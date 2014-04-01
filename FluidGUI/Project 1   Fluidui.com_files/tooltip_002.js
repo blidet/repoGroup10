@@ -1,0 +1,1 @@
+fluid.controller.define("ui.tooltip",function(b){var a=new fluid.views["ui.tooltip"]();a.create($("#hud"));b.show=function(c){a.show(c.message,c.x,c.y)};b.hide=function(){a.hide()}});

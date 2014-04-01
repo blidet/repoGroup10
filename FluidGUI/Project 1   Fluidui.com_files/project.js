@@ -1,0 +1,1 @@
+fluid.controller.define("project",function(a){a.legacy={project:window.project};this.handleCommand("open",{execute:function(b){a.legacy.project.open(b.id,b.onLoad)},revert:function(b){return}})});

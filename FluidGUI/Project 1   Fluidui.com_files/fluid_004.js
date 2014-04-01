@@ -1,0 +1,1 @@
+fluid.module.define("fluid.util",function(a){var b=a.Mustache;a.tpl=function(e,d){var c=this.tpl;if(c.templates[e]){return c.templates[e](d)}else{return"<!-- template not found -->"}};a.tpl.templates={};$('[type="text/x-underscore"]').each(function(d,e){var c=$(e);var f=c.html();var g=c.attr("id");if(typeof g==="string"&&g.length){a.tpl.templates[g]=b.compile(f)}})});
