@@ -3,6 +3,9 @@ package eda397.group10.navigator;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,6 +63,30 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
+    }
+    
+    /**
+     * This method sends the user to GitHubs registration page when
+     * the "Register" button is clicked.
+     * @param view
+     */
+    public void onClickRegister(View view) {
+    	Intent internetIntent = new Intent(Intent.ACTION_VIEW,
+    			Uri.parse("https://github.com/join"));
+    	internetIntent.setComponent(new ComponentName("com.android.browser","com.android.browser.BrowserActivity"));
+    	internetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    	this.startActivity(internetIntent);
+    }
+    
+    /**
+     * The user clicked the login button.
+     * At the moment it is just a link to the project page.
+     * TODO: check github credentials
+     * @param view
+     */
+    public void onClickLogin(View view) {
+    	Intent intent = new Intent(this, ProjectPageActivity.class);
+    	startActivity(intent);
     }
 
 }

@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Login page -->
     <string name="app_name">Git Hub Navigator</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="button_send">Login</string>
+    <string name="button_register">Register</string>
+    <string name="username_message">Username</string>
+    <string name="password_message">Password</string>
+    
+    
+    
+    <!-- Project page -->
+    <string name="title_activity_project_page">Projects</string>
 
 </resources>
