@@ -85,6 +85,10 @@ public class MainActivity extends ActionBarActivity {
      * @param view
      */
     public void onClickLogin(View view) {
+    	
+    	
+    	
+    	//Static link
     	Intent intent = new Intent(this, ProjectPageActivity.class);
     	startActivity(intent);
     }
