@@ -7,11 +7,13 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -62,6 +64,7 @@ public class MainActivity extends ActionBarActivity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
+
         }
     }
     
@@ -86,7 +89,12 @@ public class MainActivity extends ActionBarActivity {
      */
     public void onClickLogin(View view) {
     	
-    	
+//    	EditText usernameEditText = (EditText)findViewById(R.id.login_username);
+//    	EditText passwordEditText = (EditText)findViewById(R.id.login_password);
+//    	
+//    	UserManager.getInstance().authenticate(usernameEditText.getText().toString(), 
+//    			passwordEditText.getText().toString());
+    	UserManager.getInstance().authenticate(UserManager.TEST_USER_NAME, UserManager.TEST_USER_PASSWORD);
     	
     	//Static link
     	Intent intent = new Intent(this, ProjectPageActivity.class);

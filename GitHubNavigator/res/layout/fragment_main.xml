@@ -26,9 +26,8 @@
         android:id="@+id/login_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
         android:layout_marginLeft="17dp"
+        android:inputType="textNoSuggestions"
         android:ems="10"
         android:hint="@string/username_message" />
 
