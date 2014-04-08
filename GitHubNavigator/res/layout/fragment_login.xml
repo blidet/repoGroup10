@@ -48,6 +48,6 @@
         android:layout_alignBaseline="@+id/register_button"
         android:layout_alignBottom="@+id/register_button"
         android:layout_alignLeft="@+id/login_username"
-        android:text="@string/button_send" />
+        android:text="@string/button_send"/>
 
 </RelativeLayout>

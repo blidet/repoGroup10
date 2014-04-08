@@ -1,4 +1,4 @@
-package eda397.group10.navigator;
+package eda397.group10.communication;
 
 import java.io.IOException;
 
@@ -13,17 +13,30 @@ import org.apache.http.protocol.HTTP;
 
 import android.os.AsyncTask;
 
-public class GithubCommunicator extends AsyncTask<String, Void, String> {
-	
+/**
+ * Class that handles general requests to GitHub.
+ * To use this class, add a class that extends this one in the view that should do the request.
+ * The function onPostExecute should be overwritten in the new class to handle the response of the request.
+ *
+ */
+public class GithubRequest extends AsyncTask<String, Void, HttpResponse> {
 	private final Header currentHeader;
 	
-	public GithubCommunicator(String[] url, Header header){
+	/**
+	 * 
+	 * @param url the URL to send the request to
+	 * @param header the header data that should be sent with the requests (for example username and password)
+	 */
+	public GithubRequest(String url, Header header){
 		currentHeader = header;
 		this.execute(url);
 	}
 
+	/**
+	 * The actual request. This method is called by the execute method.
+	 */
 	@Override
-	protected String doInBackground(String... url) {
+	protected HttpResponse doInBackground(String... url) {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet(url[0]);
 		request.addHeader(currentHeader);
@@ -35,15 +48,6 @@ public class GithubCommunicator extends AsyncTask<String, Void, String> {
 			e.printStackTrace();
 		}
 		
-		//return response.getStatusLine().getStatusCode();
-		return response.toString();
+		return response;
 	}
-
-	@Override
-	protected void onPostExecute(String result) {
-		// TODO Auto-generated method stub
-		super.onPostExecute(result);
-		//requester.handleResponse(result);
-	}
-
 }

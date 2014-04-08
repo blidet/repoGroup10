@@ -2,6 +2,7 @@ package eda397.group10.navigator;
 
 import java.io.IOException;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
@@ -10,6 +11,7 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
+import eda397.group10.communication.GithubRequest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -19,6 +21,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +32,6 @@ public class LoginFragment extends Fragment {
 	
 	private EditText userNameEdit;
 	private EditText passwordEdit;
-	private String userName;
-	private String password;
 	private Button loginButton;
 	private Button registerButton;
 	private final int AUTHENTICATED_CODE = 200;
@@ -41,8 +42,7 @@ public class LoginFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub		
+			Bundle savedInstanceState) {	
 		View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 		
 		userNameEdit = (EditText) rootView.findViewById(R.id.login_username);
@@ -69,12 +69,19 @@ public class LoginFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				loginProgress.show();
-				LoginChecker checker = new LoginChecker();
-				checker.execute("https://api.github.com");
+
+		    	String userName = userNameEdit.getText().toString();
+				String password = passwordEdit.getText().toString();
+				
+				//Creates a basic authentication Header object, which is then used to create a GithubRequest object to handle the authentication 
+				Header header = BasicScheme.authenticate(
+		                new UsernamePasswordCredentials(userName, password),
+		                HTTP.UTF_8, false);
+				LoginChecker checker = new LoginChecker("https://api.github.com", header);
 			}
 		});
+        
         
         /**
          * This method sends the user to GitHubs registration page when
@@ -85,7 +92,6 @@ public class LoginFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent internetIntent = new Intent(Intent.ACTION_VIEW,
 		    			Uri.parse("https://github.com/join"));
 		    	internetIntent.setComponent(new ComponentName("com.android.browser","com.android.browser.BrowserActivity"));
@@ -96,51 +102,31 @@ public class LoginFragment extends Fragment {
  
 		return rootView;
 	}
-	
-	/**
-	 * This AsyncTask is used for the authentication, it is done by sending a http GET request with the
-	 * credentials filled in the http header. Authenticated: 200 OK; Authentication failed: 401 Unauthorized
-	 */
-	private class LoginChecker extends AsyncTask<String,Void,Integer>{
-
-		@Override
-		protected Integer doInBackground(String... url) {
-			// TODO Auto-generated method stub
-			userName = userNameEdit.getText().toString();
-			password = passwordEdit.getText().toString();
-
-			HttpClient client = new DefaultHttpClient();
-			HttpGet request = new HttpGet(url[0]);
-			request.addHeader(BasicScheme.authenticate(
-                    new UsernamePasswordCredentials(userName, password),
-                    HTTP.UTF_8, false));
-			
-			HttpResponse response = null;
-			try {
-				response = client.execute(request);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			return response.getStatusLine().getStatusCode();
+    
+    private class LoginChecker extends GithubRequest {
+    	
+    	public LoginChecker(String url, Header header) {
+			super(url, header);
 		}
 
+    	/**
+    	 * Checks the status code of the HTTP response. Depending on the response, 
+    	 * either the next activity is started or the error is shown to the user.
+    	 */
 		@Override
-		protected void onPostExecute(Integer result) {
-			// TODO Auto-generated method stub
-			loginProgress.dismiss();
-			if(result == AUTHENTICATED_CODE){
-				Intent projectPageActivityIntent = new Intent(getActivity(),AuthenticatedMainActivity.class);
-				getActivity().startActivity(projectPageActivityIntent);
-			}else if(result == FAILED_AUTHENTICATION){
-				authFailAlert.show();
-			}
-			super.onPostExecute(result);
-		}
-		
-	}
-
-	
-
+    	public void onPostExecute(HttpResponse result) {
+    		super.onPostExecute(result);
+    		loginProgress.dismiss();
+    		Integer statusCode = result.getStatusLine().getStatusCode();
+    		
+    		if(statusCode == AUTHENTICATED_CODE){
+    			Intent projectPageActivityIntent = new Intent(getActivity(),AuthenticatedMainActivity.class);
+    			getActivity().startActivity(projectPageActivityIntent);
+    		}else if(statusCode == FAILED_AUTHENTICATION){
+    			authFailAlert.show();
+    		} else {
+    			//TODO: handle other status codes.
+    		}
+    	}
+    }
 }
