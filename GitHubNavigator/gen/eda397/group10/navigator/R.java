@@ -1017,12 +1017,10 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05004c;
+        public static final int action_settings=0x7f05004a;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
-        public static final int button1=0x7f050047;
-        public static final int button2=0x7f050046;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
         public static final int container=0x7f05003c;
@@ -1073,11 +1071,11 @@ containing a value of this type.
         public static final int split_action_bar=0x7f05001e;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
-        public static final int tableRow1=0x7f050048;
-        public static final int tableRow2=0x7f05004a;
+        public static final int tableRow1=0x7f050046;
+        public static final int tableRow2=0x7f050048;
         public static final int textView1=0x7f050043;
-        public static final int textView2=0x7f050049;
-        public static final int textView3=0x7f05004b;
+        public static final int textView2=0x7f050047;
+        public static final int textView3=0x7f050049;
         public static final int title=0x7f05002b;
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
@@ -1138,9 +1136,8 @@ containing a value of this type.
         public static final int drawer_list_item=0x7f030019;
         public static final int fragment_authenticated_main=0x7f03001a;
         public static final int fragment_login=0x7f03001b;
-        public static final int fragment_main=0x7f03001c;
-        public static final int fragment_project_page=0x7f03001d;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001e;
+        public static final int fragment_project_page=0x7f03001c;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
     }
     public static final class menu {
         public static final int main=0x7f0d0000;
