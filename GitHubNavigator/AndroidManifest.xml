@@ -28,6 +28,9 @@
             android:name="eda397.group10.navigator.ProjectPageActivity"
             android:label="@string/title_activity_project_page" >
         </activity>
+        <activity 
+            android:name="eda397.group10.navigator.AuthenticatedMainActivity">
+        </activity>
     </application>
 
 </manifest>

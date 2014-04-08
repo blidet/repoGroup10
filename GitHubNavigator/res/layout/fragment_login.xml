@@ -33,24 +33,21 @@
         android:hint="@string/username_message" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/login_password"
         android:layout_below="@+id/login_password"
         android:layout_marginTop="47dp"
-        android:onClick="onClickRegister"
         android:text="@string/button_register" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button2"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_alignLeft="@+id/login_password"
-        android:layout_marginLeft="19dp"
-        android:onClick="onClickLogin"
+        android:layout_alignBaseline="@+id/register_button"
+        android:layout_alignBottom="@+id/register_button"
+        android:layout_alignLeft="@+id/login_username"
         android:text="@string/button_send" />
 
 </RelativeLayout>
