@@ -1,14 +1,9 @@
 package eda397.group10.navigator;
 
-import java.io.IOException;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
 import eda397.group10.communication.GithubRequest;
@@ -17,11 +12,11 @@ import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +34,10 @@ public class LoginFragment extends Fragment {
 	private ProgressDialog loginProgress;
 	private AlertDialog.Builder dialogBuilder;
 	private AlertDialog authFailAlert;
+	private SharedPreferences sh_Pref;
+	private Editor toEdit;
+	private String username;
+	private String password;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +58,7 @@ public class LoginFragment extends Fragment {
             }
         }).create();
         
+        
         /**
          * The user clicked the login button.
          * At the moment it is just a link to the project page.
@@ -71,14 +71,14 @@ public class LoginFragment extends Fragment {
 			public void onClick(View v) {
 				loginProgress.show();
 
-		    	String userName = userNameEdit.getText().toString();
-				String password = passwordEdit.getText().toString();
+		    	username = userNameEdit.getText().toString();
+				password = passwordEdit.getText().toString();
 				
 				//Creates a basic authentication Header object, which is then used to create a GithubRequest object to handle the authentication 
 				Header header = BasicScheme.authenticate(
-		                new UsernamePasswordCredentials(userName, password),
+		                new UsernamePasswordCredentials(username, password),
 		                HTTP.UTF_8, false);
-				LoginChecker checker = new LoginChecker("https://api.github.com", header);
+				        new LoginChecker("https://api.github.com", header);
 			}
 		});
         
@@ -120,6 +120,12 @@ public class LoginFragment extends Fragment {
     		Integer statusCode = result.getStatusLine().getStatusCode();
     		
     		if(statusCode == AUTHENTICATED_CODE){
+    			sh_Pref = getActivity().getSharedPreferences("Login Credentials",0);
+    			toEdit = sh_Pref.edit();
+    			toEdit.putString("Username", username);
+    	        toEdit.putString("Password", password);
+    	        toEdit.putBoolean("Autenticated", true);
+    	        toEdit.commit();
     			Intent projectPageActivityIntent = new Intent(getActivity(),AuthenticatedMainActivity.class);
     			getActivity().startActivity(projectPageActivityIntent);
     		}else if(statusCode == FAILED_AUTHENTICATION){

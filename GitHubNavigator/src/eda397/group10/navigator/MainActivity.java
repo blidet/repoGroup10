@@ -1,21 +1,32 @@
 package eda397.group10.navigator;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
 	
+	private SharedPreferences sh_Pref;
+	private boolean authenticated;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        sh_Pref = getSharedPreferences("Login Credentials",0);
+        authenticated = sh_Pref.getBoolean("Autenticated", false);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && !authenticated) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new LoginFragment())
                     .commit();
+        }else if(authenticated){
+        	startActivity(new Intent(this,AuthenticatedMainActivity.class));
+        	finish();
         }
     }
 
