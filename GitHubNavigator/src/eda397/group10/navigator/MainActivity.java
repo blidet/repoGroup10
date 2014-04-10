@@ -1,5 +1,6 @@
 package eda397.group10.navigator;
 
+import eda397.group10.communication.Constants;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,8 +18,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        sh_Pref = getSharedPreferences("Login Credentials",0);
-        authenticated = sh_Pref.getBoolean("Autenticated", false);
+        sh_Pref = getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
+        authenticated = sh_Pref.getBoolean(Constants.AUTH_PREFERENCE, false);
 
         if (savedInstanceState == null && !authenticated) {
             getSupportFragmentManager().beginTransaction()

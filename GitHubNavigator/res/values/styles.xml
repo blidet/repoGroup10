@@ -1,9 +1,29 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
+    
+	<style name="button_style">
+        <item name="android:background">#FF4000</item>
+    </style>
+    
+	<style name="CustomStyleButton" parent="@android:style/Widget.Button">
+ <item name="android:textSize">16sp</item>
+ <item name="android:textStyle">bold</item>
+ <item name="android:textColor">#ffffff</item>
+ <item name="android:gravity">center</item>
+ <item name="android:shadowColor">#000000</item>
+ <item name="android:shadowDx">1</item>
+ <item name="android:shadowDy">1</item>
+ <item name="android:shadowRadius">0.6</item>
+ <item  name="android:background">@drawable/button_custom</item>
+ <item name="android:padding">10dip</item>
+</style>
+	
+	
+    
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <!--
             Theme customizations available in newer API levels can go in
@@ -16,5 +36,7 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+ 
 
 </resources>
