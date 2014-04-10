@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import android.content.Intent;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -25,6 +26,7 @@ import org.json.JSONTokener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -43,6 +45,8 @@ public class AuthenticatedMainActivity extends Activity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
+	private SharedPreferences sh_Pref;
+	
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -90,19 +94,19 @@ public class AuthenticatedMainActivity extends Activity {
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));*/
 		
 
-		// Recycle the typed array
-		navMenuIcons.recycle();
-
-		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-
-		// setting the nav drawer list adapter
-		adapter = new NavDrawerListAdapter(getApplicationContext(),
-				navDrawerItems);
-		mDrawerList.setAdapter(adapter);
-
-		// enabling action bar app icon and behaving it as toggle button
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+//		// Recycle the typed array
+//		navMenuIcons.recycle();
+//
+//		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+//
+//		// setting the nav drawer list adapter
+//		adapter = new NavDrawerListAdapter(getApplicationContext(),
+//				navDrawerItems);
+//		mDrawerList.setAdapter(adapter);
+//
+//		// enabling action bar app icon and behaving it as toggle button
+//		getActionBar().setDisplayHomeAsUpEnabled(true);
+//		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, //nav menu toggle icon
@@ -128,6 +132,9 @@ public class AuthenticatedMainActivity extends Activity {
 			displayView(0);
 		}
 		
+		/*
+		 * Here we are searching the repo name 
+		 */
 		SharedPreferences sh_Pref = getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
         boolean authenticated = sh_Pref.getBoolean(Constants.AUTH_PREFERENCE, false);
         
@@ -140,7 +147,9 @@ public class AuthenticatedMainActivity extends Activity {
         	//Send HTTP request to retrieve user repos:
     		RepoRetriever retriever = new RepoRetriever(Constants.FETCH_REPOS_URL, header);
         } else {
-        	//TODO
+        	//If you are not loged going back to login page
+        	Intent intent = new Intent(this, MainActivity.class);
+        	startActivity(intent);
         }
 	}
 
@@ -291,12 +300,36 @@ public class AuthenticatedMainActivity extends Activity {
 			try {
 				for (int i = 0; i < json.length(); i++) {
 					String name = json.getJSONObject(i).get(Constants.REPOSITORY_JSON_KEY).toString();
-					Log.println(Log.ASSERT, "NAME", name);
+					//Log.println(Log.ASSERT, "NAME", name);
+					/*
+					 * Writing the repo names
+					 */
+					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1)));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			/*
+			 *Creating the nav menu
+			 */
+			// Recycle the typed array
+			navMenuIcons.recycle();
+
+			mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+
+			// setting the nav drawer list adapter
+			adapter = new NavDrawerListAdapter(getApplicationContext(),
+					navDrawerItems);
+			mDrawerList.setAdapter(adapter);
+
+			// enabling action bar app icon and behaving it as toggle button
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setHomeButtonEnabled(true);
+
+			mDrawerLayout.setDrawerListener(mDrawerToggle);
+			
 		}
 	}
 
