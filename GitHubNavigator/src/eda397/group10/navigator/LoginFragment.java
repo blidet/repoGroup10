@@ -58,8 +58,7 @@ public class LoginFragment extends Fragment {
                 dialog.dismiss();
             }
         }).create();
-        
-        
+       
         /**
          * The user clicked the login button.
          * At the moment it is just a link to the project page.
@@ -69,17 +68,23 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				loginProgress.show();
-
+			public void onClick(View v) {				
+				
 		    	username = userNameEdit.getText().toString();
 				password = passwordEdit.getText().toString();
 				
 				//Creates a basic authentication Header object, which is then used to create a GithubRequest object to handle the authentication 
-				Header header = BasicScheme.authenticate(
+				if(username.equals("")||password.equals("")){
+					authFailAlert.setMessage("Username or password can't be empty");
+					authFailAlert.show();
+					return;
+				}else{
+					loginProgress.show();
+					Header header = BasicScheme.authenticate(
 		                new UsernamePasswordCredentials(username, password),
 		                HTTP.UTF_8, false);
 				        new LoginChecker(Constants.AUTHENTICATE_URL, header);
+				}		
 			}
 		});
         

@@ -998,13 +998,14 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int button_custom=0x7f020057;
         public static final int counter_bg=0x7f020058;
-        public static final int ic_drawer=0x7f020059;
-        public static final int ic_git_repo=0x7f02005a;
-        public static final int ic_home=0x7f02005b;
-        public static final int ic_launcher=0x7f02005c;
-        public static final int list_item_bg_normal=0x7f02005d;
-        public static final int list_item_bg_pressed=0x7f02005e;
-        public static final int list_selector=0x7f02005f;
+        public static final int git_logo=0x7f020059;
+        public static final int ic_drawer=0x7f02005a;
+        public static final int ic_git_repo=0x7f02005b;
+        public static final int ic_home=0x7f02005c;
+        public static final int ic_launcher=0x7f02005d;
+        public static final int list_item_bg_normal=0x7f02005e;
+        public static final int list_item_bg_pressed=0x7f02005f;
+        public static final int list_selector=0x7f020060;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1045,7 +1046,7 @@ containing a value of this type.
         public static final int list_item=0x7f050029;
         public static final int list_slidermenu=0x7f050040;
         public static final int login_button=0x7f050045;
-        public static final int login_password=0x7f050044;
+        public static final int login_password=0x7f050042;
         public static final int login_username=0x7f050043;
         public static final int logo=0x7f050041;
         public static final int middle=0x7f050012;
@@ -1055,7 +1056,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
-        public static final int register_button=0x7f050042;
+        public static final int register_button=0x7f050044;
         public static final int search_badge=0x7f050032;
         public static final int search_bar=0x7f050031;
         public static final int search_button=0x7f050033;

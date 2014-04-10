@@ -16,31 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="24dp"
-        android:src="@drawable/ic_launcher" />
-    
-
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="85dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/login_username"
-        android:layout_marginBottom="65dp"
-        style="@style/CustomStyleButton" 
-        android:text="@string/button_register" />
-
-    <EditText
-        android:id="@+id/login_username"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignRight="@+id/login_password"
-        android:layout_centerVertical="true"
-        android:background="#d8d8d8"
-        android:ems="10"
-        android:hint="@string/username_message" >
-
-        <requestFocus />
-    </EditText>
+        android:src="@drawable/git_logo" />
 
     <EditText
         android:id="@+id/login_password"
@@ -54,16 +30,39 @@
         android:hint="@string/password_message"
         android:inputType="textPassword" />
 
+    <EditText
+        android:id="@+id/login_username"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignLeft="@+id/login_password"
+        android:layout_alignRight="@+id/login_password"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="14dp"
+        android:background="#d8d8d8"
+        android:ems="10"
+        android:hint="@string/username_message" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/register_button"
+        style="@style/CustomStyleButton"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/login_password"
+        android:layout_below="@+id/login_password"
+        android:layout_marginTop="47dp"
+        android:text="@string/button_register" />
+
     <Button
         android:id="@+id/login_button"
+        style="@style/CustomStyleButton"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/register_button"
         android:layout_alignBottom="@+id/register_button"
-        android:layout_alignLeft="@+id/login_username"
-        style="@style/CustomStyleButton" 
+        android:layout_alignLeft="@+id/login_password"
         android:text="@string/button_send" />
-
-    
 
 </RelativeLayout>
