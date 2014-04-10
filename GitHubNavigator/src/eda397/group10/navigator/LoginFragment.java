@@ -52,7 +52,7 @@ public class LoginFragment extends Fragment {
         loginProgress.setMessage("Authenticating......");
         loginProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);  
         dialogBuilder = new AlertDialog.Builder(getActivity());
-        authFailAlert = dialogBuilder.setMessage("Authntication failed").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        authFailAlert = dialogBuilder.setMessage("Authentication failed").setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }
