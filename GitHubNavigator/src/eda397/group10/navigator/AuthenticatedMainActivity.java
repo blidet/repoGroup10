@@ -1,5 +1,6 @@
 package eda397.group10.navigator;
 
+import eda397.group10.communication.Constants;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.sliding.NavDrawerItem;
@@ -127,16 +128,17 @@ public class AuthenticatedMainActivity extends Activity {
 			displayView(0);
 		}
 		
-		SharedPreferences sh_Pref = getSharedPreferences("Login Credentials",0);
-        boolean authenticated = sh_Pref.getBoolean("Authenticated", false);
+		SharedPreferences sh_Pref = getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
+        boolean authenticated = sh_Pref.getBoolean(Constants.AUTH_PREFERENCE, false);
         
         if (authenticated) {
         	//Create a Header with the username and password saved in "Shared Preferences":
         	Header header = BasicScheme.authenticate(
-                    new UsernamePasswordCredentials(sh_Pref.getString("Username", ""), sh_Pref.getString("Password", "")),
+                    new UsernamePasswordCredentials(sh_Pref.getString(Constants.USERNAME_PREFERENCE, ""), 
+                    		sh_Pref.getString(Constants.PASSWORD_PREFERENCE, "")),
                     HTTP.UTF_8, false);
         	//Send HTTP request to retrieve user repos:
-    		RepoRetriever retriever = new RepoRetriever("https://api.github.com/user/repos", header);
+    		RepoRetriever retriever = new RepoRetriever(Constants.FETCH_REPOS_URL, header);
         } else {
         	//TODO
         }
@@ -288,7 +290,7 @@ public class AuthenticatedMainActivity extends Activity {
 			
 			try {
 				for (int i = 0; i < json.length(); i++) {
-					String name = json.getJSONObject(i).get("full_name").toString();
+					String name = json.getJSONObject(i).get(Constants.REPOSITORY_JSON_KEY).toString();
 					Log.println(Log.ASSERT, "NAME", name);
 				}
 			} catch (JSONException e) {
