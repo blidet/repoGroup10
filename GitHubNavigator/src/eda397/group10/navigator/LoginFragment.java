@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment {
     			toEdit = sh_Pref.edit();
     			toEdit.putString("Username", username);
     	        toEdit.putString("Password", password);
-    	        toEdit.putBoolean("Autenticated", true);
+    	        toEdit.putBoolean("Authenticated", true);
     	        toEdit.commit();
     			Intent projectPageActivityIntent = new Intent(getActivity(),AuthenticatedMainActivity.class);
     			getActivity().startActivity(projectPageActivityIntent);

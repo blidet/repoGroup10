@@ -18,7 +18,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         
         sh_Pref = getSharedPreferences("Login Credentials",0);
-        authenticated = sh_Pref.getBoolean("Autenticated", false);
+        authenticated = sh_Pref.getBoolean("Authenticated", false);
 
         if (savedInstanceState == null && !authenticated) {
             getSupportFragmentManager().beginTransaction()
