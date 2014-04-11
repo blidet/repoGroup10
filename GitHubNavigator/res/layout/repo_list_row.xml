@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/background"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/rowselector"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="4dp" >
+
+        <ImageView
+            android:id="@+id/owner_icon"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_git_repo" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/repo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dip"
+            android:layout_toRightOf="@+id/owner_icon"
+            android:shadowColor="@color/black"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="0.5"
+            android:text="repoGroup10"
+            android:textColor="#6698FF"
+            android:textSize="20dip"
+            android:textStyle="bold" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/repo_discrib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/repo_name"
+            android:layout_marginLeft="4dip"
+            android:layout_toRightOf="@+id/owner_icon"
+            android:text="this is the repo of group10"
+            android:textSize="12dip" >
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="32dip"
+        android:layout_alignBottom="@+id/relativeLayout1"
+        android:layout_alignTop="@+id/relativeLayout1"
+        android:layout_toRightOf="@+id/relativeLayout1"
+        android:paddingRight="3dp" >
+
+        <TextView
+            android:id="@+id/star_count"
+            android:layout_width="wrap_content"
+            android:layout_height="30dip"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/star"
+            android:text="111"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_star" />
+    </RelativeLayout>
+
+</RelativeLayout>

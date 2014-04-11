@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
 import android.content.Intent;
 
 import org.apache.http.Header;
@@ -26,6 +27,7 @@ import org.json.JSONTokener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -104,19 +106,19 @@ public class AuthenticatedMainActivity extends Activity {
 		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
 		
 
-//		// Recycle the typed array
-//		navMenuIcons.recycle();
-//
-//		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-//
-//		// setting the nav drawer list adapter
-//		adapter = new NavDrawerListAdapter(getApplicationContext(),
-//				navDrawerItems);
-//		mDrawerList.setAdapter(adapter);
-//
-//		// enabling action bar app icon and behaving it as toggle button
-//		getActionBar().setDisplayHomeAsUpEnabled(true);
-//		getActionBar().setHomeButtonEnabled(true);
+		// Recycle the typed array
+		navMenuIcons.recycle();
+
+		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+
+		// setting the nav drawer list adapter
+		adapter = new NavDrawerListAdapter(getApplicationContext(),
+				navDrawerItems);
+		mDrawerList.setAdapter(adapter);
+
+		// enabling action bar app icon and behaving it as toggle button
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, //nav menu toggle icon
@@ -155,7 +157,7 @@ public class AuthenticatedMainActivity extends Activity {
                     		sh_Pref.getString(Constants.PASSWORD_PREFERENCE, "")),
                     HTTP.UTF_8, false);
         	//Send HTTP request to retrieve user repos:
-    		RepoRetriever retriever = new RepoRetriever(Constants.FETCH_REPOS_URL, header);
+    		new RepoRetriever(Constants.FETCH_REPOS_URL, header);
         } else {
         	//If you are not loged going back to login page
         	Intent intent = new Intent(this, MainActivity.class);
@@ -214,6 +216,7 @@ public class AuthenticatedMainActivity extends Activity {
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
+		ListFragment listFragment = null;
 		switch (position) {
 		case 0:
 			//fragment = new HomeFragment();
@@ -225,7 +228,7 @@ public class AuthenticatedMainActivity extends Activity {
 			//fragment = new PhotosFragment();
 			break;
 		case 3:
-			//fragment = new CommunityFragment();
+			listFragment = new RepoListFragment();
 			break;
 		case 4:
 			//fragment = new PagesFragment();
@@ -242,6 +245,16 @@ public class AuthenticatedMainActivity extends Activity {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
+
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			mDrawerList.setSelection(position);
+			setTitle(navMenuTitles[position]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}else if(listFragment != null){
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.frame_container, listFragment).commit();
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);

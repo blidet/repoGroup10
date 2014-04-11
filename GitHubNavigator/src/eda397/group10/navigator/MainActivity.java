@@ -21,15 +21,15 @@ public class MainActivity extends ActionBarActivity {
         sh_Pref = getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
         authenticated = sh_Pref.getBoolean(Constants.AUTH_PREFERENCE, false);
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && !authenticated) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new LoginFragment())
                     .commit();
         }
-//        else if(authenticated){
-//        	startActivity(new Intent(this,AuthenticatedMainActivity.class));
-//        	finish();
-//        }
+        else if(authenticated){
+        	startActivity(new Intent(this,AuthenticatedMainActivity.class));
+        	finish();
+        }
     }
 
 
