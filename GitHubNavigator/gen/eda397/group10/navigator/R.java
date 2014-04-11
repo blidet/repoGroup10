@@ -1006,6 +1006,22 @@ containing a value of this type.
         public static final int list_item_bg_normal=0x7f02005e;
         public static final int list_item_bg_pressed=0x7f02005f;
         public static final int list_selector=0x7f020060;
+        public static final int news144=0x7f020061;
+        public static final int news48=0x7f020062;
+        public static final int news72=0x7f020063;
+        public static final int news96=0x7f020064;
+        public static final int profile144=0x7f020065;
+        public static final int profile48=0x7f020066;
+        public static final int profile72=0x7f020067;
+        public static final int profile96=0x7f020068;
+        public static final int repository144=0x7f020069;
+        public static final int repository48=0x7f02006a;
+        public static final int repository72=0x7f02006b;
+        public static final int repository96=0x7f02006c;
+        public static final int setting144=0x7f02006d;
+        public static final int settings48=0x7f02006e;
+        public static final int settings72=0x7f02006f;
+        public static final int settings96=0x7f020070;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;

@@ -11,7 +11,10 @@
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item >Home</item>
+        <!--<item >Home</item>-->
+        <item >Profile</item>
+        <item >Settings</item>
+        <item >News</item>
         <item >Repositories</item>
         
     </string-array>
@@ -19,9 +22,15 @@
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_home</item>
-        <item>@drawable/ic_git_repo</item>
-        
+        <!--<item>@drawable/ic_home</item>-->
+        <!--Profile-->
+        <item>@drawable/profile48</item>
+        <!--Settings-->
+        <item>@drawable/settings48</item>
+        <!--News-->
+        <item>@drawable/news48</item>
+        <!--Repositories-->
+        <item>@drawable/repository48</item>        
     </array>
     
     
