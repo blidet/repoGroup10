@@ -14,6 +14,7 @@ import eda397.group10.communication.JSONParser;
 import eda397.group10.pojo.RepositoryPOJO;
 import android.annotation.SuppressLint;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class RepoListFragment extends ListFragment {
 	private ListView repoList;
 	private LayoutInflater layoutInflator;
 	private RepoListFragment repo;
+	public ProgressDialog loadingProgress;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +37,10 @@ public class RepoListFragment extends ListFragment {
 		View rootView = inflater.inflate(R.layout.repo_list, container, false);
 		repo = this;
 		repoList = (ListView)rootView.findViewById(android.R.id.list);
+		loadingProgress = new ProgressDialog(getActivity());
+        loadingProgress.setMessage("Loading......");
+        loadingProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loadingProgress.show();
 		this.layoutInflator = inflater;
 		SharedPreferences sh_Pref = getActivity().getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
 		Header header = BasicScheme.authenticate(
