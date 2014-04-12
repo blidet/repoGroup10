@@ -55,10 +55,14 @@ public class ListAdapter extends BaseAdapter {
 		description = (TextView)convertView.findViewById(R.id.repo_discrib);
 		star = (TextView)convertView.findViewById(R.id.star_count);
 		image = (ImageView)convertView.findViewById(R.id.owner_icon);
-		
+				
 		RepositoryPOJO pojo = datas.get(pos);
+		String des = pojo.getDescription();
+		if(des.length()>40){
+			des = des.substring(0, 39) + "...";
+		}
 		repoName.setText(pojo.getName());
-		description.setText(pojo.getDescription());
+		description.setText(des);
 		star.setText(pojo.getStarCount());
 		
 		return convertView;

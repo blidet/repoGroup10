@@ -34,7 +34,6 @@ public class JSONParser extends JsonExtractor {
 		}catch(JSONException ex){
 			
 		}
-		System.out.println("0000000000000000000000 "+datas.size());
 		contex.setList(datas);
 		//super.onPostExecute(json);
 	}

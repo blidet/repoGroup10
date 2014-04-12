@@ -6,10 +6,6 @@ import eda397.group10.communication.JsonExtractor;
 import eda397.group10.sliding.NavDrawerItem;
 import eda397.group10.sliding.NavDrawerListAdapter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import android.content.Intent;
@@ -21,14 +17,11 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ListFragment;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -46,8 +39,6 @@ public class AuthenticatedMainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-
-	private SharedPreferences sh_Pref;
 	
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -213,6 +204,7 @@ public class AuthenticatedMainActivity extends Activity {
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
+	@SuppressWarnings("unused")
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;

@@ -48,6 +48,7 @@
             android:layout_marginLeft="4dip"
             android:layout_toRightOf="@+id/owner_icon"
             android:text="this is the repo of group10"
+            android:maxLines="1"
             android:textSize="12dip" >
         </TextView>
     </RelativeLayout>
