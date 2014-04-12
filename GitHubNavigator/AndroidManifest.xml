@@ -31,6 +31,8 @@
         <activity 
             android:name="eda397.group10.navigator.AuthenticatedMainActivity">
         </activity>
+        
+        <service android:name="eda397.group10.notifications.NotificationService" />
     </application>
 
 </manifest>

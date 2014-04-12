@@ -13,6 +13,7 @@ public class Constants {
 	 */
 	public static final String AUTHENTICATE_URL = "https://api.github.com";
 	public static final String FETCH_REPOS_URL = AUTHENTICATE_URL + "/user/repos";
+	public static final String POLL_UPDATES_URL = AUTHENTICATE_URL + "/notifications";
 	
 	/**
 	 * The credentials for the test user of the github project.
@@ -32,5 +33,7 @@ public class Constants {
 	public static final String AUTH_PREFERENCE = "Authenticated";
 	public static final String USERNAME_PREFERENCE = "Username";
 	public static final String PASSWORD_PREFERENCE = "Password";
+	
+	public static final String SETTINGS_PREFERENCES = "Application settings";
 
 }
