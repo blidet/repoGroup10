@@ -3,28 +3,25 @@ package eda397.group10.navigator;
 import java.util.ArrayList;
 
 import eda397.group10.pojo.RepositoryPOJO;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class ListAdapter extends BaseAdapter {
 	
-	private RepoListFragment contex;
+	//private RepoListFragment contex;
 	private ArrayList<RepositoryPOJO> datas;
 	private TextView repoName;
 	private TextView description;
 	private TextView star;
-	private ImageView image;
+	//private ImageView image;
 	private LayoutInflater layoutInflater;
 	
 	
 	public ListAdapter(RepoListFragment contex,ArrayList<RepositoryPOJO> datas,LayoutInflater layoutInflater){
-		this.contex = contex;
+		//this.contex = contex;
 		this.datas = datas;
 		this.layoutInflater = layoutInflater;
 	}
@@ -54,7 +51,7 @@ public class ListAdapter extends BaseAdapter {
 		repoName = (TextView)convertView.findViewById(R.id.repo_name);
 		description = (TextView)convertView.findViewById(R.id.repo_discrib);
 		star = (TextView)convertView.findViewById(R.id.star_count);
-		image = (ImageView)convertView.findViewById(R.id.owner_icon);
+		//image = (ImageView)convertView.findViewById(R.id.owner_icon);
 				
 		RepositoryPOJO pojo = datas.get(pos);
 		String des = pojo.getDescription();

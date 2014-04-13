@@ -38,7 +38,4 @@ public class JSONParser extends JsonExtractor {
 		contex.setList(datas);
 	}
 	
-	
-
-	
 }

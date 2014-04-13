@@ -1,6 +1,5 @@
 package eda397.group10.navigator;
 
-import eda397.group10.communication.Constants;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.sliding.NavDrawerItem;
@@ -138,17 +137,17 @@ public class AuthenticatedMainActivity extends Activity {
 		/*
 		 * Here we are searching the repo name 
 		 */
-		SharedPreferences sh_Pref = getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
-        boolean authenticated = sh_Pref.getBoolean(Constants.AUTH_PREFERENCE, false);
+		SharedPreferences sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
+        boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
         
         if (authenticated) {
         	//Create a Header with the username and password saved in "Shared Preferences":
         	Header header = BasicScheme.authenticate(
-                    new UsernamePasswordCredentials(sh_Pref.getString(Constants.USERNAME_PREFERENCE, ""), 
-                    		sh_Pref.getString(Constants.PASSWORD_PREFERENCE, "")),
+                    new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
+                    		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
                     HTTP.UTF_8, false);
         	//Send HTTP request to retrieve user repos:
-    		new RepoRetriever(Constants.FETCH_REPOS_URL, header);
+    		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL),header);
         } else {
         	//If you are not loged going back to login page
         	Intent intent = new Intent(this, MainActivity.class);
@@ -314,7 +313,7 @@ public class AuthenticatedMainActivity extends Activity {
 			
 			try {
 				for (int i = 0; i < json.length(); i++) {
-					String name = json.getJSONObject(i).get(Constants.REPOSITORY_JSON_KEY).toString();
+					String name = json.getJSONObject(i).get(getResources().getString(R.string.REPOSITORY_JSON_KEY)).toString();
 					//Log.println(Log.ASSERT, "NAME", name);
 					/*
 					 * Writing the repo names

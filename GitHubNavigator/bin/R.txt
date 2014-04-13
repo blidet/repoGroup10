@@ -382,6 +382,15 @@ int layout repo_list_row 0x7f03001e
 int layout support_simple_spinner_dropdown_item 0x7f03001f
 int menu main 0x7f0d0000
 int menu project_page 0x7f0d0001
+int string AUTHENTICATE_URL 0x7f0a0013
+int string AUTH_PREFERENCE 0x7f0a0019
+int string FETCH_REPOS_URL 0x7f0a0014
+int string LOGIN_CREDENTIALS_PREFERENCE_NAME 0x7f0a0018
+int string PASSWORD_PREFERENCE 0x7f0a001b
+int string REPOSITORY_JSON_KEY 0x7f0a0017
+int string TEST_USER_PASSWORD 0x7f0a0016
+int string TEST_USER_USERNAME 0x7f0a0015
+int string USERNAME_PREFERENCE 0x7f0a001a
 int string abc_action_bar_home_description 0x7f0a0001
 int string abc_action_bar_up_description 0x7f0a0002
 int string abc_action_menu_overflow_description 0x7f0a0003
@@ -399,9 +408,9 @@ int string action_settings 0x7f0a000e
 int string app_name 0x7f0a000d
 int string button_register 0x7f0a0010
 int string button_send 0x7f0a000f
-int string desc_list_item_icon 0x7f0a0014
+int string desc_list_item_icon 0x7f0a001d
 int string password_message 0x7f0a0012
-int string title_activity_project_page 0x7f0a0013
+int string title_activity_project_page 0x7f0a001c
 int string username_message 0x7f0a0011
 int style AppBaseTheme 0x7f0b0085
 int style AppTheme 0x7f0b0086

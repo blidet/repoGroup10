@@ -8,7 +8,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 
-import eda397.group10.communication.Constants;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JSONParser;
 import eda397.group10.pojo.RepositoryPOJO;
@@ -42,13 +41,13 @@ public class RepoListFragment extends ListFragment {
         loadingProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loadingProgress.show();
 		this.layoutInflator = inflater;
-		SharedPreferences sh_Pref = getActivity().getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
+		SharedPreferences sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 		Header header = BasicScheme.authenticate(
-                new UsernamePasswordCredentials(sh_Pref.getString(Constants.USERNAME_PREFERENCE, ""), 
-                		sh_Pref.getString(Constants.PASSWORD_PREFERENCE, "")),
+                new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
+                		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
                 HTTP.UTF_8, false);
     	//Send HTTP request to retrieve user repos:
-		new RepoRetriever(Constants.FETCH_REPOS_URL, header);
+		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header);
 		return rootView;
 	}
 	

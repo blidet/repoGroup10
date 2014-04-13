@@ -8,6 +8,19 @@
     <string name="button_register">Register</string>
     <string name="username_message">Username</string>
     <string name="password_message">Password</string>
+    <!-- Http request URL's. -->
+    <string name="AUTHENTICATE_URL">https://api.github.com</string>
+    <string name="FETCH_REPOS_URL">https://api.github.com/user/repos</string>
+    <!-- The credentials for the test user of the github project. -->
+    <string name="TEST_USER_USERNAME">group10testuser</string>
+    <string name="TEST_USER_PASSWORD">eda397group10</string>
+    <!-- Json keys. -->
+    <string name="REPOSITORY_JSON_KEY">full_name</string>
+    <!-- Shared preference keys. -->
+    <string name="LOGIN_CREDENTIALS_PREFERENCE_NAME">Login Credentials</string>
+    <string name="AUTH_PREFERENCE">Authenticated</string>
+    <string name="USERNAME_PREFERENCE">Username</string>
+    <string name="PASSWORD_PREFERENCE">Password</string>
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
