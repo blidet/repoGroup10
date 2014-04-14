@@ -9,6 +9,13 @@ import org.json.JSONObject;
 import eda397.group10.navigator.RepoListFragment;
 import eda397.group10.pojo.RepositoryPOJO;
 
+/**
+ * This class is used to parse the JSON array, the result will be stored in POJOs, 
+ * these POJOs will be saved in an ArrayList, after fetching all the needed POJOs,
+ * we call the set the adapter of the list which displays all the data from this 
+ * JSON array.
+ */
+
 public class JSONParser extends JsonExtractor {
 
 	private ArrayList<RepositoryPOJO> datas;

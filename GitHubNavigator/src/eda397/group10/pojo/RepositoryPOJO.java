@@ -1,5 +1,11 @@
 package eda397.group10.pojo;
 
+/*
+ *This POJO is used to store the data of the repository JOSN array, when different arrays used, 
+ *we may need to create different POJOs in the package, or create different constructor for the 
+ *same POJO. 
+ */
+
 public class RepositoryPOJO {
 	
 	private String name;

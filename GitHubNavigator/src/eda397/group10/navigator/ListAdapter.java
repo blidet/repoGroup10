@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+/**
+ * This is the adapter used to adapt the data fetched from the JSON array to the list,
+ * since the each item of the list contains more than one value from of the JSON array,
+ * it's better to set use the adapter.
+ */
 public class ListAdapter extends BaseAdapter {
 	
 	//private RepoListFragment contex;

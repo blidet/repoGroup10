@@ -10,6 +10,10 @@ import org.json.JSONTokener;
 import android.os.AsyncTask;
 import android.util.Log;
 
+/**
+ * This class is used to fetch the JSON string, from the API we can see that the returned result
+ * is a JSON array, so we return the JSON array instead of string.
+ */
 public class JsonExtractor extends AsyncTask<HttpResponse, Void, JSONArray> {
 
 	@Override

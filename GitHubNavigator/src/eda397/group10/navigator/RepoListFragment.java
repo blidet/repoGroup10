@@ -22,6 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+/*
+ * This is the fragment which lists all the user repositories.
+ */
+
 @SuppressLint("NewApi")
 public class RepoListFragment extends ListFragment {
 	private ListView repoList;
