@@ -25,7 +25,7 @@ public class JsonExtractor extends AsyncTask<HttpResponse, Void, JSONArray> {
 			StringBuilder builder = new StringBuilder();
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");
-			    Log.println(Log.ASSERT, "JSON Extractor", line);
+			    //Log.println(Log.ASSERT, "JSON Extractor", line);
 			}
 			JSONTokener tokener = new JSONTokener(builder.toString());
 			finalResult = new JSONArray(tokener);

@@ -72,10 +72,12 @@ public class MainActivity extends ActionBarActivity {
         am.cancel(pi);
         // minutes <= 0 means notifications are disabled
         if (minutes > 0) {
-            am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+           /* am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + minutes*60*1000,
-                minutes*60*1000, pi);
-
+                minutes*60*1000, pi);*/
+        	am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + 1000,
+                    minutes*60*1000, pi);
             Log.println(Log.ASSERT, "alarm", "started");
         }
         
