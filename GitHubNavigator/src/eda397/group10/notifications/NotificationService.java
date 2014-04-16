@@ -5,10 +5,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import eda397.group10.communication.GithubRequest;
+<<<<<<< HEAD
 import eda397.group10.communication.RepoJSONParser;
 import eda397.group10.communication.JSONExtractor;
+=======
+import eda397.group10.communication.JsonExtractor;
+>>>>>>> 4d38c0c2f887d05c4b989599b0c850b4d6ae8ce7
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
 import android.app.NotificationManager;
@@ -27,7 +34,6 @@ import android.util.Log;
  *
  */
 public class NotificationService extends Service {
-	private NotificationService notificationService = this;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -64,6 +70,9 @@ public class NotificationService extends Service {
     }
     
     
+    /**
+     * Makes a call to the github API to see if there are any new notifications
+     */
     private class PollTask extends GithubRequest {
 		public PollTask(String url, Header header) {
 			super(url, header);
@@ -74,24 +83,58 @@ public class NotificationService extends Service {
 			Integer statusCode = result.getStatusLine().getStatusCode();
 			Log.println(Log.ASSERT, "get notifications", "status code: "+statusCode+" NOTIFICATION");
 			
+<<<<<<< HEAD
 			JSONExtractor repoBuilder = new JSONExtractor();
 			repoBuilder.execute(result);
+=======
+			NotificationBuilder jsonExtractor = new NotificationBuilder();
+			jsonExtractor.execute(result);
+>>>>>>> 4d38c0c2f887d05c4b989599b0c850b4d6ae8ce7
 			
-			createNotification();
 			stopSelf();
 		}
 	}
+    
+    /**
+     * Extracts data from the returned JSONArray
+     */
+    private class NotificationBuilder extends JsonExtractor {
+    	@Override
+    	public void onPostExecute(JSONArray json) {
+    		Log.println(Log.ASSERT, "Notification builder.....", json.toString());
+
+			try {
+				for (int i = 0; i < json.length(); i++) {
+					createNotification(json.getJSONObject(i));	
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    }
     
     public void onDestroy() {
         super.onDestroy();
     }
     
-    private void createNotification() {
+    /**
+     * Creates the actual notifications shown to the user.
+     * TODO: move to separate class.
+     * @param input
+     * @throws JSONException
+     */
+    private void createNotification(JSONObject input) throws JSONException {
+    	// mId allows you to update the notification later on.
+    	int mId = input.getInt("id");
+    	JSONObject subject = input.getJSONObject("subject");
+    	String text = subject.getString("type") + ": " + subject.getString("title");
+    	
     	NotificationCompat.Builder mBuilder =
     	        new NotificationCompat.Builder(this)
     	        .setSmallIcon(R.drawable.news72)
-    	        .setContentTitle("My notification")
-    	        .setContentText("Hello World!");
+    	        .setContentTitle("Id: " + mId)
+    	        .setContentText(text);
     	// Creates an explicit intent for an Activity in your app
     	Intent resultIntent = new Intent(this, MainActivity.class);
 
@@ -112,8 +155,7 @@ public class NotificationService extends Service {
     	mBuilder.setContentIntent(resultPendingIntent);
     	NotificationManager mNotificationManager =
     	    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    	// mId allows you to update the notification later on.
-    	int mId = 1; 
+    	
     	mNotificationManager.notify(mId, mBuilder.build());
     }
 }

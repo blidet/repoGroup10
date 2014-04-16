@@ -12,7 +12,7 @@
     <!-- Http request URL's. -->
     <string name="AUTHENTICATE_URL">https://api.github.com</string>
     <string name="FETCH_REPOS_URL">https://api.github.com/user/repos</string>
-    <string name="FETCH_NOTIFICATIONS_URL">https://api.github.com/notifications</string>
+    <string name="FETCH_NOTIFICATIONS_URL">https://api.github.com/notifications?all=true</string>
     
     <!-- The credentials for the test user of the github project. -->
     <string name="TEST_USER_USERNAME">group10testuser</string>
