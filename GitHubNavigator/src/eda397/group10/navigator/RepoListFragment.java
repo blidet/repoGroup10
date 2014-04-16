@@ -51,7 +51,7 @@ public class RepoListFragment extends ListFragment {
                 HTTP.UTF_8, false);
     	//Send HTTP request to retrieve user repos:
 		//new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header);
-		new RepoRetriever("https://api.github.com/users/haozhenxiao/received_events", header);
+		new RepoRetriever("https://api.github.com/users/haozhenxiao/received_events", header); 
 		return rootView;
 	}
 	
