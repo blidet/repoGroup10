@@ -109,7 +109,7 @@ public class NotificationService extends Service {
     	NotificationManager mNotificationManager =
     	    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     	// mId allows you to update the notification later on.
-    	int mId = 1;
+    	int mId = 1; 
     	mNotificationManager.notify(mId, mBuilder.build());
     }
 }
