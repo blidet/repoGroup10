@@ -16,12 +16,12 @@ import eda397.group10.pojo.RepositoryPOJO;
  * JSON array.
  */
 
-public class JSONParser extends JsonExtractor {
+public class RepoJSONParser extends JSONExtractor {
 
 	private ArrayList<RepositoryPOJO> datas;
 	private RepoListFragment contex;
 	
-	public JSONParser(RepoListFragment contex){
+	public RepoJSONParser(RepoListFragment contex){
 		this.contex = contex;
 	}
 	

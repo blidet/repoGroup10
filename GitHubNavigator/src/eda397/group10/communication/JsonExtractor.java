@@ -14,7 +14,7 @@ import android.util.Log;
  * This class is used to fetch the JSON string, from the API we can see that the returned result
  * is a JSON array, so we return the JSON array instead of string.
  */
-public class JsonExtractor extends AsyncTask<HttpResponse, Void, JSONArray> {
+public class JSONExtractor extends AsyncTask<HttpResponse, Void, JSONArray> {
 
 	@Override
 	protected JSONArray doInBackground(HttpResponse... params) {
@@ -25,7 +25,7 @@ public class JsonExtractor extends AsyncTask<HttpResponse, Void, JSONArray> {
 			StringBuilder builder = new StringBuilder();
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");
-			    Log.println(Log.ASSERT, "JSON Extractor", line);
+			    Log.println(Log.INFO, "JSON Extractor", line);
 			}
 			JSONTokener tokener = new JSONTokener(builder.toString());
 			finalResult = new JSONArray(tokener);

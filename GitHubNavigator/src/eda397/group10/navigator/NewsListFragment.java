@@ -11,7 +11,6 @@ import org.apache.http.protocol.HTTP;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.RepoJSONParser;
 import eda397.group10.pojo.RepositoryPOJO;
-import android.annotation.SuppressLint;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
@@ -21,15 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-/*
- * This is the fragment which lists all the user repositories.
- */
-
-@SuppressLint("NewApi")
-public class RepoListFragment extends ListFragment {
+public class NewsListFragment extends ListFragment {
+	
 	private ListView repoList;
 	private LayoutInflater layoutInflator;
-	private RepoListFragment repo;
+	private NewsListFragment repo;
 	public ProgressDialog loadingProgress;
 
 	@Override
@@ -50,26 +45,25 @@ public class RepoListFragment extends ListFragment {
                 		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
                 HTTP.UTF_8, false);
     	//Send HTTP request to retrieve user repos:
-		//new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header);
-		new RepoRetriever("https://api.github.com/users/haozhenxiao/received_events", header);
+//		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header);
 		return rootView;
 	}
 	
-	public void setList(ArrayList<RepositoryPOJO> datas){
-		repoList.setAdapter(new ListAdapter(this,datas,layoutInflator));		
-	}
-	
-	private class RepoRetriever extends GithubRequest {
-		public RepoRetriever(String url, Header header) {
-			super(url, header);
-		}
-		
-		@Override
-    	public void onPostExecute(HttpResponse result) {
-			RepoJSONParser repoBuilder = new RepoJSONParser(repo);
-			repoBuilder.execute(result);
-		}
-	}
+//	public void setList(ArrayList<RepositoryPOJO> datas){
+//		repoList.setAdapter(new ListAdapter(this,datas,layoutInflator));		
+//	}
+//	
+//	private class RepoRetriever extends GithubRequest {
+//		public RepoRetriever(String url, Header header) {
+//			super(url, header);
+//		}
+//		
+//		@Override
+//    	public void onPostExecute(HttpResponse result) {
+//			RepoJSONParser repoBuilder = new RepoJSONParser(repo);
+//			repoBuilder.execute(result);
+//		}
+//	}
 	
 
 }

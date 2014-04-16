@@ -7,8 +7,8 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 
 import eda397.group10.communication.GithubRequest;
-import eda397.group10.communication.JSONParser;
-import eda397.group10.communication.JsonExtractor;
+import eda397.group10.communication.RepoJSONParser;
+import eda397.group10.communication.JSONExtractor;
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
 import android.app.NotificationManager;
@@ -74,7 +74,7 @@ public class NotificationService extends Service {
 			Integer statusCode = result.getStatusLine().getStatusCode();
 			Log.println(Log.ASSERT, "get notifications", "status code: "+statusCode+" NOTIFICATION");
 			
-			JsonExtractor repoBuilder = new JsonExtractor();
+			JSONExtractor repoBuilder = new JSONExtractor();
 			repoBuilder.execute(result);
 			
 			createNotification();
