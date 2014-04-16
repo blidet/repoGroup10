@@ -1,7 +1,7 @@
 package eda397.group10.navigator;
 
 import eda397.group10.communication.GithubRequest;
-import eda397.group10.communication.JSONExtractor;
+import eda397.group10.communication.JsonExtractor;
 import eda397.group10.sliding.NavDrawerItem;
 import eda397.group10.sliding.NavDrawerListAdapter;
 
@@ -306,7 +306,7 @@ public class AuthenticatedMainActivity extends Activity {
 	 * Extracts repo information from the HTTP response.
 	 *
 	 */
-	private class RepoBuilder extends JSONExtractor {
+	private class RepoBuilder extends JsonExtractor {
 		@Override
     	public void onPostExecute(JSONArray json) {
 			Log.println(Log.ASSERT, "REPO BUILDER:::", json.toString());

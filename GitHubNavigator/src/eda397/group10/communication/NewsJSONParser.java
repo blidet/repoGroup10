@@ -4,7 +4,7 @@ import org.json.JSONArray;
 
 import eda397.group10.navigator.NewsListFragment;
 
-public class NewsJSONParser extends JSONExtractor {
+public class NewsJSONParser extends JsonExtractor {
 	
 	private NewsListFragment context;
 	

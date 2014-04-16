@@ -10,12 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import eda397.group10.communication.GithubRequest;
-<<<<<<< HEAD
 import eda397.group10.communication.RepoJSONParser;
-import eda397.group10.communication.JSONExtractor;
-=======
 import eda397.group10.communication.JsonExtractor;
->>>>>>> 4d38c0c2f887d05c4b989599b0c850b4d6ae8ce7
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
 import android.app.NotificationManager;
@@ -83,13 +79,12 @@ public class NotificationService extends Service {
 			Integer statusCode = result.getStatusLine().getStatusCode();
 			Log.println(Log.ASSERT, "get notifications", "status code: "+statusCode+" NOTIFICATION");
 			
-<<<<<<< HEAD
-			JSONExtractor repoBuilder = new JSONExtractor();
+
+			JsonExtractor repoBuilder = new JsonExtractor();
 			repoBuilder.execute(result);
-=======
+
 			NotificationBuilder jsonExtractor = new NotificationBuilder();
 			jsonExtractor.execute(result);
->>>>>>> 4d38c0c2f887d05c4b989599b0c850b4d6ae8ce7
 			
 			stopSelf();
 		}
