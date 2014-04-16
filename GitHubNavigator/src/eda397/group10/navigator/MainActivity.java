@@ -1,6 +1,5 @@
 package eda397.group10.navigator;
 
-import eda397.group10.communication.Constants;
 import eda397.group10.notifications.NotificationService;
 import android.support.v7.app.ActionBarActivity;
 import android.app.AlarmManager;
@@ -64,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
      * Starts an alarm that will initiate the poll for updates in github, and then repeat itself.
      */
     private void startAlarm() {
-    	SharedPreferences prefs = getSharedPreferences(Constants.SETTINGS_PREFERENCES,0);
+    	SharedPreferences prefs = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
         //int minutes = prefs.getInt("interval", 1);
     	int minutes =1;
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);

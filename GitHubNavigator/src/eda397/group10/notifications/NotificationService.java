@@ -6,10 +6,10 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 
-import eda397.group10.communication.Constants;
 import eda397.group10.communication.GithubRequest;
+import eda397.group10.communication.JSONParser;
+import eda397.group10.communication.JsonExtractor;
 import eda397.group10.navigator.MainActivity;
-import eda397.group10.navigator.ProjectPageActivity;
 import eda397.group10.navigator.R;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,6 +27,7 @@ import android.util.Log;
  *
  */
 public class NotificationService extends Service {
+	private NotificationService notificationService = this;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -43,18 +44,18 @@ public class NotificationService extends Service {
     private void handleIntent(Intent intent) {
     	Log.println(Log.ASSERT, "get notifications", "...handle intent...");
        
-		SharedPreferences sh_Pref = getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
-        boolean authenticated = sh_Pref.getBoolean(Constants.AUTH_PREFERENCE, false);
+		SharedPreferences sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
+        boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
         
         if (authenticated) {
         	//Create a Header with the username and password saved in "Shared Preferences":
         	Header header = BasicScheme.authenticate(
-                    new UsernamePasswordCredentials(sh_Pref.getString(Constants.USERNAME_PREFERENCE, ""), 
-                    		sh_Pref.getString(Constants.PASSWORD_PREFERENCE, "")),
+                    new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
+                    		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
                     HTTP.UTF_8, false);
         	//Send HTTP request to poll for updates (in a new thread):
         	Log.println(Log.ASSERT, "get notifications", "..starting poller...");
-    		PollTask poller = new PollTask(Constants.POLL_UPDATES_URL, header);
+    		PollTask poller = new PollTask(getResources().getString(R.string.FETCH_NOTIFICATIONS_URL), header);
         } else {
         	//If you are not logged going back to login page
         	Intent mainIntent = new Intent(this, MainActivity.class);
@@ -72,6 +73,9 @@ public class NotificationService extends Service {
     	public void onPostExecute(HttpResponse result) {
 			Integer statusCode = result.getStatusLine().getStatusCode();
 			Log.println(Log.ASSERT, "get notifications", "status code: "+statusCode+" NOTIFICATION");
+			
+			JsonExtractor repoBuilder = new JsonExtractor();
+			repoBuilder.execute(result);
 			
 			createNotification();
 			stopSelf();

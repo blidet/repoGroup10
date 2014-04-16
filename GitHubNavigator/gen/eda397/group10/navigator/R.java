@@ -1162,14 +1162,13 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f030015;
         public static final int abc_search_view=0x7f030016;
         public static final int activity_main=0x7f030017;
-        public static final int activity_project_page=0x7f030018;
-        public static final int drawer_list_item=0x7f030019;
-        public static final int fragment_authenticated_main=0x7f03001a;
-        public static final int fragment_login=0x7f03001b;
-        public static final int fragment_project_page=0x7f03001c;
-        public static final int repo_list=0x7f03001d;
-        public static final int repo_list_row=0x7f03001e;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001f;
+        public static final int drawer_list_item=0x7f030018;
+        public static final int fragment_authenticated_main=0x7f030019;
+        public static final int fragment_login=0x7f03001a;
+        public static final int fragment_project_page=0x7f03001b;
+        public static final int repo_list=0x7f03001c;
+        public static final int repo_list_row=0x7f03001d;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001e;
     }
     public static final class menu {
         public static final int main=0x7f0d0000;
@@ -1179,20 +1178,22 @@ containing a value of this type.
         /**  Http request URL's. 
          */
         public static final int AUTHENTICATE_URL=0x7f0a0013;
-        public static final int AUTH_PREFERENCE=0x7f0a0019;
+        public static final int AUTH_PREFERENCE=0x7f0a001a;
+        public static final int FETCH_NOTIFICATIONS_URL=0x7f0a0015;
         public static final int FETCH_REPOS_URL=0x7f0a0014;
         /**  Shared preference keys. 
          */
-        public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a0018;
-        public static final int PASSWORD_PREFERENCE=0x7f0a001b;
+        public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a0019;
+        public static final int PASSWORD_PREFERENCE=0x7f0a001c;
         /**  Json keys. 
          */
-        public static final int REPOSITORY_JSON_KEY=0x7f0a0017;
-        public static final int TEST_USER_PASSWORD=0x7f0a0016;
+        public static final int REPOSITORY_JSON_KEY=0x7f0a0018;
+        public static final int SETTINGS_PREFERENCES=0x7f0a001d;
+        public static final int TEST_USER_PASSWORD=0x7f0a0017;
         /**  The credentials for the test user of the github project. 
          */
-        public static final int TEST_USER_USERNAME=0x7f0a0015;
-        public static final int USERNAME_PREFERENCE=0x7f0a001a;
+        public static final int TEST_USER_USERNAME=0x7f0a0016;
+        public static final int USERNAME_PREFERENCE=0x7f0a001b;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0a0001;
@@ -1241,11 +1242,11 @@ containing a value of this type.
         public static final int button_send=0x7f0a000f;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f0a001d;
+        public static final int desc_list_item_icon=0x7f0a001f;
         public static final int password_message=0x7f0a0012;
         /**  Project page 
          */
-        public static final int title_activity_project_page=0x7f0a001c;
+        public static final int title_activity_project_page=0x7f0a001e;
         public static final int username_message=0x7f0a0011;
     }
     public static final class style {
