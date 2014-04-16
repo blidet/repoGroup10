@@ -1,16 +1,12 @@
 package eda397.group10.navigator;
 
-import eda397.group10.communication.Constants;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.sliding.NavDrawerItem;
 import eda397.group10.sliding.NavDrawerListAdapter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
 import android.content.Intent;
 
 import org.apache.http.Header;
@@ -20,13 +16,11 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
+import android.app.ListFragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -44,8 +38,6 @@ public class AuthenticatedMainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-
-	private SharedPreferences sh_Pref;
 	
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -104,19 +96,19 @@ public class AuthenticatedMainActivity extends Activity {
 		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
 		
 
-//		// Recycle the typed array
-//		navMenuIcons.recycle();
-//
-//		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-//
-//		// setting the nav drawer list adapter
-//		adapter = new NavDrawerListAdapter(getApplicationContext(),
-//				navDrawerItems);
-//		mDrawerList.setAdapter(adapter);
-//
-//		// enabling action bar app icon and behaving it as toggle button
-//		getActionBar().setDisplayHomeAsUpEnabled(true);
-//		getActionBar().setHomeButtonEnabled(true);
+		// Recycle the typed array
+		navMenuIcons.recycle();
+
+		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+
+		// setting the nav drawer list adapter
+		adapter = new NavDrawerListAdapter(getApplicationContext(),
+				navDrawerItems);
+		mDrawerList.setAdapter(adapter);
+
+		// enabling action bar app icon and behaving it as toggle button
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, //nav menu toggle icon
@@ -145,17 +137,17 @@ public class AuthenticatedMainActivity extends Activity {
 		/*
 		 * Here we are searching the repo name 
 		 */
-		SharedPreferences sh_Pref = getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
-        boolean authenticated = sh_Pref.getBoolean(Constants.AUTH_PREFERENCE, false);
+		SharedPreferences sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
+        boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
         
         if (authenticated) {
         	//Create a Header with the username and password saved in "Shared Preferences":
         	Header header = BasicScheme.authenticate(
-                    new UsernamePasswordCredentials(sh_Pref.getString(Constants.USERNAME_PREFERENCE, ""), 
-                    		sh_Pref.getString(Constants.PASSWORD_PREFERENCE, "")),
+                    new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
+                    		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
                     HTTP.UTF_8, false);
         	//Send HTTP request to retrieve user repos:
-    		RepoRetriever retriever = new RepoRetriever(Constants.FETCH_REPOS_URL, header);
+    		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL),header);
         } else {
         	//If you are not loged going back to login page
         	Intent intent = new Intent(this, MainActivity.class);
@@ -211,9 +203,11 @@ public class AuthenticatedMainActivity extends Activity {
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
+	@SuppressWarnings("unused")
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
+		ListFragment listFragment = null;
 		switch (position) {
 		case 0:
 			//fragment = new HomeFragment();
@@ -225,7 +219,7 @@ public class AuthenticatedMainActivity extends Activity {
 			//fragment = new PhotosFragment();
 			break;
 		case 3:
-			//fragment = new CommunityFragment();
+			listFragment = new RepoListFragment();
 			break;
 		case 4:
 			//fragment = new PagesFragment();
@@ -242,6 +236,16 @@ public class AuthenticatedMainActivity extends Activity {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
+
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			mDrawerList.setSelection(position);
+			setTitle(navMenuTitles[position]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}else if(listFragment != null){
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.frame_container, listFragment).commit();
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
@@ -309,7 +313,7 @@ public class AuthenticatedMainActivity extends Activity {
 			
 			try {
 				for (int i = 0; i < json.length(); i++) {
-					String name = json.getJSONObject(i).get(Constants.REPOSITORY_JSON_KEY).toString();
+					String name = json.getJSONObject(i).get(getResources().getString(R.string.REPOSITORY_JSON_KEY)).toString();
 					//Log.println(Log.ASSERT, "NAME", name);
 					/*
 					 * Writing the repo names

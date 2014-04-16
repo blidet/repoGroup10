@@ -803,10 +803,11 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f060002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f070009;
+        public static final int abc_search_url_text_holo=0x7f07000a;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
+        public static final int black=0x7f070009;
         public static final int counter_text_bg=0x7f070007;
         public static final int counter_text_color=0x7f070008;
         public static final int list_background=0x7f070004;
@@ -1003,25 +1004,29 @@ containing a value of this type.
         public static final int ic_git_repo=0x7f02005b;
         public static final int ic_home=0x7f02005c;
         public static final int ic_launcher=0x7f02005d;
-        public static final int list_item_bg_normal=0x7f02005e;
-        public static final int list_item_bg_pressed=0x7f02005f;
-        public static final int list_selector=0x7f020060;
-        public static final int news144=0x7f020061;
-        public static final int news48=0x7f020062;
-        public static final int news72=0x7f020063;
-        public static final int news96=0x7f020064;
-        public static final int profile144=0x7f020065;
-        public static final int profile48=0x7f020066;
-        public static final int profile72=0x7f020067;
-        public static final int profile96=0x7f020068;
-        public static final int repository144=0x7f020069;
-        public static final int repository48=0x7f02006a;
-        public static final int repository72=0x7f02006b;
-        public static final int repository96=0x7f02006c;
-        public static final int setting144=0x7f02006d;
-        public static final int settings48=0x7f02006e;
-        public static final int settings72=0x7f02006f;
-        public static final int settings96=0x7f020070;
+        public static final int ic_star=0x7f02005e;
+        public static final int list_item_bg_normal=0x7f02005f;
+        public static final int list_item_bg_pressed=0x7f020060;
+        public static final int list_selector=0x7f020061;
+        public static final int news144=0x7f020062;
+        public static final int news48=0x7f020063;
+        public static final int news72=0x7f020064;
+        public static final int news96=0x7f020065;
+        public static final int profile144=0x7f020066;
+        public static final int profile48=0x7f020067;
+        public static final int profile72=0x7f020068;
+        public static final int profile96=0x7f020069;
+        public static final int repository144=0x7f02006a;
+        public static final int repository48=0x7f02006b;
+        public static final int repository72=0x7f02006c;
+        public static final int repository96=0x7f02006d;
+        public static final int rowbackground=0x7f02006e;
+        public static final int rowbackgroundselected=0x7f02006f;
+        public static final int rowselector=0x7f020070;
+        public static final int setting144=0x7f020071;
+        public static final int settings48=0x7f020072;
+        public static final int settings72=0x7f020073;
+        public static final int settings96=0x7f020074;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1035,9 +1040,10 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05004a;
+        public static final int action_settings=0x7f050051;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
+        public static final int background=0x7f05004a;
         public static final int beginning=0x7f050011;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
@@ -1069,10 +1075,14 @@ containing a value of this type.
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
+        public static final int owner_icon=0x7f05004c;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
         public static final int register_button=0x7f050044;
+        public static final int relativeLayout1=0x7f05004b;
+        public static final int repo_discrib=0x7f05004e;
+        public static final int repo_name=0x7f05004d;
         public static final int search_badge=0x7f050032;
         public static final int search_bar=0x7f050031;
         public static final int search_button=0x7f050033;
@@ -1088,6 +1098,8 @@ containing a value of this type.
         public static final int showHome=0x7f050004;
         public static final int showTitle=0x7f050006;
         public static final int split_action_bar=0x7f05001e;
+        public static final int star=0x7f050050;
+        public static final int star_count=0x7f05004f;
         public static final int submit_area=0x7f050039;
         public static final int tabMode=0x7f050002;
         public static final int tableRow1=0x7f050046;
@@ -1155,13 +1167,32 @@ containing a value of this type.
         public static final int fragment_authenticated_main=0x7f03001a;
         public static final int fragment_login=0x7f03001b;
         public static final int fragment_project_page=0x7f03001c;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
+        public static final int repo_list=0x7f03001d;
+        public static final int repo_list_row=0x7f03001e;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001f;
     }
     public static final class menu {
         public static final int main=0x7f0d0000;
         public static final int project_page=0x7f0d0001;
     }
     public static final class string {
+        /**  Http request URL's. 
+         */
+        public static final int AUTHENTICATE_URL=0x7f0a0013;
+        public static final int AUTH_PREFERENCE=0x7f0a0019;
+        public static final int FETCH_REPOS_URL=0x7f0a0014;
+        /**  Shared preference keys. 
+         */
+        public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a0018;
+        public static final int PASSWORD_PREFERENCE=0x7f0a001b;
+        /**  Json keys. 
+         */
+        public static final int REPOSITORY_JSON_KEY=0x7f0a0017;
+        public static final int TEST_USER_PASSWORD=0x7f0a0016;
+        /**  The credentials for the test user of the github project. 
+         */
+        public static final int TEST_USER_USERNAME=0x7f0a0015;
+        public static final int USERNAME_PREFERENCE=0x7f0a001a;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0a0001;
@@ -1210,11 +1241,11 @@ containing a value of this type.
         public static final int button_send=0x7f0a000f;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f0a0014;
+        public static final int desc_list_item_icon=0x7f0a001d;
         public static final int password_message=0x7f0a0012;
         /**  Project page 
          */
-        public static final int title_activity_project_page=0x7f0a0013;
+        public static final int title_activity_project_page=0x7f0a001c;
         public static final int username_message=0x7f0a0011;
     }
     public static final class style {

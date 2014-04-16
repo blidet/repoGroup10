@@ -6,7 +6,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 
-import eda397.group10.communication.Constants;
 import eda397.group10.communication.GithubRequest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -83,7 +82,7 @@ public class LoginFragment extends Fragment {
 					Header header = BasicScheme.authenticate(
 		                new UsernamePasswordCredentials(username, password),
 		                HTTP.UTF_8, false);
-				        new LoginChecker(Constants.AUTHENTICATE_URL, header);
+				        new LoginChecker(getResources().getString(R.string.AUTHENTICATE_URL), header);
 				}		
 			}
 		});
@@ -126,11 +125,11 @@ public class LoginFragment extends Fragment {
     		Integer statusCode = result.getStatusLine().getStatusCode();
     		
     		if(statusCode == AUTHENTICATED_CODE){
-    			sh_Pref = getActivity().getSharedPreferences(Constants.LOGIN_CREDENTIALS_PREFERENCE_NAME,0);
+    			sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
     			toEdit = sh_Pref.edit();
-    			toEdit.putString(Constants.USERNAME_PREFERENCE, username);
-    	        toEdit.putString(Constants.PASSWORD_PREFERENCE, password);
-    	        toEdit.putBoolean(Constants.AUTH_PREFERENCE, true);
+    			toEdit.putString(getResources().getString(R.string.USERNAME_PREFERENCE), username);
+    	        toEdit.putString(getResources().getString(R.string.PASSWORD_PREFERENCE), password);
+    	        toEdit.putBoolean(getResources().getString(R.string.AUTH_PREFERENCE), true);
     	        toEdit.commit();
     			Intent projectPageActivityIntent = new Intent(getActivity(),AuthenticatedMainActivity.class);
     			getActivity().startActivity(projectPageActivityIntent);
