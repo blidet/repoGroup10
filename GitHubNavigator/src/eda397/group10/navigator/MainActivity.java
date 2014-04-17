@@ -64,20 +64,16 @@ public class MainActivity extends ActionBarActivity {
      */
     private void startAlarm() {
     	SharedPreferences prefs = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
-        //int minutes = prefs.getInt("interval", 1);
-    	int minutes =1;
+    	int seconds = prefs.getInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), 60);
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent i = new Intent(this, NotificationService.class);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         am.cancel(pi);
-        // minutes <= 0 means notifications are disabled
-        if (minutes > 0) {
-           /* am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + minutes*60*1000,
-                minutes*60*1000, pi);*/
+        // seconds <= 0 means notifications are disabled
+        if (seconds > 0) {
         	am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + 1000,
-                    minutes*60*1000, pi);
+                    seconds*1000, pi);
             Log.println(Log.ASSERT, "alarm", "started");
         }
         

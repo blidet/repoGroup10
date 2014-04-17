@@ -213,6 +213,7 @@ public class AuthenticatedMainActivity extends Activity {
 			//fragment = new HomeFragment();
 			break;
 		case 1:
+			fragment = new SettingsFragment();
 			//fragment = new FindPeopleFragment();
 			break;
 		case 2:

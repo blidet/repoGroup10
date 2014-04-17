@@ -21,12 +21,29 @@
     <!-- Json keys. -->
     <string name="REPOSITORY_JSON_KEY">full_name</string>
     
-    <!-- Shared preference keys. -->
+    <!-- Shared preferences login credentials. -->
     <string name="LOGIN_CREDENTIALS_PREFERENCE_NAME">Login Credentials</string>
     <string name="AUTH_PREFERENCE">Authenticated</string>
     <string name="USERNAME_PREFERENCE">Username</string>
     <string name="PASSWORD_PREFERENCE">Password</string>
+    
+    <!-- Shared preferences settings -->
     <string name="SETTINGS_PREFERENCES">Application Settings</string>
+    <string name="INTERVAL_SPINNER_SELECTED">Interval spinner selected</string>
+    <string name="SECONDS_BETWEEN_UPDATES">Github notifications interval</string>
+    
+    <!-- Settings page  -->
+    <string name="notification_interval">Check for new notifications every: </string>
+    <string-array name="intervals_array">
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>Turn notifications off</item>
+    </string-array>
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -58,5 +75,7 @@
     
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+    
+    
 
 </resources>

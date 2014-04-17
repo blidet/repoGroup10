@@ -14,6 +14,7 @@ import eda397.group10.communication.RepoJSONParser;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -29,6 +30,7 @@ import android.util.Log;
  * This class polls the github API for updates/notifications in the user's repos.
  *
  */
+@SuppressLint("NewApi")
 public class NotificationService extends Service {
 
 	@Override
@@ -80,8 +82,8 @@ public class NotificationService extends Service {
 			Log.println(Log.ASSERT, "get notifications", "status code: "+statusCode+" NOTIFICATION");
 			
 
-			JsonExtractor repoBuilder = new JsonExtractor();
-			repoBuilder.execute(result);
+			//JsonExtractor repoBuilder = new JsonExtractor();
+			//repoBuilder.execute(result);
 
 			NotificationBuilder jsonExtractor = new NotificationBuilder();
 			jsonExtractor.execute(result);
