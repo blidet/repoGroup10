@@ -210,7 +210,7 @@ public class AuthenticatedMainActivity extends Activity {
 		ListFragment listFragment = null;
 		switch (position) {
 		case 0:
-			//fragment = new HomeFragment();
+			listFragment = new TheListFragment(getResources().getString(R.string.NEWS_ACTION));
 			break;
 		case 1:
 			fragment = new SettingsFragment();
@@ -220,7 +220,7 @@ public class AuthenticatedMainActivity extends Activity {
 			//fragment = new PhotosFragment();
 			break;
 		case 3:
-			listFragment = new RepoListFragment();
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));
 			break;
 		case 4:
 			//fragment = new PagesFragment();

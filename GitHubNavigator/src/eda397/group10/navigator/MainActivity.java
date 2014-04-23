@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
         	finish();
         }
         
-        startAlarm();
+        //startAlarm();
     }
 
 

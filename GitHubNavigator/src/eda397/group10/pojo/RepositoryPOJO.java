@@ -6,7 +6,7 @@ package eda397.group10.pojo;
  *same POJO. 
  */
 
-public class RepositoryPOJO {
+public class RepositoryPOJO{
 	
 	private String name;
 	private String starCount;
@@ -32,7 +32,7 @@ public class RepositoryPOJO {
 		return description;
 	}
 
-	public UserPOJO getOwnerUrl() {
+	public UserPOJO getOwner() {
 		return owner;
 	}
 	

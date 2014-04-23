@@ -1,21 +1,29 @@
 package eda397.group10.pojo;
 
+import android.graphics.drawable.Drawable;
+
 public class UserPOJO {
 	
 	private String name;
-	private String avatar_url;
+	private Drawable avatar;
+	private int userId;
 	
-	public UserPOJO(String name, String avatar_url){
+	public UserPOJO(int userId, String name, Drawable avatar){
+		this.userId = userId;
 		this.name = name;
-		this.avatar_url = avatar_url;
+		this.avatar = avatar;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getAvatar_url() {
-		return avatar_url;
+	public Drawable getAvatar() {
+		return avatar;
+	}
+	
+	public int getUserId(){
+		return userId;
 	}
 	
 	

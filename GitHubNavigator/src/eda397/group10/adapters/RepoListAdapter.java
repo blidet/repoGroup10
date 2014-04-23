@@ -1,12 +1,16 @@
-package eda397.group10.navigator;
+package eda397.group10.adapters;
 
 import java.util.ArrayList;
 
+import eda397.group10.navigator.R;
+import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.RepositoryPOJO;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -14,21 +18,22 @@ import android.widget.TextView;
  * since the each item of the list contains more than one value from of the JSON array,
  * it's better to set use the adapter.
  */
-public class ListAdapter extends BaseAdapter {
+public class RepoListAdapter extends BaseAdapter {
 	
-	//private RepoListFragment contex;
+	private TheListFragment contex;
 	private ArrayList<RepositoryPOJO> datas;
 	private TextView repoName;
 	private TextView description;
 	private TextView star;
-	//private ImageView image;
+	private ImageView image;
 	private LayoutInflater layoutInflater;
+	private SharedPreferences sh_Pref;
 	
 	
-	public ListAdapter(RepoListFragment contex,ArrayList<RepositoryPOJO> datas,LayoutInflater layoutInflater){
-		//this.contex = contex;
+	public RepoListAdapter(TheListFragment contex,ArrayList<RepositoryPOJO> datas,LayoutInflater layoutInflater){
+		this.contex = contex;
 		this.datas = datas;
-		this.layoutInflater = layoutInflater;
+		this.layoutInflater = layoutInflater;		
 	}
 
 	@Override
@@ -53,10 +58,11 @@ public class ListAdapter extends BaseAdapter {
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		convertView = layoutInflater.inflate (R.layout.repo_list_row, parent, false);
+		sh_Pref = contex.getActivity().getSharedPreferences(contex.getActivity().getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 		repoName = (TextView)convertView.findViewById(R.id.repo_name);
 		description = (TextView)convertView.findViewById(R.id.repo_discrib);
 		star = (TextView)convertView.findViewById(R.id.star_count);
-		//image = (ImageView)convertView.findViewById(R.id.owner_icon);
+		image = (ImageView)convertView.findViewById(R.id.owner_icon);
 				
 		RepositoryPOJO pojo = datas.get(pos);
 		String des = pojo.getDescription();
@@ -66,6 +72,11 @@ public class ListAdapter extends BaseAdapter {
 		repoName.setText(pojo.getName());
 		description.setText(des);
 		star.setText(pojo.getStarCount());
+		if(pojo.getOwner().getUserId()==sh_Pref.getInt("userId", 0000)){
+			image.setImageResource(R.drawable.ic_repo_self);
+		}else{
+			image.setImageResource(R.drawable.ic_repo_others);
+		}
 		
 		return convertView;
 	}

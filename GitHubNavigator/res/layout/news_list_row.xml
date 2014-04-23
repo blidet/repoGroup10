@@ -10,6 +10,7 @@
         android:layout_height="32dip"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:paddingLeft="2dip"
         android:src="@drawable/ic_git_repo" />
 
     <TextView
@@ -26,7 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/actiontext"
-        android:layout_below="@+id/owner_icon2"
-        android:text="discrib" />
+        android:layout_below="@+id/owner_icon2"/>
 
 </RelativeLayout>

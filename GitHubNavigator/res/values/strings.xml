@@ -14,6 +14,10 @@
     <string name="FETCH_REPOS_URL">https://api.github.com/user/repos</string>
     <string name="FETCH_NOTIFICATIONS_URL">https://api.github.com/notifications?all=true</string>
     
+    <!-- Action codes used to indentify different actions to the list fragment -->
+    <string name="REPO_ACTION">repo_action</string>
+    <string name="NEWS_ACTION">news_action</string>
+    
     <!-- The credentials for the test user of the github project. -->
     <string name="TEST_USER_USERNAME">group10testuser</string>
     <string name="TEST_USER_PASSWORD">eda397group10</string>
