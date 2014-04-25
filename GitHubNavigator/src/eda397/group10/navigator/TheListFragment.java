@@ -52,6 +52,7 @@ public class TheListFragment extends ListFragment {
         loadingProgress.show();
 		this.layoutInflator = inflater;
 		SharedPreferences sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
+		String userName = sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), "");
 		Header header = BasicScheme.authenticate(
                 new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
                 		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
@@ -62,10 +63,10 @@ public class TheListFragment extends ListFragment {
 			new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header);
 			break;
 		case "news_action":
-			new RepoRetriever("https://api.github.com/users/haozhenxiao/received_events", header); 
+			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header); 
 			break;
 		}		
-		//new RepoRetriever("https://api.github.com/users/haozhenxiao/received_events", header); 
+		
 		return rootView;
 	}
 	
