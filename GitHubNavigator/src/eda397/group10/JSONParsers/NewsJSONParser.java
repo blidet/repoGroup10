@@ -22,15 +22,20 @@ import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.PushEventPOJO;
 import eda397.group10.pojo.RepositoryPOJO;
 import eda397.group10.pojo.UserPOJO;
+import eda397.group10.widget.*;
+import eda397.group10.widget.LoadMoreListView.OnLoadMoreListener;
+import android.widget.BaseAdapter;
 
 public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<PushEventPOJO>> {
 	
 	private TheListFragment context;
 	private ArrayList<PushEventPOJO> datas;
+	private boolean loadMore;
 	
-	public NewsJSONParser(TheListFragment context){
+	public NewsJSONParser(TheListFragment context, boolean loadMore){
 		this.context = context;
 		datas = new ArrayList<PushEventPOJO>();
+		this.loadMore = loadMore;
 	}
 	
 	@Override
@@ -44,11 +49,13 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Push
 			StringBuilder builder = new StringBuilder();
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");
-
-			    Log.println(Log.INFO, "JSON Extractor", line);
-
 			}
+			
+			Log.println(Log.INFO, "***************", params[0].getHeaders("Link")[0].getValue());
+			
+			
 			JSONTokener tokener = new JSONTokener(builder.toString());
+			Log.println(Log.INFO, "_________________________________",tokener.toString());
 			json = new JSONArray(tokener);
 			
 			
@@ -101,10 +108,23 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Push
 		// TODO Auto-generated method stub
 		context.loadingProgress.dismiss();
 		context.setList(pojos);
+		if(loadMore){
+		    //((BaseAdapter)context.getListAdapter()).notifyDataSetChanged();
+			context.getListView().invalidateViews();
+		}
+		
+		
+		//((BaseAdapter)context.getListAdapter()).notifyDataSetChanged();
+		//((LoadMoreListView) context.getListView()).onLoadMoreComplete();
+		
+//		((LoadMoreListView)context.getListView())
+//        .setOnLoadMoreListener(new OnLoadMoreListener() {
+//            public void onLoadMore() {
+//                // Do the work to load more items at the end of list here
+//                System.out.println("=================================================================================");
+//            }
+//        });
+//		
 	}
-
-	
-	
-	
 
 }

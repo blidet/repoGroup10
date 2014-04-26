@@ -11,6 +11,7 @@ import org.apache.http.protocol.HTTP;
 import eda397.group10.adapters.NewsListAdapter;
 import eda397.group10.adapters.RepoListAdapter;
 import eda397.group10.communication.GithubRequest;
+import eda397.group10.widget.LoadMoreListView;
 import eda397.group10.JSONParsers.NewsJSONParser;
 import eda397.group10.JSONParsers.RepoJSONParser;
 import android.annotation.SuppressLint;
@@ -21,7 +22,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ProgressBar;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /*
  * This is the fragment which lists all the user repositories.
@@ -30,10 +35,13 @@ import android.widget.ListView;
 @SuppressLint("NewApi")
 public class TheListFragment extends ListFragment {
 	private ListView repoList;
+	//private LoadMoreListView repoList;
 	private LayoutInflater layoutInflator;
 	private TheListFragment thisContext;
 	public ProgressDialog loadingProgress;
 	private String actionType;
+	
+	private ProgressBar mProgressBarLoadMore;
 	
 	public TheListFragment(String actionType){
 		this.actionType = actionType;
@@ -46,26 +54,63 @@ public class TheListFragment extends ListFragment {
 		View rootView = inflater.inflate(R.layout.repo_list, container, false);
 		thisContext = this;
 		repoList = (ListView)rootView.findViewById(android.R.id.list);
-		loadingProgress = new ProgressDialog(getActivity());
-        loadingProgress.setMessage("Loading......");
-        loadingProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loadingProgress.show();
-		this.layoutInflator = inflater;
+		View footerView = inflater.inflate(R.layout.load_more_footer, null, false);
+		mProgressBarLoadMore = (ProgressBar)footerView.findViewById(R.id.load_more_progressBar);
+		repoList.addFooterView(footerView);
+		
+		
 		SharedPreferences sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
-		String userName = sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), "");
-		Header header = BasicScheme.authenticate(
+		final String userName = sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), "");
+		final Header header = BasicScheme.authenticate(
                 new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
                 		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
                 HTTP.UTF_8, false);
     	//Send HTTP request to retrieve user repos:		
 		switch(actionType){
 		case "repo_action":
-			new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header);
+			new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header, false);
 			break;
 		case "news_action":
-			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header); 
+			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header, false); 
+//			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events?page=2", header);
 			break;
-		}		
+		}	
+		
+		
+		
+		repoList.setOnScrollListener(new OnScrollListener(){
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub				
+				int threshold = 1;
+                int count = repoList.getCount();
+                
+                if (scrollState == SCROLL_STATE_IDLE) {
+                    if (repoList.getLastVisiblePosition() >= count
+                            - threshold) {
+                    	System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+                    	//mProgressBarLoadMore.setVisibility(View.VISIBLE);
+                    	new RepoRetriever("https://api.github.com/users/"+userName+"/received_events?page=2", header,true);
+                    }
+                }
+                
+			}
+			
+		});
+
+
+		loadingProgress = new ProgressDialog(getActivity());
+        loadingProgress.setMessage("Loading......");
+        loadingProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loadingProgress.show();
+		this.layoutInflator = inflater;
+			
 		
 		return rootView;
 	}
@@ -83,8 +128,10 @@ public class TheListFragment extends ListFragment {
 	}
 	
 	private class RepoRetriever extends GithubRequest {
-		public RepoRetriever(String url, Header header) {
+		private boolean loadMore;
+		public RepoRetriever(String url, Header header, boolean loadMore) {
 			super(url, header);
+			this.loadMore = loadMore;
 		}
 		
 		@Override
@@ -95,7 +142,7 @@ public class TheListFragment extends ListFragment {
 				repoBuilder.execute(result);
 				break;
 			case "news_action":
-				NewsJSONParser newsBuilder = new NewsJSONParser(thisContext);
+				NewsJSONParser newsBuilder = new NewsJSONParser(thisContext,loadMore);
 				newsBuilder.execute(result);
 				break;
 			}		
