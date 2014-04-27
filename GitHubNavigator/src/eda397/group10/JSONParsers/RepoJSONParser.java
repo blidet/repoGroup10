@@ -82,7 +82,7 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 		// TODO Auto-generated method stub
 		
 		contex.loadingProgress.dismiss();
-		contex.setList(pojos);
+		contex.setList(pojos,false);
 	}
 
 	

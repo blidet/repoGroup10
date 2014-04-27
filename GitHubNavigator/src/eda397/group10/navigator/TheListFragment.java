@@ -43,6 +43,11 @@ public class TheListFragment extends ListFragment {
 	
 	private ProgressBar mProgressBarLoadMore;
 	
+	public String loadMoreUrl=null;
+	private boolean isLoadingMore = false;
+	private int mCurrentScrollState;
+	private int pageCount = 2;
+	
 	public TheListFragment(String actionType){
 		this.actionType = actionType;
 	}
@@ -65,45 +70,41 @@ public class TheListFragment extends ListFragment {
                 new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
                 		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
                 HTTP.UTF_8, false);
-    	//Send HTTP request to retrieve user repos:		
+	
 		switch(actionType){
 		case "repo_action":
 			new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header, false);
 			break;
 		case "news_action":
 			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header, false); 
-//			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events?page=2", header);
 			break;
 		}	
-		
-		
-		
+
 		repoList.setOnScrollListener(new OnScrollListener(){
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				// TODO Auto-generated method stub
+                boolean larger = firstVisibleItem + visibleItemCount >= totalItemCount;
+                
+                if (!isLoadingMore && larger && mCurrentScrollState != SCROLL_STATE_IDLE) {
+                	isLoadingMore = true;
+                	mProgressBarLoadMore.setVisibility(View.VISIBLE);
+                	new RepoRetriever("https://api.github.com/users/"+userName+"/received_events?page="+pageCount, header,true);
+                	pageCount++;
+                }
 			}
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				// TODO Auto-generated method stub				
-				int threshold = 1;
-                int count = repoList.getCount();
-                
-                if (scrollState == SCROLL_STATE_IDLE) {
-                    if (repoList.getLastVisiblePosition() >= count
-                            - threshold) {
-                    	System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
-                    	//mProgressBarLoadMore.setVisibility(View.VISIBLE);
-                    	new RepoRetriever("https://api.github.com/users/"+userName+"/received_events?page=2", header,true);
-                    }
-                }
-                
+				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+					view.invalidateViews();
+				}
+				mCurrentScrollState = scrollState;
 			}
 			
 		});
-
 
 		loadingProgress = new ProgressDialog(getActivity());
         loadingProgress.setMessage("Loading......");
@@ -111,17 +112,21 @@ public class TheListFragment extends ListFragment {
         loadingProgress.show();
 		this.layoutInflator = inflater;
 			
-		
 		return rootView;
 	}
 	
-	public void setList(ArrayList datas){
+	public void setList(ArrayList datas, boolean shouldLoadMore){
 		switch(actionType){
 		case "repo_action":
 			repoList.setAdapter(new RepoListAdapter(this,datas,layoutInflator));
 			break;
 		case "news_action":
+			int position = repoList.getFirstVisiblePosition();
+			mProgressBarLoadMore.setVisibility(View.GONE);
 			repoList.setAdapter(new NewsListAdapter(this,datas,layoutInflator));
+			if(shouldLoadMore){
+				repoList.setSelectionFromTop(position+1, 0);
+			}
 			break;
 		}	
 				
@@ -145,10 +150,7 @@ public class TheListFragment extends ListFragment {
 				NewsJSONParser newsBuilder = new NewsJSONParser(thisContext,loadMore);
 				newsBuilder.execute(result);
 				break;
-			}		
-			
+			}					
 		}
 	}
-	
-
 }
