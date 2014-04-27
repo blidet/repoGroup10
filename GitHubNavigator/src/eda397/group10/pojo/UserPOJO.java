@@ -7,12 +7,6 @@ public class UserPOJO {
 	private String name;
 	private Drawable avatar;
 	private int userId;
-	
-	public UserPOJO(int userId, String name, Drawable avatar){
-		this.userId = userId;
-		this.name = name;
-		this.avatar = avatar;
-	}
 
 	public String getName() {
 		return name;
@@ -24,6 +18,18 @@ public class UserPOJO {
 	
 	public int getUserId(){
 		return userId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setAvatar(Drawable avatar) {
+		this.avatar = avatar;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	
 	

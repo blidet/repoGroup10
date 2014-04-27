@@ -44,9 +44,6 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 			StringBuilder builder = new StringBuilder();
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");
-
-			    Log.println(Log.INFO, "JSON Extractor", line);
-
 			}
 			JSONTokener tokener = new JSONTokener(builder.toString());
 			json = new JSONArray(tokener);
@@ -66,7 +63,8 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 				String star = obj.getString("stargazers_count");
 				JSONObject userObj = obj.getJSONObject("owner");
 				int userId = userObj.getInt("id");
-				UserPOJO userPojo = new UserPOJO(userId,null,null);
+				UserPOJO userPojo = new UserPOJO();
+				userPojo.setUserId(userId);
 				RepositoryPOJO pojo = new RepositoryPOJO(name,star,discription,userPojo);				
 				datas.add(pojo);
 			}
@@ -79,8 +77,7 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 	
 	@Override
 	protected void onPostExecute(ArrayList<RepositoryPOJO> pojos) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 		contex.loadingProgress.dismiss();
 		contex.setList(pojos,false);
 	}

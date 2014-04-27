@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
-import eda397.group10.pojo.PushEventPOJO;
+import eda397.group10.pojo.EventPOJO;
 import eda397.group10.pojo.RepositoryPOJO;
 import eda397.group10.pojo.UserPOJO;
 import android.graphics.drawable.Drawable;
@@ -17,14 +17,14 @@ import android.widget.TextView;
 
 public class NewsListAdapter extends BaseAdapter {
 
-	private ArrayList<PushEventPOJO> datas;
+	private ArrayList<EventPOJO> datas;
 	private TextView actionText;
 	private TextView time;
 	private ImageView avatar;
 	private LayoutInflater layoutInflater;
 	private TheListFragment contex;
 	
-	public NewsListAdapter(TheListFragment contex,ArrayList<PushEventPOJO> datas,LayoutInflater layoutInflater){
+	public NewsListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
 		this.contex = contex;
 		this.datas = datas;
 		this.layoutInflater = layoutInflater;
@@ -55,16 +55,37 @@ public class NewsListAdapter extends BaseAdapter {
 		actionText = (TextView)convertView.findViewById(R.id.actiontext);
 		avatar = (ImageView)convertView.findViewById(R.id.owner_icon2);
 		
-		PushEventPOJO push = datas.get(pos);
-		UserPOJO user= push.getActor();
+		EventPOJO event = datas.get(pos);
+		String type = event.getType();
+		UserPOJO user= event.getActor();
 		String actorName = user.getName();
-		String branch = push.getRef();
-		String repoName = push.getRepoName();
-		String action = actorName + " pushed to " + branch + " at " + repoName;
 		Drawable imageDrawable = user.getAvatar();
-		
-		actionText.setText(action);
 		avatar.setImageDrawable(imageDrawable);
+		String action = null;
+		String repoName = event.getRepoName();
+		switch(type){
+		case "PushEvent":			
+			String branch = event.getRef();			
+			action = actorName + " pushed to " + branch + " at " + repoName;	
+			actionText.setText(action);
+			break;
+		case "CreateEvent":
+			System.out.println("----------------------------------------------------------------------");
+			String refType = event.getRefType();
+			if(refType.equals("repository")){
+				action = actorName + " created repository " + repoName;
+			}else{
+				String ref = event.getRef();
+				action = actorName + " created " + refType + " " + ref + " at " + repoName;
+			}
+			actionText.setText(action);
+			break;
+		case "ForkEvent":
+			action = actorName + " forked " + repoName;
+			actionText.setText(action);
+			break;
+		}
+		
 
 		return convertView;
 	}

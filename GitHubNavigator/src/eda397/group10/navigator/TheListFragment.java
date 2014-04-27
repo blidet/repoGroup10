@@ -126,6 +126,7 @@ public class TheListFragment extends ListFragment {
 			repoList.setAdapter(new NewsListAdapter(this,datas,layoutInflator));
 			if(shouldLoadMore){
 				repoList.setSelectionFromTop(position+1, 0);
+				//isLoadingMore = false;
 			}
 			break;
 		}	
