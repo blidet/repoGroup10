@@ -17,6 +17,7 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -34,6 +35,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+@SuppressLint("NewApi")
 public class AuthenticatedMainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -204,7 +206,6 @@ public class AuthenticatedMainActivity extends Activity {
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
-	@SuppressWarnings("unused")
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
@@ -214,10 +215,10 @@ public class AuthenticatedMainActivity extends Activity {
 			listFragment = new TheListFragment(getResources().getString(R.string.NEWS_ACTION));
 			break;
 		case 1:
-			fragment = new SettingsFragment();
 			//fragment = new FindPeopleFragment();
 			break;
 		case 2:
+			fragment = new SettingsFragment();
 			//fragment = new PhotosFragment();
 			break;
 		case 3:

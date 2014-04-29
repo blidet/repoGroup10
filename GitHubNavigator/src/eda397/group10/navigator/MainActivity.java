@@ -1,14 +1,10 @@
 package eda397.group10.navigator;
 
-import eda397.group10.notifications.NotificationService;
+import eda397.group10.notifications.NotificationAlarm;
 import android.support.v7.app.ActionBarActivity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -35,7 +31,9 @@ public class MainActivity extends ActionBarActivity {
         	finish();
         }
         
-        //startAlarm();
+        //Create alarm that polls for notifications
+        NotificationAlarm alarm = new NotificationAlarm();
+        alarm.startAlarm(this);
     }
 
 
@@ -58,26 +56,4 @@ public class MainActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    /**
-     * Starts an alarm that will initiate the poll for updates in github, and then repeat itself.
-     */
-    private void startAlarm() {
-    	SharedPreferences prefs = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
-    	int seconds = prefs.getInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), 60);
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent i = new Intent(this, NotificationService.class);
-        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        am.cancel(pi);
-        // seconds <= 0 means notifications are disabled
-        if (seconds > 0) {
-        	am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + 1000,
-                    seconds*1000, pi);
-            Log.println(Log.ASSERT, "alarm", "started");
-        }
-        
-       // startService(new Intent(this, NotificationService.class));
-    }
-
 }

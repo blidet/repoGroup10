@@ -1,8 +1,8 @@
 package eda397.group10.navigator;
 
+import eda397.group10.notifications.NotificationAlarm;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.app.ListFragment;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -43,7 +43,6 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 	public void onItemSelected(AdapterView<?> parent, View view, 
 			int pos, long id) {
 		//Value in spinner changed (notification interval)
-		//TODO: changed interval doesnt take place until after the app is restarted
 		SharedPreferences settingsPrefs = getActivity().getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 		Editor toEdit = settingsPrefs.edit();
 		toEdit.putInt(getResources().getString(R.string.INTERVAL_SPINNER_SELECTED), pos);
@@ -81,6 +80,10 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 		}
 		toEdit.putInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), seconds);
 		toEdit.commit();
+		
+		//restart the notification alarm with the new interval settings
+		NotificationAlarm alarm = new NotificationAlarm();
+		alarm.startAlarm(getActivity());
 	}
 
 	@Override

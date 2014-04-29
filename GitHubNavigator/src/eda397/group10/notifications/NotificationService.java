@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import eda397.group10.communication.GithubRequest;
-import eda397.group10.JSONParsers.RepoJSONParser;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
@@ -80,15 +79,11 @@ public class NotificationService extends Service {
     	public void onPostExecute(HttpResponse result) {
 			Integer statusCode = result.getStatusLine().getStatusCode();
 			Log.println(Log.ASSERT, "get notifications", "status code: "+statusCode+" NOTIFICATION");
+
+			NotificationBuilder jsonExtractor = new NotificationBuilder();
+			jsonExtractor.execute(result);
 			
-
-			//JsonExtractor repoBuilder = new JsonExtractor();
-			//repoBuilder.execute(result);
-
-//			NotificationBuilder jsonExtractor = new NotificationBuilder();
-//			jsonExtractor.execute(result);
-//			
-//			stopSelf();
+			stopSelf();
 		}
 	}
     
