@@ -38,7 +38,7 @@ public class NotificationPOJO {
 	 */
 	public NotificationPOJO(JSONObject input, Service context)  {
 		try {
-			notificationId = input.getInt("id");
+			/*notificationId = input.getInt("id");
 			JSONObject subject = input.getJSONObject("subject");
 			String text = subject.getString("type") + ": " + subject.getString("title");
 			JSONObject repository = input.getJSONObject("repository");
@@ -53,7 +53,13 @@ public class NotificationPOJO {
 			case "comment":
 				reason ="New comment";
 				break;
-			}
+			}*/
+			
+			
+			//EVENTS
+			notificationId = input.getInt("id");
+			String reason = input.getString("type");
+			String text = input.getString("created_at");
 			
 			notificationBuilder =
 					new NotificationCompat.Builder(context)

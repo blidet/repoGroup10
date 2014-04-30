@@ -18,7 +18,7 @@ public class NotificationAlarm {
     	int seconds = prefs.getInt(context.getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), 60);
     	
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent i = new Intent(context, NotificationService.class);
+        Intent i = new Intent(context, EventService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
         
         am.cancel(pendingIntent); //cancel old alarms

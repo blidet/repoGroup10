@@ -1,5 +1,7 @@
 package eda397.group10.notifications;
 
+import java.util.GregorianCalendar;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -13,52 +15,51 @@ import eda397.group10.communication.JsonExtractor;
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.pojo.NotificationPOJO;
-import android.annotation.SuppressLint;
+import eda397.group10.utils.CalendarUtil;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 
-/**
- * This class polls the github API for updates/notifications in the user's repos.
- *
- */
-@SuppressLint("NewApi")
-public class NotificationService extends Service {
+public class EventService extends Service {
+	GregorianCalendar timeline = CalendarUtil.convertToCalendar("2014-04-20T17:26:27Z");
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
 	
-    @Override
+	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        Log.println(Log.ASSERT, "event", "here");
         handleIntent(intent);
         return START_NOT_STICKY;
     }
-    
-    private void handleIntent(Intent intent) {       
+	
+	private void handleIntent(Intent intent) { 
 		SharedPreferences sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
         boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
         
         if (authenticated) {
+        	String userName= sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), "");
+        	String password = sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "");
         	//Create a Header with the username and password saved in "Shared Preferences":
         	Header header = BasicScheme.authenticate(
-                    new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
-                    		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
+                    new UsernamePasswordCredentials(userName, password),
                     HTTP.UTF_8, false);
         	//Send HTTP request to poll for updates (in a new thread):
-    		PollTask poller = new PollTask(getResources().getString(R.string.FETCH_NOTIFICATIONS_URL), header);
+    		PollTask poller = new PollTask("https://api.github.com/users/"+userName+"/received_events", header);
         } else {
         	//If you are not logged going back to login page
         	Intent mainIntent = new Intent(this, MainActivity.class);
         	startActivity(mainIntent);
         }
-    }
-    
-    
-    /**
-     * Makes a call to the github API to see if there are any new notifications
+	}
+
+	/**
+     * Makes a call to the github API to see if there are any new events
      */
     private class PollTask extends GithubRequest {
 		public PollTask(String url, Header header) {
@@ -70,8 +71,8 @@ public class NotificationService extends Service {
 			Integer statusCode = result.getStatusLine().getStatusCode();
 
 			if (statusCode==200) {
-				NotificationBuilder jsonExtractor = new NotificationBuilder();
-				jsonExtractor.execute(result);
+				NotificationBuilder notificationBuilder = new NotificationBuilder();
+				notificationBuilder.execute(result);
 			} else {
 				//TODO: take care of other status codes
 			}			
@@ -81,14 +82,20 @@ public class NotificationService extends Service {
 	}
     
     /**
-     * Extracts data from the returned JSONArray
+     * Extracts data from the returned JSONArray and creates notifications
      */
     private class NotificationBuilder extends JsonExtractor {
     	@Override
     	public void onPostExecute(JSONArray json) {
 			try {
 				for (int i = 0; i < json.length(); i++) {
-					new NotificationPOJO(json.getJSONObject(i), NotificationService.this);
+					String created_at = json.getJSONObject(i).getString("created_at");
+					GregorianCalendar createdAt = CalendarUtil.convertToCalendar(created_at);
+					
+					if (createdAt.after(timeline)) {
+
+						new NotificationPOJO(json.getJSONObject(i), EventService.this);	
+					}
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

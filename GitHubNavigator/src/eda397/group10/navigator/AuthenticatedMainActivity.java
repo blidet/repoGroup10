@@ -156,6 +156,7 @@ public class AuthenticatedMainActivity extends Activity {
     		//Create alarm that polls for notifications
             NotificationAlarm alarm = new NotificationAlarm();
             alarm.startAlarm(this);
+
         } else {
         	//If you are not loged going back to login page
         	Intent intent = new Intent(this, MainActivity.class);
