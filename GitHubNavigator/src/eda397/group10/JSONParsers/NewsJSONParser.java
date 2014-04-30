@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -31,13 +32,14 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 	private TheListFragment context;
 	private static ArrayList<EventPOJO> datas;
 	private boolean loadMore;
+	private HashMap<String, Drawable> imageCache;
 	
 	public NewsJSONParser(TheListFragment context, boolean loadMore){
 		this.context = context;
 		if(!loadMore){
 			datas = new ArrayList<EventPOJO>();
 		}
-		
+		imageCache = new HashMap<String, Drawable>();
 		this.loadMore = loadMore;
 	}
 	
@@ -55,17 +57,6 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 			    Log.println(Log.INFO, "************", line);
 			}
 			
-			
-//			for(int i=0; i<params[0].getAllHeaders().length;i++){
-//				Log.println(Log.INFO, "################", params[0].getAllHeaders()[i].getName()+" : "+params[0].getAllHeaders()[i].getValue());
-//			}
-			
-//			for(int i=0; i<params[0].getFirstHeader("Link").getElements().length;i++){
-//				Log.println(Log.INFO, "***************", params[0].getFirstHeader("Link").getElements()[i].getName()+" ------- "+params[0].getFirstHeader("Link").getElements()[i].getValue());
-//			}
-			//String linkHeaderValue = params[0].getFirstHeader("Link");
-			//String nextUrl = linkHeaderValue.r
-			
 			JSONTokener tokener = new JSONTokener(builder.toString());
 			json = new JSONArray(tokener);
 			
@@ -81,12 +72,17 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 				String eventType = obj.getString("type");
 				JSONObject actorObj = obj.getJSONObject("actor");
 				String actorName = actorObj.getString("login");
-				URL avatarUrl = new URL(actorObj.getString("avatar_url"));
-				System.out.println("66666666666666666666 "+avatarUrl);
-				InputStream istr = avatarUrl.openStream();
-				
-				Drawable imageDrawable = Drawable.createFromStream(istr, "src");
-				istr.close();
+				String avatarUrlKey = actorObj.getString("avatar_url");
+				URL avatarUrl = new URL(avatarUrlKey);
+				Drawable imageDrawable = null;
+				if(imageCache.containsKey(avatarUrlKey)){
+					imageDrawable = imageCache.get(avatarUrlKey);
+				}else{
+					InputStream istr = avatarUrl.openStream();				
+					imageDrawable = Drawable.createFromStream(istr, "src");
+					istr.close();
+					imageCache.put(avatarUrlKey, imageDrawable);
+				}				
 				
 				UserPOJO actor = new UserPOJO();
 				actor.setAvatar(imageDrawable);
