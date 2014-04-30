@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 public class UserPOJO {
 	
 	private String name;
+	private String avatarUrl;
 	private Drawable avatar;
 	private int userId;
 
@@ -30,6 +31,14 @@ public class UserPOJO {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
 	}
 	
 	
