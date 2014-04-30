@@ -2,6 +2,7 @@ package eda397.group10.navigator;
 
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
+import eda397.group10.notifications.NotificationAlarm;
 import eda397.group10.sliding.NavDrawerItem;
 import eda397.group10.sliding.NavDrawerListAdapter;
 
@@ -151,6 +152,10 @@ public class AuthenticatedMainActivity extends Activity {
                     HTTP.UTF_8, false);
         	//Send HTTP request to retrieve user repos:
     		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL),header);
+    		
+    		//Create alarm that polls for notifications
+            NotificationAlarm alarm = new NotificationAlarm();
+            alarm.startAlarm(this);
         } else {
         	//If you are not loged going back to login page
         	Intent intent = new Intent(this, MainActivity.class);
