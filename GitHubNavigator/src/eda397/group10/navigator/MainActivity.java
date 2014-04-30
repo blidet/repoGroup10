@@ -30,10 +30,6 @@ public class MainActivity extends ActionBarActivity {
         	startActivity(new Intent(this,AuthenticatedMainActivity.class));
         	finish();
         }
-        
-        //Create alarm that polls for notifications
-        NotificationAlarm alarm = new NotificationAlarm();
-        alarm.startAlarm(this);
     }
 
 

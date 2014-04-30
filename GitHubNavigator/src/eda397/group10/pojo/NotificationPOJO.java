@@ -30,8 +30,6 @@ public class NotificationPOJO {
 	
 	// notificationId allows you to update the notification later on.
 	private int notificationId;
-	private String text;
-	private Bitmap image;
 	
 	/**
 	 * Creates the actual notifications shown to the user.
@@ -42,17 +40,25 @@ public class NotificationPOJO {
 		try {
 			notificationId = input.getInt("id");
 			JSONObject subject = input.getJSONObject("subject");
-			text = subject.getString("type") + ": " + subject.getString("title");
+			String text = subject.getString("type") + ": " + subject.getString("title");
 			JSONObject repository = input.getJSONObject("repository");
 			JSONObject owner = repository.getJSONObject("owner");
-			Log.println(Log.ASSERT, "icon", owner.getString("avatar_url"));
 			new URLRequester().execute(owner.getString("avatar_url"));
+			
+			String reason = input.getString("reason");
+			switch(reason) {
+			case "subscribed":
+				reason = "You subscribed to an issue";
+				break;
+			case "comment":
+				reason ="New comment";
+				break;
+			}
 			
 			notificationBuilder =
 					new NotificationCompat.Builder(context)
 			.setSmallIcon(R.drawable.git_logo)
-			.setLargeIcon(image)
-			.setContentTitle("Id: " + notificationId)
+			.setContentTitle(reason)
 			.setContentText(text);
 			// Creates an explicit intent for an Activity in your app
 			Intent resultIntent = new Intent(context, MainActivity.class);
