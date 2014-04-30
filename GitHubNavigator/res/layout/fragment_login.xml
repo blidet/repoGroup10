@@ -50,9 +50,9 @@
         style="@style/CustomStyleButton"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/login_password"
+        android:layout_alignLeft="@+id/login_password"
         android:layout_below="@+id/login_password"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="50dp"
         android:text="@string/button_register" />
 
     <Button
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/register_button"
         android:layout_alignBottom="@+id/register_button"
-        android:layout_alignLeft="@+id/login_password"
+        android:layout_alignRight="@+id/login_password"
         android:text="@string/button_send" />
 
 </RelativeLayout>
