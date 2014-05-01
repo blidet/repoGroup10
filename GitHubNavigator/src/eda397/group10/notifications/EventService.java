@@ -32,8 +32,6 @@ public class EventService extends Service {
 	
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Log.println(Log.ASSERT, "event", "here");
         handleIntent(intent);
         return START_NOT_STICKY;
     }

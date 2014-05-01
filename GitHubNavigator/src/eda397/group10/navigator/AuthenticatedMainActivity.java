@@ -145,6 +145,10 @@ public class AuthenticatedMainActivity extends Activity {
         boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
         
         if (authenticated) {
+    		//Create alarm that polls for notifications
+            NotificationAlarm alarm = new NotificationAlarm();
+            alarm.startAlarm(this);
+        	
         	//Create a Header with the username and password saved in "Shared Preferences":
         	Header header = BasicScheme.authenticate(
                     new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
@@ -152,11 +156,6 @@ public class AuthenticatedMainActivity extends Activity {
                     HTTP.UTF_8, false);
         	//Send HTTP request to retrieve user repos:
     		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL),header);
-    		
-    		//Create alarm that polls for notifications
-            NotificationAlarm alarm = new NotificationAlarm();
-            alarm.startAlarm(this);
-
         } else {
         	//If you are not loged going back to login page
         	Intent intent = new Intent(this, MainActivity.class);

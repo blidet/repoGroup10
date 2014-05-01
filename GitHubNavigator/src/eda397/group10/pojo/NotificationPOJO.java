@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,10 +28,10 @@ import eda397.group10.navigator.R;
 public class NotificationPOJO {
 	private NotificationCompat.Builder notificationBuilder;
 	private NotificationManager notificationManager;
-	
-	// notificationId allows you to update the notification later on.
+
+	// notificationId allows the notification to be updated later on.
 	private int notificationId;
-	
+
 	/**
 	 * Creates the actual notifications shown to the user.
 	 * @param input
@@ -38,34 +39,36 @@ public class NotificationPOJO {
 	 */
 	public NotificationPOJO(JSONObject input, Service context)  {
 		try {
-			/*notificationId = input.getInt("id");
-			JSONObject subject = input.getJSONObject("subject");
-			String text = subject.getString("type") + ": " + subject.getString("title");
-			JSONObject repository = input.getJSONObject("repository");
-			JSONObject owner = repository.getJSONObject("owner");
-			new URLRequester().execute(owner.getString("avatar_url"));
-			
-			String reason = input.getString("reason");
-			switch(reason) {
-			case "subscribed":
-				reason = "You subscribed to an issue";
-				break;
-			case "comment":
-				reason ="New comment";
-				break;
-			}*/
-			
-			
-			//EVENTS
 			notificationId = input.getInt("id");
-			String reason = input.getString("type");
+			String eventType = input.getString("type");
 			String text = input.getString("created_at");
-			
+			String title = "";
+			JSONObject actor = input.getJSONObject("actor");
+			JSONObject repo = input.getJSONObject("repo");
+			JSONObject payload = input.getJSONObject("payload");
+
+			switch(eventType) {
+			case "PushEvent":
+				title = actor.getString("login") + " pushed to " + repo.getString("name");
+				JSONArray commits = payload.getJSONArray("commits");
+				text = commits.getJSONObject(0).getString("message"); //not sure if it should be first or last commit
+				break;
+			default:
+				break;
+			}
+
+
+			//Design the notification
 			notificationBuilder =
 					new NotificationCompat.Builder(context)
 			.setSmallIcon(R.drawable.git_logo)
-			.setContentTitle(reason)
+			.setContentTitle(title)
 			.setContentText(text);
+
+			//set the notification icon
+			new URLRequester().execute(actor.getString("avatar_url"));
+
+
 			// Creates an explicit intent for an Activity in your app
 			Intent resultIntent = new Intent(context, MainActivity.class);
 
@@ -73,14 +76,15 @@ public class NotificationPOJO {
 			// started Activity.
 			// This ensures that navigating backward from the Activity leads out of
 			// your application to the Home screen.
+			//TODO: fix proper back stack
 			TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-			
+
 			// Adds the back stack for the Intent (but not the Intent itself)
 			//stackBuilder.addParentStack(MainActivity.class);
-			
+
 			// Adds the Intent that starts the Activity to the top of the stack
 			stackBuilder.addNextIntent(resultIntent);
-			
+
 			PendingIntent resultPendingIntent =
 					stackBuilder.getPendingIntent(
 							0,
@@ -96,7 +100,7 @@ public class NotificationPOJO {
 			e.printStackTrace();
 		}	
 	}
-	
+
 	/**
 	 * Converts a URL to an icon for the notification.
 	 *
@@ -104,32 +108,32 @@ public class NotificationPOJO {
 	private class URLRequester extends AsyncTask<String, Void, Bitmap> {
 		@Override
 		protected Bitmap doInBackground(String... URLs) {
-			 try {
-			        URL url = new URL(URLs[0]);
-			        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			        connection.setDoInput(true);
-			        connection.connect();
-			        InputStream input = connection.getInputStream();
-			        Bitmap myBitmap = BitmapFactory.decodeStream(input);
-			        return myBitmap;
-			    } catch (IOException e) {
-			        e.printStackTrace();
-			        return null;
-			    }
+			try {
+				URL url = new URL(URLs[0]);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				InputStream input = connection.getInputStream();
+				Bitmap myBitmap = BitmapFactory.decodeStream(input);
+				return myBitmap;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
-		
+
 		@Override
 		protected void onPostExecute(Bitmap result) {
-	         NotificationPOJO.this.setImage(result);
-	     }
-		
+			NotificationPOJO.this.setIcon(result);
+		}
+
 	}
-	
+
 	/**
 	 * Updates the large icon of this notification.
 	 * @param image
 	 */
-	private void setImage(Bitmap image) {
+	private void setIcon(Bitmap image) {
 		notificationBuilder.setLargeIcon(image);
 		notificationManager.notify(notificationId, notificationBuilder.build());
 	}
