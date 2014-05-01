@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,24 +39,13 @@ public class NotificationPOJO {
 	public NotificationPOJO(JSONObject input, Service context)  {
 		try {
 			notificationId = input.getInt("id");
-			String eventType = input.getString("type");
 			String text = input.getString("created_at");
 			String title = "";
 			JSONObject actor = input.getJSONObject("actor");
-			JSONObject repo = input.getJSONObject("repo");
-			JSONObject payload = input.getJSONObject("payload");
-
-			switch(eventType) {
-			case "PushEvent":
-				title = actor.getString("login") + " pushed to " + repo.getString("name");
-				JSONArray commits = payload.getJSONArray("commits");
-				text = commits.getJSONObject(0).getString("message"); //not sure if it should be first or last commit
-				break;
-			default:
-				break;
-			}
 
 
+
+			//TODO: only part of the title is visible
 			//Design the notification
 			notificationBuilder =
 					new NotificationCompat.Builder(context)
@@ -95,6 +83,7 @@ public class NotificationPOJO {
 					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			notificationManager.notify(notificationId, notificationBuilder.build());
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,8 +122,40 @@ public class NotificationPOJO {
 	 * Updates the large icon of this notification.
 	 * @param image
 	 */
-	private void setIcon(Bitmap image) {
+	protected void setIcon(Bitmap image) {
 		notificationBuilder.setLargeIcon(image);
+		notificationManager.notify(notificationId, notificationBuilder.build());
+	}
+	
+	/**
+	 * Sets the title of the notification.
+	 * @param title
+	 */
+	protected void setTitle(String title) {
+		notificationBuilder.setContentTitle(title);
+		notificationManager.notify(notificationId, notificationBuilder.build());
+	}
+	
+	/**
+	 * Sets the content text of the notification.
+	 * @param text
+	 */
+	protected void setText(String text) {
+		notificationBuilder.setContentText(text);
+		notificationManager.notify(notificationId, notificationBuilder.build());
+	}
+	
+	/**
+	 * Makes the notification expandable (only available on Android 4.1 and later)
+	 * and sets the text to be shown in the expanded view.
+	 * @param text the text to be shown in the expanded view
+	 */
+	protected void setExpandedText(String text) {
+		//Creates the expanded view of the notification (only on Android 4.1 and later)
+		NotificationCompat.BigTextStyle bigStyle =
+				new NotificationCompat.BigTextStyle()
+		.bigText(text);
+		notificationBuilder.setStyle(bigStyle);
 		notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 }

@@ -1,6 +1,5 @@
 package eda397.group10.navigator;
 
-import eda397.group10.notifications.NotificationAlarm;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
