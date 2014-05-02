@@ -15,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -27,14 +29,14 @@ public class RepoNewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<
 	private TheListFragment context;
 	private static ArrayList<EventPOJO> datas;
 	private boolean loadMore;
-	private HashMap<String, Drawable> imageCache;
+	private HashMap<String, Bitmap> imageCache;
 	
 	public RepoNewsJSONParser(TheListFragment context, boolean loadMore){
 		this.context = context;
 		if(!loadMore){
 			datas = new ArrayList<EventPOJO>();
 		}
-		imageCache = new HashMap<String, Drawable>();
+		imageCache = new HashMap<String, Bitmap>();
 		this.loadMore = loadMore;
 	}
 	
@@ -68,43 +70,45 @@ public class RepoNewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<
 				JSONObject obj = json.getJSONObject(i);
 				
 				String committerName;
-				Drawable imageDrawable;
+				//Drawable imageDrawable;
+				Bitmap imageBitmap;
 				
 				if(!obj.isNull("committer")){
 					JSONObject committerObj = obj.getJSONObject("committer");
 					committerName = committerObj.getString("login");
 					String avatarUrlKey = committerObj.getString("avatar_url");
 					URL avatarUrl = new URL(avatarUrlKey);
-					imageDrawable = null;
+					imageBitmap = null;
 					if(imageCache.containsKey(avatarUrlKey)){
-						imageDrawable = imageCache.get(avatarUrlKey);
+						imageBitmap = imageCache.get(avatarUrlKey);
 					}else{
 						InputStream istr = avatarUrl.openStream();				
-						imageDrawable = Drawable.createFromStream(istr, "src");
+						imageBitmap = BitmapFactory.decodeStream(istr);
 						istr.close();
-						imageCache.put(avatarUrlKey, imageDrawable);
+						imageCache.put(avatarUrlKey, imageBitmap);
 					}				
 				}else if(!obj.isNull("author")){
 					JSONObject authorObj = obj.getJSONObject("author");
 					committerName = authorObj.getString("login");
 					String avatarUrlKey = authorObj.getString("avatar_url");
 					URL avatarUrl = new URL(avatarUrlKey);
-					imageDrawable = null;
+					imageBitmap = null;
 					if(imageCache.containsKey(avatarUrlKey)){
-						imageDrawable = imageCache.get(avatarUrlKey);
+						imageBitmap = imageCache.get(avatarUrlKey);
 					}else{
 						InputStream istr = avatarUrl.openStream();				
-						imageDrawable = Drawable.createFromStream(istr, "src");
+						imageBitmap = BitmapFactory.decodeStream(istr);
 						istr.close();
-						imageCache.put(avatarUrlKey, imageDrawable);
+						imageCache.put(avatarUrlKey, imageBitmap);
 					}				
 				}else{
 					committerName = "Unknown";
-					imageDrawable = null;
+					imageBitmap = null;
 				}
 				
 				UserPOJO author = new UserPOJO();
-				author.setAvatar(imageDrawable);
+				//author.setAvatar(imageDrawable);
+				author.setAvatarBitmap(imageBitmap);
 				author.setName(committerName);
 				
 				EventPOJO event = new EventPOJO();

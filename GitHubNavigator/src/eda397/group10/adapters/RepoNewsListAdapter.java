@@ -7,6 +7,7 @@ import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.EventPOJO;
 import eda397.group10.pojo.RepositoryPOJO;
 import eda397.group10.pojo.UserPOJO;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,8 +60,8 @@ public class RepoNewsListAdapter extends BaseAdapter {
 		String type = event.getType();
 		UserPOJO user= event.getActor();
 		String actorName = user.getName();
-		Drawable imageDrawable = user.getAvatar();
-		avatar.setImageDrawable(imageDrawable);
+		Bitmap imageBitmap = user.getAvatarBitmap();
+		avatar.setImageBitmap(imageBitmap);
 		String action = null;
 		String repoName = event.getRepoName();
 		switch(type){
