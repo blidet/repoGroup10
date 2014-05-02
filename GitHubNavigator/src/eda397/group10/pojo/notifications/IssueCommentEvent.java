@@ -21,7 +21,7 @@ public class IssueCommentEvent extends NotificationPOJO {
 		setTitle(issue.getString("title"));
 		setText(comment.getString("body"));
 		
-		setTarget(SettingsFragment.class, context);
+		//setTarget(SettingsFragment.class, context);
 	}
 
 }

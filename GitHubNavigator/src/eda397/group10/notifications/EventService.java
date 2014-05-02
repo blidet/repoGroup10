@@ -48,7 +48,7 @@ public class EventService extends Service {
 	private void handleIntent(Intent intent) { 
 		SharedPreferences sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 		boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
-
+		
 		if (authenticated) {
 			String userName= sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), "");
 			String password = sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "");
@@ -61,8 +61,10 @@ public class EventService extends Service {
 			PollTask poller = new PollTask("https://api.github.com/users/"+userName+"/received_events", header);
 		} else {
 			//If you are not logged going back to login page
-			Intent mainIntent = new Intent(this, MainActivity.class);
-			startActivity(mainIntent);
+			//TODO causes crash
+			//http://stackoverflow.com/questions/3689581/calling-startactivity-from-outside-of-an-activity
+//			Intent mainIntent = new Intent(this, MainActivity.class);
+	//		startActivity(mainIntent);
 		}
 	}
 
