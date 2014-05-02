@@ -1,9 +1,13 @@
 package eda397.group10.JSONParsers;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,16 +19,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.google.gson.Gson;
+
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.support.v4.util.LruCache;
 import android.util.Log;
 import eda397.group10.communication.JsonExtractor;
+import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.EventPOJO;
 import eda397.group10.pojo.RepositoryPOJO;
 import eda397.group10.pojo.UserPOJO;
-import eda397.group10.widget.*;
-import eda397.group10.widget.LoadMoreListView.OnLoadMoreListener;
 import android.widget.BaseAdapter;
 
 public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<EventPOJO>> {
@@ -32,15 +43,19 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 	private TheListFragment context;
 	private static ArrayList<EventPOJO> datas;
 	private boolean loadMore;
-	private HashMap<String, Drawable> imageCache;
+	private HashMap<String, Bitmap> imageBitmap;
+	SharedPreferences  mPrefs;
+	
 	
 	public NewsJSONParser(TheListFragment context, boolean loadMore){
 		this.context = context;
 		if(!loadMore){
 			datas = new ArrayList<EventPOJO>();
 		}
-		imageCache = new HashMap<String, Drawable>();
+		imageBitmap = new HashMap<String,Bitmap>();
 		this.loadMore = loadMore;
+		mPrefs = context.getActivity().getPreferences(0);
+		//mPrefs.edit().clear().commit();
 	}
 	
 	@Override
@@ -54,11 +69,10 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 			StringBuilder builder = new StringBuilder();
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");
-			    Log.println(Log.INFO, "************", line);
 			}
 			
 			JSONTokener tokener = new JSONTokener(builder.toString());
-			json = new JSONArray(tokener);
+			json = new JSONArray(tokener);			
 			
 			
 		} catch (Exception e) {
@@ -74,18 +88,35 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 				String actorName = actorObj.getString("login");
 				String avatarUrlKey = actorObj.getString("avatar_url");
 				URL avatarUrl = new URL(avatarUrlKey);
-				Drawable imageDrawable = null;
-				if(imageCache.containsKey(avatarUrlKey)){
-					imageDrawable = imageCache.get(avatarUrlKey);
-				}else{
-					InputStream istr = avatarUrl.openStream();				
-					imageDrawable = Drawable.createFromStream(istr, "src");
+				
+		        Bitmap myBitmap = null;
+				
+				String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+				File file = new File(extStorageDirectory, actorName+".PNG");
+				if(!file.exists()){					
+					InputStream istr = avatarUrl.openStream();
+					myBitmap = BitmapFactory.decodeStream(istr);
 					istr.close();
-					imageCache.put(avatarUrlKey, imageDrawable);
+					imageBitmap.put(actorName, myBitmap);
+					
+					FileOutputStream outStream = new FileOutputStream(file);
+				    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+				    outStream.flush();
+				    outStream.close();
+				}else{
+					if(imageBitmap.containsKey(actorName)){
+						myBitmap = imageBitmap.get(actorName);
+					}else{
+						FileInputStream inputStream = new FileInputStream(file);
+						myBitmap = BitmapFactory.decodeStream(inputStream);
+					    imageBitmap.put(actorName, myBitmap);
+					}
+					
 				}				
 				
+				
 				UserPOJO actor = new UserPOJO();
-				actor.setAvatar(imageDrawable);
+				actor.setAvatarBitmap(myBitmap);
 				actor.setName(actorName);
 				
 				JSONObject repoObj = obj.getJSONObject("repo");
@@ -117,6 +148,16 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 					datas.add(event);
 					break;
 				}
+				
+				
+				if(i<1){
+					Editor prefsEditor = mPrefs.edit();
+				    Gson gson = new Gson();
+				    String convert = gson.toJson(event);
+				    prefsEditor.putString(Integer.toString(i), convert);
+				    prefsEditor.commit();
+				}				
+				
 			}
 			
 		}catch(JSONException ex){
@@ -127,6 +168,8 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+			
 
 		return datas;
 	}

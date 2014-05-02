@@ -47,8 +47,7 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 			}
 			JSONTokener tokener = new JSONTokener(builder.toString());
 			json = new JSONArray(tokener);
-			
-			
+						
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.println(Log.ASSERT, "catch", e.toString());

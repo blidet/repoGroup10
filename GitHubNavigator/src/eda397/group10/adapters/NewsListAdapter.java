@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.EventPOJO;
-import eda397.group10.pojo.RepositoryPOJO;
 import eda397.group10.pojo.UserPOJO;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,12 +56,14 @@ public class NewsListAdapter extends BaseAdapter {
 		actionText = (TextView)convertView.findViewById(R.id.actiontext);
 		avatar = (ImageView)convertView.findViewById(R.id.owner_icon2);
 		
+		
+		
 		EventPOJO event = datas.get(pos);
 		String type = event.getType();
 		UserPOJO user= event.getActor();
 		String actorName = user.getName();
-		Drawable imageDrawable = user.getAvatar();
-		avatar.setImageDrawable(imageDrawable);
+		Bitmap bitmap = user.getAvatarBitmap();
+		avatar.setImageBitmap(bitmap);
 		String action = null;
 		String repoName = event.getRepoName();
 		switch(type){
@@ -70,7 +73,6 @@ public class NewsListAdapter extends BaseAdapter {
 			actionText.setText(action);
 			break;
 		case "CreateEvent":
-			System.out.println("----------------------------------------------------------------------");
 			String refType = event.getRefType();
 			if(refType.equals("repository")){
 				action = actorName + " created repository " + repoName;

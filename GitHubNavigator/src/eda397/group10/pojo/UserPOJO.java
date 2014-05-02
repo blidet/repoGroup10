@@ -1,20 +1,17 @@
 package eda397.group10.pojo;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 public class UserPOJO {
 	
 	private String name;
 	private String avatarUrl;
-	private Drawable avatar;
 	private int userId;
+	private Bitmap avatarBitmap;
 
 	public String getName() {
 		return name;
-	}
-
-	public Drawable getAvatar() {
-		return avatar;
 	}
 	
 	public int getUserId(){
@@ -23,10 +20,6 @@ public class UserPOJO {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setAvatar(Drawable avatar) {
-		this.avatar = avatar;
 	}
 
 	public void setUserId(int userId) {
@@ -39,6 +32,14 @@ public class UserPOJO {
 
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
+	}
+
+	public Bitmap getAvatarBitmap() {
+		return avatarBitmap;
+	}
+
+	public void setAvatarBitmap(Bitmap avatarBitmap) {
+		this.avatarBitmap = avatarBitmap;
 	}
 	
 	
