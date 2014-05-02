@@ -2,6 +2,19 @@ package eda397.group10.sliding;
 
 public class NavDrawerItem {
 	
+	/**
+	 * The different types of nav drawer items.
+	 * 
+	 * @author Oscar
+	 *
+	 */
+	public enum NavDrawerItemType {REPOSITORY, NONE};
+	
+	/**
+	 * The type of nav drawer item this is.
+	 */
+	private NavDrawerItemType type = NavDrawerItemType.NONE;
+	
 	private String title;
 	private int icon;
 	private String count = "0";
@@ -13,6 +26,12 @@ public class NavDrawerItem {
 	public NavDrawerItem(String title, int icon){
 		this.title = title;
 		this.icon = icon;
+	}
+	
+	public NavDrawerItem(String title, int icon, NavDrawerItemType type){
+		this.title = title;
+		this.icon = icon;
+		this.type = type;
 	}
 	
 	public NavDrawerItem(String title, int icon, boolean isCounterVisible, String count){
@@ -52,5 +71,13 @@ public class NavDrawerItem {
 	
 	public void setCounterVisibility(boolean isCounterVisible){
 		this.isCounterVisible = isCounterVisible;
+	}
+	
+	public NavDrawerItemType getType() {
+		return type;
+	}
+
+	public void setType(NavDrawerItemType type) {
+		this.type = type;
 	}
 }
