@@ -42,15 +42,14 @@ public class NotificationPOJO {
 			String title = "";
 			JSONObject actor = input.getJSONObject("actor");
 
-
-
 			//TODO: only part of the title is visible
 			//Design the notification
 			notificationBuilder =
 					new NotificationCompat.Builder(context)
 			.setSmallIcon(R.drawable.git_logo)
 			.setContentTitle(title)
-			.setContentText(text);
+			.setContentText(text)
+			.setAutoCancel(true);
 
 			//set the notification icon
 			new URLRequester().execute(actor.getString("avatar_url"));

@@ -151,12 +151,7 @@ public class AuthenticatedMainActivity extends Activity {
         
         if (authenticated) {
         	//Update timestamp to ignore events before current time
-        	SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
-        	/*Editor toEdit = settings.edit();
-        	toEdit.putString(getResources().getString(R.string.LAST_POLL), "2014-04-29T17:26:27Z");
-        	toEdit.commit();
-        	Log.println(Log.ASSERT, "111", settings.getString(getResources().getString(R.string.LAST_POLL), "defValue"));*/
-        	
+        	SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);        	
         	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

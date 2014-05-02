@@ -1,8 +1,10 @@
 package eda397.group10.notifications;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -29,6 +31,8 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class EventService extends Service {
+	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -36,6 +40,7 @@ public class EventService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		handleIntent(intent);
 		return START_NOT_STICKY;
 	}
@@ -94,6 +99,7 @@ public class EventService extends Service {
 				SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 				String lastPoll = settings.getString(getResources().getString(R.string.LAST_POLL), "");
 				GregorianCalendar timeline = CalendarUtil.convertToCalendar(lastPoll);
+								
 				for (int i = 0; i < json.length(); i++) {
 					String created_at = json.getJSONObject(i).getString("created_at");
 					GregorianCalendar createdAt = CalendarUtil.convertToCalendar(created_at);
@@ -118,8 +124,6 @@ public class EventService extends Service {
 						}
 					}
 				}
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-				dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 				Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 				
 	        	Editor toEdit = settings.edit();
