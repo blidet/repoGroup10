@@ -17,15 +17,15 @@ import android.os.AsyncTask;
  *
  */
 public class GithubRequest extends AsyncTask<String, Void, HttpResponse> {
-	private final Header currentHeader;
+	private final Header[] headers;
 	
 	/**
 	 * 
 	 * @param url the URL to send the request to
 	 * @param header the header data that should be sent with the requests (for example username and password)
 	 */
-	public GithubRequest(String url, Header header){
-		currentHeader = header;
+	public GithubRequest(String url, Header... header){
+		headers = header;
 		this.execute(url);
 	}
 
@@ -36,7 +36,11 @@ public class GithubRequest extends AsyncTask<String, Void, HttpResponse> {
 	protected HttpResponse doInBackground(String... url) {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet(url[0]);
-		request.addHeader(currentHeader);
+		
+		for (Header h : headers) {
+			request.addHeader(h);
+		}
+		//request.addHeader(currentHeader);
 		
 		HttpResponse response = null;
 		try {

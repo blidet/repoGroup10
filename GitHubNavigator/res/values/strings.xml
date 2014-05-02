@@ -12,7 +12,6 @@
     <!-- Http request URL's. -->
     <string name="AUTHENTICATE_URL">https://api.github.com</string>
     <string name="FETCH_REPOS_URL">https://api.github.com/user/repos</string>
-    <string name="FETCH_NOTIFICATIONS_URL">https://api.github.com/notifications?all=true</string>
     
     <!-- Action codes used to indentify different actions to the list fragment -->
     <string name="REPO_ACTION">repo_action</string>
@@ -35,6 +34,7 @@
     <string name="SETTINGS_PREFERENCES">Application Settings</string>
     <string name="INTERVAL_SPINNER_SELECTED">Interval spinner selected</string>
     <string name="SECONDS_BETWEEN_UPDATES">Github notifications interval</string>
+    <string name="LAST_POLL">Last poll for new events</string>
     
     <!-- Settings page  -->
     <string name="notification_interval">Check for new notifications every: </string>

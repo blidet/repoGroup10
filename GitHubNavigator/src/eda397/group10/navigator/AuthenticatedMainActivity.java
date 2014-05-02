@@ -6,9 +6,14 @@ import eda397.group10.notifications.NotificationAlarm;
 import eda397.group10.sliding.NavDrawerItem;
 import eda397.group10.sliding.NavDrawerListAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -145,6 +150,20 @@ public class AuthenticatedMainActivity extends Activity {
         boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
         
         if (authenticated) {
+        	//Update timestamp to ignore events before current time
+        	SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+        	/*Editor toEdit = settings.edit();
+        	toEdit.putString(getResources().getString(R.string.LAST_POLL), "2014-04-29T17:26:27Z");
+        	toEdit.commit();
+        	Log.println(Log.ASSERT, "111", settings.getString(getResources().getString(R.string.LAST_POLL), "defValue"));*/
+        	
+        	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        	Editor toEdit = settings.edit();
+        	toEdit.putString(getResources().getString(R.string.LAST_POLL), dateFormat.format(cal.getTime()));
+        	toEdit.commit();
+        	
     		//Create alarm that polls for notifications
             NotificationAlarm alarm = new NotificationAlarm();
             alarm.startAlarm(this);

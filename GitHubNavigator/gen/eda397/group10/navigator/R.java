@@ -1197,30 +1197,30 @@ containing a value of this type.
         /**  Http request URL's. 
          */
         public static final int AUTHENTICATE_URL=0x7f0a0013;
-        public static final int AUTH_PREFERENCE=0x7f0a001c;
-        public static final int FETCH_NOTIFICATIONS_URL=0x7f0a0015;
+        public static final int AUTH_PREFERENCE=0x7f0a001b;
         public static final int FETCH_REPOS_URL=0x7f0a0014;
-        public static final int INTERVAL_SPINNER_SELECTED=0x7f0a0020;
+        public static final int INTERVAL_SPINNER_SELECTED=0x7f0a001f;
+        public static final int LAST_POLL=0x7f0a0021;
         /**  Shared preferences login credentials. 
          */
-        public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a001b;
-        public static final int NEWS_ACTION=0x7f0a0017;
-        public static final int PASSWORD_PREFERENCE=0x7f0a001e;
+        public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a001a;
+        public static final int NEWS_ACTION=0x7f0a0016;
+        public static final int PASSWORD_PREFERENCE=0x7f0a001d;
         /**  Json keys. 
          */
-        public static final int REPOSITORY_JSON_KEY=0x7f0a001a;
+        public static final int REPOSITORY_JSON_KEY=0x7f0a0019;
         /**  Action codes used to indentify different actions to the list fragment 
          */
-        public static final int REPO_ACTION=0x7f0a0016;
-        public static final int SECONDS_BETWEEN_UPDATES=0x7f0a0021;
+        public static final int REPO_ACTION=0x7f0a0015;
+        public static final int SECONDS_BETWEEN_UPDATES=0x7f0a0020;
         /**  Shared preferences settings 
          */
-        public static final int SETTINGS_PREFERENCES=0x7f0a001f;
-        public static final int TEST_USER_PASSWORD=0x7f0a0019;
+        public static final int SETTINGS_PREFERENCES=0x7f0a001e;
+        public static final int TEST_USER_PASSWORD=0x7f0a0018;
         /**  The credentials for the test user of the github project. 
          */
-        public static final int TEST_USER_USERNAME=0x7f0a0018;
-        public static final int USERNAME_PREFERENCE=0x7f0a001d;
+        public static final int TEST_USER_USERNAME=0x7f0a0017;
+        public static final int USERNAME_PREFERENCE=0x7f0a001c;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0a0001;

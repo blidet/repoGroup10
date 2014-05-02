@@ -1,6 +1,10 @@
 package eda397.group10.notifications;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -20,13 +24,11 @@ import eda397.group10.utils.CalendarUtil;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.IBinder;
+import android.util.Log;
 
 public class EventService extends Service {
-	GregorianCalendar timeline = CalendarUtil.convertToCalendar("2014-04-15T17:26:27Z");
-	GregorianCalendar timeline_temp = CalendarUtil.convertToCalendar("2014-04-20T17:26:27Z");
-	//TODO: fix timeline
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -63,7 +65,7 @@ public class EventService extends Service {
 	 * Makes a call to the github API to see if there are any new events
 	 */
 	private class PollTask extends GithubRequest {
-		public PollTask(String url, Header header) {
+		public PollTask(String url, Header... header) {
 			super(url, header);
 		}
 
@@ -89,13 +91,14 @@ public class EventService extends Service {
 		@Override
 		public void onPostExecute(JSONArray json) {
 			try {
+				SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+				String lastPoll = settings.getString(getResources().getString(R.string.LAST_POLL), "");
+				GregorianCalendar timeline = CalendarUtil.convertToCalendar(lastPoll);
 				for (int i = 0; i < json.length(); i++) {
 					String created_at = json.getJSONObject(i).getString("created_at");
 					GregorianCalendar createdAt = CalendarUtil.convertToCalendar(created_at);
 
-					if (createdAt.after(timeline) && createdAt.before(timeline_temp)) {
-						//TODO: this timeline is only for testing purposes
-
+					if (createdAt.after(timeline)) {
 						String eventType = json.getJSONObject(i).getString("type");
 						switch(eventType) {
 						case "PushEvent":
@@ -107,12 +110,22 @@ public class EventService extends Service {
 						case "IssueCommentEvent":
 							new IssueCommentEvent(json.getJSONObject(i), EventService.this);
 							break;
-						default:
-							new NotificationPOJO(json.getJSONObject(i), EventService.this);	
+						case "CommitCommentEvent":
+							new CommitCommentEvent(json.getJSONObject(i), EventService.this);
 							break;
+						//default:
+							//new NotificationPOJO(json.getJSONObject(i), EventService.this);	
 						}
 					}
 				}
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+				dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+				Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+				
+	        	Editor toEdit = settings.edit();
+	        	toEdit.putString(getResources().getString(R.string.LAST_POLL), dateFormat.format(cal.getTime()));
+	        	toEdit.commit();
+	        	Log.println(Log.ASSERT, "Getting updates", settings.getString(getResources().getString(R.string.LAST_POLL), "defValue"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
