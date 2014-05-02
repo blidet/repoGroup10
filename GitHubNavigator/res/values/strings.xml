@@ -16,6 +16,7 @@
     <!-- Action codes used to indentify different actions to the list fragment -->
     <string name="REPO_ACTION">repo_action</string>
     <string name="NEWS_ACTION">news_action</string>
+    <string name="REPO_NEWS_ACTION">repo_news_action</string>
     
     <!-- The credentials for the test user of the github project. -->
     <string name="TEST_USER_USERNAME">group10testuser</string>

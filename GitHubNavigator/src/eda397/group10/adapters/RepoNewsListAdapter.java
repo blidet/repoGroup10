@@ -15,7 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class NewsListAdapter extends BaseAdapter {
+public class RepoNewsListAdapter extends BaseAdapter {
 
 	private ArrayList<EventPOJO> datas;
 	private TextView actionText;
@@ -24,7 +24,7 @@ public class NewsListAdapter extends BaseAdapter {
 	private LayoutInflater layoutInflater;
 	private TheListFragment contex;
 	
-	public NewsListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
+	public RepoNewsListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
 		this.contex = contex;
 		this.datas = datas;
 		this.layoutInflater = layoutInflater;
@@ -59,10 +59,8 @@ public class NewsListAdapter extends BaseAdapter {
 		String type = event.getType();
 		UserPOJO user= event.getActor();
 		String actorName = user.getName();
-		if(user.getAvatar() != null){
-			Drawable imageDrawable = user.getAvatar();
-			avatar.setImageDrawable(imageDrawable);
-		}
+		Drawable imageDrawable = user.getAvatar();
+		avatar.setImageDrawable(imageDrawable);
 		String action = null;
 		String repoName = event.getRepoName();
 		switch(type){
@@ -92,6 +90,7 @@ public class NewsListAdapter extends BaseAdapter {
 			break;
 		}
 		
+
 		return convertView;
 	}
 

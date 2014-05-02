@@ -258,6 +258,12 @@ public class AuthenticatedMainActivity extends Activity {
 		case 5:
 			//fragment = new WhatsHotFragment();
 			break;
+		/**
+		 * Currently used for the repository news feed.
+		 */
+		case 99:
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
+			break;
 
 		default:
 			break;
@@ -269,9 +275,12 @@ public class AuthenticatedMainActivity extends Activity {
 					.replace(R.id.frame_container, fragment).commit();
 
 			// update selected item and title, then close the drawer
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			if(position <= mDrawerList.getCount()){
+				mDrawerList.setItemChecked(position, true);
+				mDrawerList.setSelection(position);
+				setTitle(navMenuTitles[position]);
+			}
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}else if(listFragment != null){
 			FragmentManager fragmentManager = getFragmentManager();
@@ -279,9 +288,12 @@ public class AuthenticatedMainActivity extends Activity {
 					.replace(R.id.frame_container, listFragment).commit();
 
 			// update selected item and title, then close the drawer
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			if(position <= mDrawerList.getCount()){
+				mDrawerList.setItemChecked(position, true);
+				mDrawerList.setSelection(position);
+				setTitle(navMenuTitles[position]);
+			}
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 		} else {
 			// error in creating fragment
@@ -320,6 +332,7 @@ public class AuthenticatedMainActivity extends Activity {
         toEdit.commit();
         
         //TODO Open the repository news view.
+        displayView(99);
 		
 	}
 
@@ -383,7 +396,8 @@ public class AuthenticatedMainActivity extends Activity {
 					/*
 					 * Writing the repo names
 					 */
-					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1)));
+					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1), 
+							NavDrawerItem.NavDrawerItemType.REPOSITORY));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
