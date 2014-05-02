@@ -78,6 +78,9 @@ public class TheListFragment extends ListFragment {
 		case "news_action":
 			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header, false); 
 			break;
+		//case "logout_action":
+			//new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header, false); 
+			//break;
 		}	
 
 		repoList.setOnScrollListener(new OnScrollListener(){

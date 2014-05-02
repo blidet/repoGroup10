@@ -16,6 +16,7 @@
     
     <!-- Action codes used to indentify different actions to the list fragment -->
     <string name="REPO_ACTION">repo_action</string>
+    <string name="LOGOUT_ACTION">logout_action</string>
     <string name="NEWS_ACTION">news_action</string>
     
     <!-- The credentials for the test user of the github project. -->
@@ -55,6 +56,7 @@
         <item >News</item>
         <item >Profile</item>
         <item >Settings</item>        
+        <item >Logout</item>
         <item >Repositories</item>
         
     </string-array>
@@ -64,13 +66,16 @@
     <array name="nav_drawer_icons">
         <!--<item>@drawable/ic_home</item>-->
         <!--News-->
-        <item>@drawable/news48</item>
+        <item>@drawable/news</item>
         <!--Profile-->
-        <item>@drawable/profile48</item>
+        <item>@drawable/profile</item>
         <!--Settings-->
-        <item>@drawable/settings48</item>        
+        <item>@drawable/settings</item>
+        <!--Logout-->
+        <item>@drawable/logout</item>        
         <!--Repositories-->
-        <item>@drawable/repository48</item>        
+        <item>@drawable/repository</item>     
+            
     </array>
     
     

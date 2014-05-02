@@ -54,6 +54,7 @@ public class AuthenticatedMainActivity extends Activity {
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
+	private SharedPreferences sh_Pref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,8 @@ public class AuthenticatedMainActivity extends Activity {
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
 		navDrawerItems = new ArrayList<NavDrawerItem>();
+		
+		sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 
 		// adding nav drawer items to array
 		// Home
@@ -86,8 +89,10 @@ public class AuthenticatedMainActivity extends Activity {
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));	
 		// Profile
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-		// Repositories
+		// Logout
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+		// Repositories
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		
 		
 		
@@ -228,10 +233,17 @@ public class AuthenticatedMainActivity extends Activity {
 			//fragment = new PhotosFragment();
 			break;
 		case 3:
-			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));
+//----------------add confirmation for logout ----------------------------------
+
+			
+			
+//---------------------------------------------------------------------
+			sh_Pref.edit().clear().commit();
+			 Intent firstpage=new Intent(this,MainActivity.class);			 
+			 startActivity(firstpage);
 			break;
 		case 4:
-			//fragment = new PagesFragment();
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));			
 			break;
 		case 5:
 			//fragment = new WhatsHotFragment();
