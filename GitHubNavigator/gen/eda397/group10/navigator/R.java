@@ -1016,25 +1016,15 @@ containing a value of this type.
         public static final int list_item_bg_normal=0x7f020063;
         public static final int list_item_bg_pressed=0x7f020064;
         public static final int list_selector=0x7f020065;
-        public static final int news144=0x7f020066;
-        public static final int news48=0x7f020067;
-        public static final int news72=0x7f020068;
-        public static final int news96=0x7f020069;
-        public static final int profile144=0x7f02006a;
-        public static final int profile48=0x7f02006b;
-        public static final int profile72=0x7f02006c;
-        public static final int profile96=0x7f02006d;
-        public static final int repository144=0x7f02006e;
-        public static final int repository48=0x7f02006f;
-        public static final int repository72=0x7f020070;
-        public static final int repository96=0x7f020071;
-        public static final int rowbackground=0x7f020072;
-        public static final int rowbackgroundselected=0x7f020073;
-        public static final int rowselector=0x7f020074;
-        public static final int setting144=0x7f020075;
-        public static final int settings48=0x7f020076;
-        public static final int settings72=0x7f020077;
-        public static final int settings96=0x7f020078;
+        public static final int logout=0x7f020066;
+        public static final int news=0x7f020067;
+        public static final int profile=0x7f020068;
+        public static final int repository=0x7f020069;
+        public static final int rowbackground=0x7f02006a;
+        public static final int rowbackgroundselected=0x7f02006b;
+        public static final int rowselector=0x7f02006c;
+        public static final int setting=0x7f02006d;
+        public static final int settings=0x7f02006e;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1197,30 +1187,34 @@ containing a value of this type.
         /**  Http request URL's. 
          */
         public static final int AUTHENTICATE_URL=0x7f0a0013;
-        public static final int AUTH_PREFERENCE=0x7f0a001b;
+        public static final int AUTH_PREFERENCE=0x7f0a001d;
+        public static final int CURRENT_REPOSITORY_PREFERENCE=0x7f0a0024;
         public static final int FETCH_REPOS_URL=0x7f0a0014;
-        public static final int INTERVAL_SPINNER_SELECTED=0x7f0a001f;
-        public static final int LAST_POLL=0x7f0a0021;
+        public static final int HAS_CURRENT_REPOSITORY_PREFERENCE=0x7f0a0025;
+        public static final int INTERVAL_SPINNER_SELECTED=0x7f0a0021;
+        public static final int LAST_POLL=0x7f0a0023;
         /**  Shared preferences login credentials. 
          */
-        public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a001a;
+        public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a001c;
+        public static final int LOGOUT_ACTION=0x7f0a0018;
         public static final int NEWS_ACTION=0x7f0a0016;
-        public static final int PASSWORD_PREFERENCE=0x7f0a001d;
+        public static final int PASSWORD_PREFERENCE=0x7f0a001f;
         /**  Json keys. 
          */
-        public static final int REPOSITORY_JSON_KEY=0x7f0a0019;
+        public static final int REPOSITORY_JSON_KEY=0x7f0a001b;
         /**  Action codes used to indentify different actions to the list fragment 
          */
         public static final int REPO_ACTION=0x7f0a0015;
-        public static final int SECONDS_BETWEEN_UPDATES=0x7f0a0020;
+        public static final int REPO_NEWS_ACTION=0x7f0a0017;
+        public static final int SECONDS_BETWEEN_UPDATES=0x7f0a0022;
         /**  Shared preferences settings 
          */
-        public static final int SETTINGS_PREFERENCES=0x7f0a001e;
-        public static final int TEST_USER_PASSWORD=0x7f0a0018;
+        public static final int SETTINGS_PREFERENCES=0x7f0a0020;
+        public static final int TEST_USER_PASSWORD=0x7f0a001a;
         /**  The credentials for the test user of the github project. 
          */
-        public static final int TEST_USER_USERNAME=0x7f0a0017;
-        public static final int USERNAME_PREFERENCE=0x7f0a001c;
+        public static final int TEST_USER_USERNAME=0x7f0a0019;
+        public static final int USERNAME_PREFERENCE=0x7f0a001e;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0a0001;
@@ -1269,14 +1263,14 @@ containing a value of this type.
         public static final int button_send=0x7f0a000f;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f0a0024;
+        public static final int desc_list_item_icon=0x7f0a0028;
         /**  Settings page  
          */
-        public static final int notification_interval=0x7f0a0022;
+        public static final int notification_interval=0x7f0a0026;
         public static final int password_message=0x7f0a0012;
         /**  Project page 
          */
-        public static final int title_activity_project_page=0x7f0a0023;
+        public static final int title_activity_project_page=0x7f0a0027;
         public static final int username_message=0x7f0a0011;
     }
     public static final class style {

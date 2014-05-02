@@ -16,6 +16,8 @@
     <!-- Action codes used to indentify different actions to the list fragment -->
     <string name="REPO_ACTION">repo_action</string>
     <string name="NEWS_ACTION">news_action</string>
+    <string name="REPO_NEWS_ACTION">repo_news_action</string>
+    <string name="LOGOUT_ACTION">logout_action</string>
     
     <!-- The credentials for the test user of the github project. -->
     <string name="TEST_USER_USERNAME">group10testuser</string>
@@ -35,6 +37,8 @@
     <string name="INTERVAL_SPINNER_SELECTED">Interval spinner selected</string>
     <string name="SECONDS_BETWEEN_UPDATES">Github notifications interval</string>
     <string name="LAST_POLL">Last poll for new events</string>
+    <string name="CURRENT_REPOSITORY_PREFERENCE">Current Repository</string>
+    <string name="HAS_CURRENT_REPOSITORY_PREFERENCE">Has Current Repository</string>
     
     <!-- Settings page  -->
     <string name="notification_interval">Check for new notifications every: </string>
@@ -54,7 +58,8 @@
         <!--<item >Home</item>-->
         <item >News</item>
         <item >Profile</item>
-        <item >Settings</item>        
+        <item >Settings</item> 
+        <item >Logout</item>       
         <item >Repositories</item>
         
     </string-array>
@@ -64,13 +69,15 @@
     <array name="nav_drawer_icons">
         <!--<item>@drawable/ic_home</item>-->
         <!--News-->
-        <item>@drawable/news48</item>
+        <item>@drawable/news</item>
         <!--Profile-->
-        <item>@drawable/profile48</item>
+        <item>@drawable/profile</item>
         <!--Settings-->
-        <item>@drawable/settings48</item>        
+        <item>@drawable/settings</item>
+        <!--Logout-->
+        <item>@drawable/logout</item>        
         <!--Repositories-->
-        <item>@drawable/repository48</item>        
+        <item>@drawable/repository</item>        
     </array>
     
     

@@ -16,11 +16,13 @@ import eda397.group10.communication.GithubRequest;
 import eda397.group10.pojo.EventPOJO;
 import eda397.group10.JSONParsers.NewsJSONParser;
 import eda397.group10.JSONParsers.RepoJSONParser;
+import eda397.group10.JSONParsers.RepoNewsJSONParser;
 import android.annotation.SuppressLint;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,7 @@ import android.widget.Toast;
  * This is the fragment which lists all the user repositories.
  */
 
-@SuppressLint("NewApi")
+@SuppressLint({ "NewApi", "ValidFragment" })
 public class TheListFragment extends ListFragment {
 	private ListView repoList;
 	//private LoadMoreListView repoList;
@@ -97,6 +99,16 @@ public class TheListFragment extends ListFragment {
 			
 			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header, false); 
 			break;
+		case "repo_news_action":
+			SharedPreferences settings_preferences = getActivity().getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+			if(!settings_preferences.getBoolean(getResources().getString(
+					R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), false))
+				break;
+			String currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
+			if(currentRepository.equals("none"))
+				break;
+			new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/commits", header, false);
+			break;
 		}	
 
 		repoList.setOnScrollListener(new OnScrollListener(){
@@ -149,6 +161,15 @@ public class TheListFragment extends ListFragment {
 				//isLoadingMore = false;
 			}
 			break;
+		case "repo_news_action":
+			int position2 = repoList.getFirstVisiblePosition();
+			mProgressBarLoadMore.setVisibility(View.GONE);
+			repoList.setAdapter(new NewsListAdapter(this,datas,layoutInflator));
+			if(shouldLoadMore){
+				repoList.setSelectionFromTop(position2+1, 0);
+				//isLoadingMore = false;
+			}
+			break;
 		}	
 				
 	}
@@ -170,6 +191,10 @@ public class TheListFragment extends ListFragment {
 			case "news_action":
 				NewsJSONParser newsBuilder = new NewsJSONParser(thisContext,loadMore);
 				newsBuilder.execute(result);
+				break;
+			case "repo_news_action":
+				RepoNewsJSONParser repoNewsBuilder = new RepoNewsJSONParser(thisContext,loadMore);
+				repoNewsBuilder.execute(result);
 				break;
 			}					
 		}

@@ -2,6 +2,11 @@ package eda397.group10.pojo;
 
 public class EventPOJO {
 	
+	/**
+	 * Comment used for commit events.
+	 */
+	private String comment;
+	
 	private UserPOJO actor;
 	private String repoName;
 	private String ref;
@@ -44,6 +49,12 @@ public class EventPOJO {
 	}
 	public void setActionTime(String actionTime) {
 		this.actionTime = actionTime;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

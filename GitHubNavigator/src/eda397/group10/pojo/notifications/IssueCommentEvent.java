@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
+import eda397.group10.navigator.MainActivity;
+import eda397.group10.navigator.SettingsFragment;
 import eda397.group10.pojo.NotificationPOJO;
 
 public class IssueCommentEvent extends NotificationPOJO {
@@ -18,6 +20,8 @@ public class IssueCommentEvent extends NotificationPOJO {
 		
 		setTitle(issue.getString("title"));
 		setText(comment.getString("body"));
+		
+		//setTarget(SettingsFragment.class, context);
 	}
 
 }
