@@ -6,9 +6,14 @@ import eda397.group10.notifications.NotificationAlarm;
 import eda397.group10.sliding.NavDrawerItem;
 import eda397.group10.sliding.NavDrawerListAdapter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -150,6 +155,24 @@ public class AuthenticatedMainActivity extends Activity {
         boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
         
         if (authenticated) {
+        	//Update timestamp to ignore events before current time
+        	SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+        	/*Editor toEdit = settings.edit();
+        	toEdit.putString(getResources().getString(R.string.LAST_POLL), "2014-04-29T17:26:27Z");
+        	toEdit.commit();
+        	Log.println(Log.ASSERT, "111", settings.getString(getResources().getString(R.string.LAST_POLL), "defValue"));*/
+        	
+        	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        	Editor toEdit = settings.edit();
+        	toEdit.putString(getResources().getString(R.string.LAST_POLL), dateFormat.format(cal.getTime()));
+        	toEdit.commit();
+        	
+    		//Create alarm that polls for notifications
+            NotificationAlarm alarm = new NotificationAlarm();
+            alarm.startAlarm(this);
+        	
         	//Create a Header with the username and password saved in "Shared Preferences":
         	Header header = BasicScheme.authenticate(
                     new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
@@ -157,11 +180,6 @@ public class AuthenticatedMainActivity extends Activity {
                     HTTP.UTF_8, false);
         	//Send HTTP request to retrieve user repos:
     		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL),header);
-    		
-    		//Create alarm that polls for notifications
-            NotificationAlarm alarm = new NotificationAlarm();
-            alarm.startAlarm(this);
-
         } else {
         	//If you are not loged going back to login page
         	Intent intent = new Intent(this, MainActivity.class);
@@ -179,6 +197,10 @@ public class AuthenticatedMainActivity extends Activity {
 				long id) {
 			// display view for selected nav drawer item
 			displayView(position);
+			
+			if(parent.getItemAtPosition(position) instanceof NavDrawerItem)
+				openRepository((NavDrawerItem)parent.getItemAtPosition(position));
+
 		}
 	}
 
@@ -248,6 +270,12 @@ public class AuthenticatedMainActivity extends Activity {
 		case 5:
 			//fragment = new WhatsHotFragment();
 			break;
+		/**
+		 * Currently used for the repository news feed.
+		 */
+		case 99:
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
+			break;
 
 		default:
 			break;
@@ -259,9 +287,12 @@ public class AuthenticatedMainActivity extends Activity {
 					.replace(R.id.frame_container, fragment).commit();
 
 			// update selected item and title, then close the drawer
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			if(position <= mDrawerList.getCount()){
+				mDrawerList.setItemChecked(position, true);
+				mDrawerList.setSelection(position);
+				setTitle(navMenuTitles[position]);
+			}
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}else if(listFragment != null){
 			FragmentManager fragmentManager = getFragmentManager();
@@ -269,14 +300,52 @@ public class AuthenticatedMainActivity extends Activity {
 					.replace(R.id.frame_container, listFragment).commit();
 
 			// update selected item and title, then close the drawer
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			if(position <= mDrawerList.getCount()){
+				mDrawerList.setItemChecked(position, true);
+				mDrawerList.setSelection(position);
+				setTitle(navMenuTitles[position]);
+			}
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 		} else {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
 		}
+	}
+	
+	/**
+	 * Opens the clicked repository in the slider menu, as well as storing it 
+	 * as the most recent repository in the shared preferences.
+	 * 
+	 * @param navDrawerItem
+	 */
+	private void openRepository(NavDrawerItem navDrawerItem){
+		
+		//======= Variables =======
+		
+		SharedPreferences sh_Pref;
+		Editor toEdit;
+		
+		//===== Functionality =====
+		
+		/**
+		 * Makes sure that this nav drawer item repressents a repository.
+		 */
+		if(navDrawerItem.getType() != NavDrawerItem.NavDrawerItemType.REPOSITORY)
+			return;
+		
+		/**
+		 * Store the repository in the shared preferences.
+		 */
+		sh_Pref = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+		toEdit = sh_Pref.edit();
+		toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), navDrawerItem.getTitle());
+        toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
+        toEdit.commit();
+        
+        //TODO Open the repository news view.
+        displayView(99);
+		
 	}
 
 	@Override
@@ -339,7 +408,8 @@ public class AuthenticatedMainActivity extends Activity {
 					/*
 					 * Writing the repo names
 					 */
-					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1)));
+					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1), 
+							NavDrawerItem.NavDrawerItemType.REPOSITORY));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

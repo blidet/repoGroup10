@@ -1188,21 +1188,24 @@ containing a value of this type.
          */
         public static final int AUTHENTICATE_URL=0x7f0a0013;
         public static final int AUTH_PREFERENCE=0x7f0a001d;
-        public static final int FETCH_NOTIFICATIONS_URL=0x7f0a0015;
+        public static final int CURRENT_REPOSITORY_PREFERENCE=0x7f0a0024;
         public static final int FETCH_REPOS_URL=0x7f0a0014;
+        public static final int HAS_CURRENT_REPOSITORY_PREFERENCE=0x7f0a0025;
         public static final int INTERVAL_SPINNER_SELECTED=0x7f0a0021;
+        public static final int LAST_POLL=0x7f0a0023;
         /**  Shared preferences login credentials. 
          */
         public static final int LOGIN_CREDENTIALS_PREFERENCE_NAME=0x7f0a001c;
-        public static final int LOGOUT_ACTION=0x7f0a0017;
-        public static final int NEWS_ACTION=0x7f0a0018;
+        public static final int LOGOUT_ACTION=0x7f0a0018;
+        public static final int NEWS_ACTION=0x7f0a0016;
         public static final int PASSWORD_PREFERENCE=0x7f0a001f;
         /**  Json keys. 
          */
         public static final int REPOSITORY_JSON_KEY=0x7f0a001b;
         /**  Action codes used to indentify different actions to the list fragment 
          */
-        public static final int REPO_ACTION=0x7f0a0016;
+        public static final int REPO_ACTION=0x7f0a0015;
+        public static final int REPO_NEWS_ACTION=0x7f0a0017;
         public static final int SECONDS_BETWEEN_UPDATES=0x7f0a0022;
         /**  Shared preferences settings 
          */
@@ -1260,14 +1263,14 @@ containing a value of this type.
         public static final int button_send=0x7f0a000f;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f0a0025;
+        public static final int desc_list_item_icon=0x7f0a0028;
         /**  Settings page  
          */
-        public static final int notification_interval=0x7f0a0023;
+        public static final int notification_interval=0x7f0a0026;
         public static final int password_message=0x7f0a0012;
         /**  Project page 
          */
-        public static final int title_activity_project_page=0x7f0a0024;
+        public static final int title_activity_project_page=0x7f0a0027;
         public static final int username_message=0x7f0a0011;
     }
     public static final class style {

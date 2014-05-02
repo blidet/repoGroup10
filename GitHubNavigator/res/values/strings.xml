@@ -12,12 +12,12 @@
     <!-- Http request URL's. -->
     <string name="AUTHENTICATE_URL">https://api.github.com</string>
     <string name="FETCH_REPOS_URL">https://api.github.com/user/repos</string>
-    <string name="FETCH_NOTIFICATIONS_URL">https://api.github.com/notifications?all=true</string>
     
     <!-- Action codes used to indentify different actions to the list fragment -->
     <string name="REPO_ACTION">repo_action</string>
-    <string name="LOGOUT_ACTION">logout_action</string>
     <string name="NEWS_ACTION">news_action</string>
+    <string name="REPO_NEWS_ACTION">repo_news_action</string>
+    <string name="LOGOUT_ACTION">logout_action</string>
     
     <!-- The credentials for the test user of the github project. -->
     <string name="TEST_USER_USERNAME">group10testuser</string>
@@ -36,6 +36,9 @@
     <string name="SETTINGS_PREFERENCES">Application Settings</string>
     <string name="INTERVAL_SPINNER_SELECTED">Interval spinner selected</string>
     <string name="SECONDS_BETWEEN_UPDATES">Github notifications interval</string>
+    <string name="LAST_POLL">Last poll for new events</string>
+    <string name="CURRENT_REPOSITORY_PREFERENCE">Current Repository</string>
+    <string name="HAS_CURRENT_REPOSITORY_PREFERENCE">Has Current Repository</string>
     
     <!-- Settings page  -->
     <string name="notification_interval">Check for new notifications every: </string>
@@ -55,8 +58,8 @@
         <!--<item >Home</item>-->
         <item >News</item>
         <item >Profile</item>
-        <item >Settings</item>        
-        <item >Logout</item>
+        <item >Settings</item> 
+        <item >Logout</item>       
         <item >Repositories</item>
         
     </string-array>
@@ -74,8 +77,7 @@
         <!--Logout-->
         <item>@drawable/logout</item>        
         <!--Repositories-->
-        <item>@drawable/repository</item>     
-            
+        <item>@drawable/repository</item>        
     </array>
     
     
