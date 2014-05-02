@@ -54,29 +54,8 @@ public class NotificationPOJO {
 			//set the notification icon
 			new URLRequester().execute(actor.getString("avatar_url"));
 
-
-			// Creates an explicit intent for an Activity in your app
-			Intent resultIntent = new Intent(context, MainActivity.class);
-
-			// The stack builder object will contain an artificial back stack for the
-			// started Activity.
-			// This ensures that navigating backward from the Activity leads out of
-			// your application to the Home screen.
-			//TODO: fix proper back stack
-			TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-
-			// Adds the back stack for the Intent (but not the Intent itself)
-			//stackBuilder.addParentStack(MainActivity.class);
-
-			// Adds the Intent that starts the Activity to the top of the stack
-			stackBuilder.addNextIntent(resultIntent);
-
-			PendingIntent resultPendingIntent =
-					stackBuilder.getPendingIntent(
-							0,
-							PendingIntent.FLAG_UPDATE_CURRENT
-							);
-			notificationBuilder.setContentIntent(resultPendingIntent);
+			setTarget(MainActivity.class, context);
+			
 			notificationManager =
 					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -155,5 +134,30 @@ public class NotificationPOJO {
 		.bigText(text);
 		notificationBuilder.setStyle(bigStyle);
 		notificationManager.notify(notificationId, notificationBuilder.build());
+	}
+	
+	protected void setTarget(Class<?> target, Service context) {
+		// Creates an explicit intent for an Activity in your app
+					Intent resultIntent = new Intent(context, target);
+
+					// The stack builder object will contain an artificial back stack for the
+					// started Activity.
+					// This ensures that navigating backward from the Activity leads out of
+					// your application to the Home screen.
+					//TODO: fix proper back stack
+					TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+
+					// Adds the back stack for the Intent (but not the Intent itself)
+					//stackBuilder.addParentStack(MainActivity.class);
+
+					// Adds the Intent that starts the Activity to the top of the stack
+					stackBuilder.addNextIntent(resultIntent);
+
+					PendingIntent resultPendingIntent =
+							stackBuilder.getPendingIntent(
+									0,
+									PendingIntent.FLAG_UPDATE_CURRENT
+									);
+					notificationBuilder.setContentIntent(resultPendingIntent);
 	}
 }

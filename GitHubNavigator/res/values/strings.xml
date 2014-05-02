@@ -35,6 +35,8 @@
     <string name="INTERVAL_SPINNER_SELECTED">Interval spinner selected</string>
     <string name="SECONDS_BETWEEN_UPDATES">Github notifications interval</string>
     <string name="LAST_POLL">Last poll for new events</string>
+    <string name="CURRENT_REPOSITORY_PREFERENCE">Current Repository</string>
+    <string name="HAS_CURRENT_REPOSITORY_PREFERENCE">Has Current Repository</string>
     
     <!-- Settings page  -->
     <string name="notification_interval">Check for new notifications every: </string>

@@ -187,6 +187,10 @@ public class AuthenticatedMainActivity extends Activity {
 				long id) {
 			// display view for selected nav drawer item
 			displayView(position);
+			
+			if(parent.getItemAtPosition(position) instanceof NavDrawerItem)
+				openRepository((NavDrawerItem)parent.getItemAtPosition(position));
+
 		}
 	}
 
@@ -278,6 +282,40 @@ public class AuthenticatedMainActivity extends Activity {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
 		}
+	}
+	
+	/**
+	 * Opens the clicked repository in the slider menu, as well as storing it 
+	 * as the most recent repository in the shared preferences.
+	 * 
+	 * @param navDrawerItem
+	 */
+	private void openRepository(NavDrawerItem navDrawerItem){
+		
+		//======= Variables =======
+		
+		SharedPreferences sh_Pref;
+		Editor toEdit;
+		
+		//===== Functionality =====
+		
+		/**
+		 * Makes sure that this nav drawer item repressents a repository.
+		 */
+		if(navDrawerItem.getType() != NavDrawerItem.NavDrawerItemType.REPOSITORY)
+			return;
+		
+		/**
+		 * Store the repository in the shared preferences.
+		 */
+		sh_Pref = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+		toEdit = sh_Pref.edit();
+		toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), navDrawerItem.getTitle());
+        toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
+        toEdit.commit();
+        
+        //TODO Open the repository news view.
+		
 	}
 
 	@Override
