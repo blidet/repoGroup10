@@ -59,8 +59,10 @@ public class NewsListAdapter extends BaseAdapter {
 		String type = event.getType();
 		UserPOJO user= event.getActor();
 		String actorName = user.getName();
-		Drawable imageDrawable = user.getAvatar();
-		avatar.setImageDrawable(imageDrawable);
+		if(user.getAvatar() != null){
+			Drawable imageDrawable = user.getAvatar();
+			avatar.setImageDrawable(imageDrawable);
+		}
 		String action = null;
 		String repoName = event.getRepoName();
 		switch(type){
@@ -84,9 +86,12 @@ public class NewsListAdapter extends BaseAdapter {
 			action = actorName + " forked " + repoName;
 			actionText.setText(action);
 			break;
+		case "commitEvent" :
+			action = actorName + " : " + event.getComment();
+			actionText.setText(action);
+			break;
 		}
 		
-
 		return convertView;
 	}
 

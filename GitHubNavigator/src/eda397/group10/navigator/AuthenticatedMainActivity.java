@@ -59,6 +59,7 @@ public class AuthenticatedMainActivity extends Activity {
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
+	private SharedPreferences sh_Pref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,8 @@ public class AuthenticatedMainActivity extends Activity {
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
 		navDrawerItems = new ArrayList<NavDrawerItem>();
+		
+		sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 
 		// adding nav drawer items to array
 		// Home
@@ -91,8 +94,10 @@ public class AuthenticatedMainActivity extends Activity {
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));	
 		// Profile
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-		// Repositories
+		// Logout
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+		// Repositories
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		
 		
 		
@@ -245,13 +250,26 @@ public class AuthenticatedMainActivity extends Activity {
 			//fragment = new PhotosFragment();
 			break;
 		case 3:
-			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));
+//----------------add confirmation for logout ----------------------------------
+
+			
+			
+//---------------------------------------------------------------------
+			sh_Pref.edit().clear().commit();
+			 Intent firstpage=new Intent(this,MainActivity.class);			 
+			 startActivity(firstpage);
 			break;
 		case 4:
-			//fragment = new PagesFragment();
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));			
 			break;
 		case 5:
 			//fragment = new WhatsHotFragment();
+			break;
+		/**
+		 * Currently used for the repository news feed.
+		 */
+		case 99:
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
 			break;
 
 		default:
@@ -264,9 +282,12 @@ public class AuthenticatedMainActivity extends Activity {
 					.replace(R.id.frame_container, fragment).commit();
 
 			// update selected item and title, then close the drawer
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			if(position <= mDrawerList.getCount()){
+				mDrawerList.setItemChecked(position, true);
+				mDrawerList.setSelection(position);
+				setTitle(navMenuTitles[position]);
+			}
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}else if(listFragment != null){
 			FragmentManager fragmentManager = getFragmentManager();
@@ -274,9 +295,12 @@ public class AuthenticatedMainActivity extends Activity {
 					.replace(R.id.frame_container, listFragment).commit();
 
 			// update selected item and title, then close the drawer
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			if(position <= mDrawerList.getCount()){
+				mDrawerList.setItemChecked(position, true);
+				mDrawerList.setSelection(position);
+				setTitle(navMenuTitles[position]);
+			}
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 		} else {
 			// error in creating fragment
@@ -315,6 +339,7 @@ public class AuthenticatedMainActivity extends Activity {
         toEdit.commit();
         
         //TODO Open the repository news view.
+        displayView(99);
 		
 	}
 
@@ -378,7 +403,8 @@ public class AuthenticatedMainActivity extends Activity {
 					/*
 					 * Writing the repo names
 					 */
-					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1)));
+					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1), 
+							NavDrawerItem.NavDrawerItemType.REPOSITORY));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
