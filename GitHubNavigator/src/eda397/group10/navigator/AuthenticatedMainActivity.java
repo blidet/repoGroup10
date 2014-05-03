@@ -24,9 +24,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -42,7 +45,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 @SuppressLint("NewApi")
-public class AuthenticatedMainActivity extends Activity {
+public class AuthenticatedMainActivity extends Activity{
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -181,6 +184,9 @@ public class AuthenticatedMainActivity extends Activity {
         	startActivity(intent);
         }
 	}
+	
+	
+	
 
 	/**
 	 * Slide menu item click listener
@@ -432,5 +438,6 @@ public class AuthenticatedMainActivity extends Activity {
 			
 		}
 	}
+
 
 }
