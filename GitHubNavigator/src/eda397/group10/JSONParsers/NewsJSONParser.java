@@ -19,8 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.google.gson.Gson;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
@@ -55,13 +53,12 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 		imageBitmap = new HashMap<String,Bitmap>();
 		this.loadMore = loadMore;
 		mPrefs = context.getActivity().getPreferences(0);
-		//mPrefs.edit().clear().commit();
+		mPrefs.edit().clear().commit();
 	}
 	
 	@Override
 	protected ArrayList<EventPOJO> doInBackground(HttpResponse... params) {
 		// TODO Auto-generated method stub
-		
 		BufferedReader reader;
 		JSONArray json = new JSONArray();
 		try {
@@ -91,28 +88,36 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 				
 		        Bitmap myBitmap = null;
 				
-				String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-				File file = new File(extStorageDirectory, actorName+".PNG");
-				if(!file.exists()){					
+//				String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+//				File file = new File(extStorageDirectory, actorName+".PNG");
+//				if(!file.exists()){					
+//					InputStream istr = avatarUrl.openStream();
+//					myBitmap = BitmapFactory.decodeStream(istr);
+//					istr.close();
+//					imageBitmap.put(actorName, myBitmap);
+//					
+//					FileOutputStream outStream = new FileOutputStream(file);
+//				    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+//				    outStream.flush();
+//				    outStream.close();
+//				}else{
+//					if(imageBitmap.containsKey(actorName)){
+//						myBitmap = imageBitmap.get(actorName);
+//					}else{
+//						FileInputStream inputStream = new FileInputStream(file);
+//						myBitmap = BitmapFactory.decodeStream(inputStream);
+//					    imageBitmap.put(actorName, myBitmap);
+//					}
+//					
+//				}	
+				
+				if(imageBitmap.containsKey(actorName)){
+					myBitmap = imageBitmap.get(actorName);
+				}else{
 					InputStream istr = avatarUrl.openStream();
 					myBitmap = BitmapFactory.decodeStream(istr);
-					istr.close();
-					imageBitmap.put(actorName, myBitmap);
-					
-					FileOutputStream outStream = new FileOutputStream(file);
-				    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-				    outStream.flush();
-				    outStream.close();
-				}else{
-					if(imageBitmap.containsKey(actorName)){
-						myBitmap = imageBitmap.get(actorName);
-					}else{
-						FileInputStream inputStream = new FileInputStream(file);
-						myBitmap = BitmapFactory.decodeStream(inputStream);
-					    imageBitmap.put(actorName, myBitmap);
-					}
-					
-				}				
+				    imageBitmap.put(actorName, myBitmap);
+				}
 				
 				
 				UserPOJO actor = new UserPOJO();
@@ -147,16 +152,7 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 					event.setRepoName(forkee);
 					datas.add(event);
 					break;
-				}
-				
-				
-//				if(i<1){
-//					Editor prefsEditor = mPrefs.edit();
-//				    Gson gson = new Gson();
-//				    String convert = gson.toJson(event);
-//				    prefsEditor.putString(Integer.toString(i), convert);
-//				    prefsEditor.commit();
-//				}				
+				}				
 				
 			}
 			

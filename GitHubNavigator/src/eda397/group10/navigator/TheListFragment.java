@@ -8,8 +8,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 
-import com.google.gson.Gson;
-
 import eda397.group10.adapters.NewsListAdapter;
 import eda397.group10.adapters.RepoListAdapter;
 import eda397.group10.communication.GithubRequest;
@@ -66,20 +64,6 @@ public class TheListFragment extends ListFragment {
 		View footerView = inflater.inflate(R.layout.load_more_footer, null, false);
 		mProgressBarLoadMore = (ProgressBar)footerView.findViewById(R.id.load_more_progressBar);
 		repoList.addFooterView(footerView);
-		
-//		ArrayList theEvents = new ArrayList();
-//		SharedPreferences  mPrefs = getActivity().getPreferences(0);
-//		Gson gson = new Gson(); 
-//	    boolean first = mPrefs.getBoolean("first", true);
-//	    if(!first){
-//	    	for(int i=0;i<20;i++){
-//				 String json = mPrefs.getString(Integer.toString(i), "");
-//				 if(!json.equals("")){
-//					 EventPOJO theEvent = gson.fromJson(json, EventPOJO.class);
-//					 theEvents.add(theEvent);
-//				 }
-//			}
-//	    }
 	    
 		SharedPreferences sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 		final String userName = sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), "");
@@ -93,10 +77,6 @@ public class TheListFragment extends ListFragment {
 			new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL), header, false);
 			break;
 		case "news_action":
-//			if(!first){
-//				repoList.setAdapter(new RepoListAdapter(this,theEvents,inflater));
-//			}
-			
 			new RepoRetriever("https://api.github.com/users/"+userName+"/received_events", header, false); 
 			break;
 		case "repo_news_action":
