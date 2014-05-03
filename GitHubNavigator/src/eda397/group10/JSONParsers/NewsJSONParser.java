@@ -150,13 +150,13 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 				}
 				
 				
-				if(i<1){
-					Editor prefsEditor = mPrefs.edit();
-				    Gson gson = new Gson();
-				    String convert = gson.toJson(event);
-				    prefsEditor.putString(Integer.toString(i), convert);
-				    prefsEditor.commit();
-				}				
+//				if(i<1){
+//					Editor prefsEditor = mPrefs.edit();
+//				    Gson gson = new Gson();
+//				    String convert = gson.toJson(event);
+//				    prefsEditor.putString(Integer.toString(i), convert);
+//				    prefsEditor.commit();
+//				}				
 				
 			}
 			
