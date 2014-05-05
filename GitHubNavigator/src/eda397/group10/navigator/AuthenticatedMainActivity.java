@@ -68,12 +68,47 @@ public class AuthenticatedMainActivity extends Activity{
 	//private MenuItem theItem;
 	private int currentPosition;
 	private boolean showRefresh = true;
+	private boolean showTabs = false;
+	private ActionBar actionBar;
+	private ListFragment newsListFragment = null;
+	private boolean firstLoad = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_authenticated_main);
+		
+		actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+	        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+	            // show the given tab
+	        	switch(tab.getPosition()){
+	        	case 0:
+	        		if(!firstLoad){
+	        			displayView(-2);
+	        		}	        		
+	        		break;
+	        	case 1:
+	        		firstLoad = false;
+	        		displayView(-1);
+	        		break;
+	        	}
+	        }
 
+	        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	            // hide the given tab
+	        }
+
+	        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	            // probably ignore this event
+	        }
+	    };
+	    
+	    actionBar.addTab(actionBar.newTab().setText("Events").setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab().setText("Commits").setTabListener(tabListener));
+
+	    
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -89,12 +124,6 @@ public class AuthenticatedMainActivity extends Activity{
 		navDrawerItems = new ArrayList<NavDrawerItem>();
 		
 		sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
-
-		// adding nav drawer items to array
-		// Home
-		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-		
-		//That is just the menu in the right order of the tasks
 		
 		// News
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));		
@@ -107,18 +136,6 @@ public class AuthenticatedMainActivity extends Activity{
 		// Repositories
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		
-		
-		
-		
-		// Communities, Will add a counter here
-		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-		// Pages
-		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-		// What's hot, We  will add a counter here
-		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
-		
-
-		// Recycle the typed array
 		navMenuIcons.recycle();
 
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
@@ -243,7 +260,17 @@ public class AuthenticatedMainActivity extends Activity{
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-		menu.findItem(R.id.action_refresh).setVisible(showRefresh);
+		
+		if(drawerOpen){
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			menu.findItem(R.id.action_refresh).setVisible(false);
+		}else{
+			menu.findItem(R.id.action_refresh).setVisible(showRefresh);
+			if(showTabs){
+				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			}
+		}
+		
 
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -257,15 +284,27 @@ public class AuthenticatedMainActivity extends Activity{
 		Fragment fragment = null;
 		ListFragment listFragment = null;
 		switch (position) {
+		case -2:
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
+			break;
+		case -1:
+			listFragment = new TheListFragment(getResources().getString(R.string.REPO_COMMIT_NEWS_ACTION));
+			break;
 		case 0:
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			showTabs = false;
 			showRefresh = true;
 			listFragment = new TheListFragment(getResources().getString(R.string.NEWS_ACTION));
 			break;
 		case 1:
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			showTabs = false;
 			showRefresh = false;
 			//fragment = new FindPeopleFragment();
 			break;
 		case 2:	
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			showTabs = false;
 		    showRefresh = false;		    
 			fragment = new SettingsFragment();
 			//fragment = new PhotosFragment();
@@ -276,11 +315,16 @@ public class AuthenticatedMainActivity extends Activity{
 			
 			
 //---------------------------------------------------------------------
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			showTabs = false;
+		    showRefresh = false;
 			sh_Pref.edit().clear().commit();
 			 Intent firstpage=new Intent(this,MainActivity.class);			 
 			 startActivity(firstpage);
 			break;
 		case 4:
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			showTabs = false;
 			showRefresh = true;
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));			
 			break;
@@ -291,15 +335,21 @@ public class AuthenticatedMainActivity extends Activity{
 		 * Currently used for the repository news feed.
 		 */
 		case 99:
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			showTabs = true;
 			showRefresh = true;
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
+			newsListFragment = listFragment;
 			break;
 
 		default:
 			break;
 		}
 		
-		invalidateOptionsMenu();
+		if(position>=0){
+			invalidateOptionsMenu();
+		}
+		
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
@@ -320,13 +370,17 @@ public class AuthenticatedMainActivity extends Activity{
 					.replace(R.id.frame_container, listFragment).commit();
 
 			// update selected item and title, then close the drawer
-			if(position <= mDrawerList.getCount()){
-				mDrawerList.setItemChecked(position, true);
-				mDrawerList.setSelection(position);
-				setTitle(navMenuTitles[position]);
+			if(position>=0){
+				if(position <= mDrawerList.getCount()){
+					mDrawerList.setItemChecked(position, true);
+					mDrawerList.setSelection(position);
+					setTitle(navMenuTitles[position]);
+				}			
+				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 			
-			mDrawerLayout.closeDrawer(mDrawerList);
+			
+			
 		} else {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
@@ -481,6 +535,5 @@ public class AuthenticatedMainActivity extends Activity{
 			
 		}
 	}
-
 
 }

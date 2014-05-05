@@ -31,6 +31,8 @@
         </activity>
         <activity 
             android:name="eda397.group10.navigator.AuthenticatedMainActivity">
+            <meta-data android:name="android.support.UI_OPTIONS"
+                   android:value="splitActionBarWhenNarrow" />
         </activity>
         
         <service android:name="eda397.group10.notifications.EventService" />

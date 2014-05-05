@@ -9,12 +9,17 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 
 import eda397.group10.adapters.NewsListAdapter;
+import eda397.group10.adapters.RepoCommitListAdapter;
 import eda397.group10.adapters.RepoListAdapter;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.pojo.EventPOJO;
 import eda397.group10.JSONParsers.NewsJSONParser;
+import eda397.group10.JSONParsers.RepoCommitJSONParser;
 import eda397.group10.JSONParsers.RepoJSONParser;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
@@ -34,7 +39,7 @@ import android.widget.Toast;
  */
 
 @SuppressLint({ "NewApi", "ValidFragment" })
-public class TheListFragment extends ListFragment {
+public class TheListFragment extends ListFragment{
 	private ListView repoList;
 	//private LoadMoreListView repoList;
 	private LayoutInflater layoutInflator;
@@ -57,7 +62,7 @@ public class TheListFragment extends ListFragment {
 			isRepoListAction = true;
 		}
 	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -92,6 +97,16 @@ public class TheListFragment extends ListFragment {
 			if(currentRepository.equals("none"))
 				break;
 			new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/events",header,false);
+			break;
+		case "repo_commit_news_action":
+			SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+			if(!preferences.getBoolean(getResources().getString(
+					R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), false))
+				break;
+			currentRepository = preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
+			if(currentRepository.equals("none"))
+				break;
+			new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/commits", header, false);
 			break;
 		}	
 
@@ -166,6 +181,15 @@ public class TheListFragment extends ListFragment {
 				//isLoadingMore = false;
 			}
 			break;
+		case "repo_commit_news_action":
+			int position3 = repoList.getFirstVisiblePosition();
+			mProgressBarLoadMore.setVisibility(View.GONE);
+			repoList.setAdapter(new RepoCommitListAdapter(this,datas,layoutInflator));
+			if(shouldLoadMore){
+				repoList.setSelectionFromTop(position3+1, 0);
+				//isLoadingMore = false;
+			}
+			break;
 		}	
 				
 	}
@@ -192,7 +216,11 @@ public class TheListFragment extends ListFragment {
 				NewsJSONParser repoNewsBuilder = new NewsJSONParser(thisContext,loadMore);
 				repoNewsBuilder.execute(result);
 				break;
+			case "repo_commit_news_action":
+				RepoCommitJSONParser repoCommitBuilder = new RepoCommitJSONParser(thisContext,loadMore);
+				repoCommitBuilder.execute(result);
 			}					
 		}
 	}
+
 }
