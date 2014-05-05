@@ -10,6 +10,7 @@ import org.apache.http.protocol.HTTP;
 
 import eda397.group10.adapters.NewsListAdapter;
 import eda397.group10.adapters.RepoListAdapter;
+import eda397.group10.adapters.RepoNewsListAdapter;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.pojo.EventPOJO;
 import eda397.group10.JSONParsers.NewsJSONParser;
@@ -144,7 +145,7 @@ public class TheListFragment extends ListFragment {
 		case "repo_news_action":
 			int position2 = repoList.getFirstVisiblePosition();
 			mProgressBarLoadMore.setVisibility(View.GONE);
-			repoList.setAdapter(new NewsListAdapter(this,datas,layoutInflator));
+			repoList.setAdapter(new RepoNewsListAdapter(this,datas,layoutInflator));
 			if(shouldLoadMore){
 				repoList.setSelectionFromTop(position2+1, 0);
 				//isLoadingMore = false;
