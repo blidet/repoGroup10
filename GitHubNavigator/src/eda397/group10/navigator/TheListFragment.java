@@ -10,12 +10,10 @@ import org.apache.http.protocol.HTTP;
 
 import eda397.group10.adapters.NewsListAdapter;
 import eda397.group10.adapters.RepoListAdapter;
-import eda397.group10.adapters.RepoNewsListAdapter;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.pojo.EventPOJO;
 import eda397.group10.JSONParsers.NewsJSONParser;
 import eda397.group10.JSONParsers.RepoJSONParser;
-import eda397.group10.JSONParsers.RepoNewsJSONParser;
 import android.annotation.SuppressLint;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
@@ -43,6 +41,7 @@ public class TheListFragment extends ListFragment {
 	private TheListFragment thisContext;
 	public ProgressDialog loadingProgress;
 	private String actionType;
+	private boolean isRepoListAction = false;
 	
 	private ProgressBar mProgressBarLoadMore;
 	
@@ -50,9 +49,13 @@ public class TheListFragment extends ListFragment {
 	private boolean isLoadingMore = false;
 	private int mCurrentScrollState;
 	private int pageCount = 2;
+	private String currentRepository;
 	
 	public TheListFragment(String actionType){
 		this.actionType = actionType;
+		if(actionType.equals("repo_action")){
+			isRepoListAction = true;
+		}
 	}
 
 	@Override
@@ -85,39 +88,51 @@ public class TheListFragment extends ListFragment {
 			if(!settings_preferences.getBoolean(getResources().getString(
 					R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), false))
 				break;
-			String currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
+			currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
 			if(currentRepository.equals("none"))
 				break;
-			new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/commits", header, false);
+			new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/events",header,false);
 			break;
 		}	
 
-		repoList.setOnScrollListener(new OnScrollListener(){
+		if(!isRepoListAction){
+			repoList.setOnScrollListener(new OnScrollListener() {
 
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				// TODO Auto-generated method stub
-                boolean larger = firstVisibleItem + visibleItemCount >= totalItemCount;
-                
-                if (!isLoadingMore && larger && mCurrentScrollState != SCROLL_STATE_IDLE) {
-                	isLoadingMore = true;
-                	mProgressBarLoadMore.setVisibility(View.VISIBLE);
-                	new RepoRetriever("https://api.github.com/users/"+userName+"/received_events?page="+pageCount, header,true);
-                	pageCount++;
-                }
-			}
+				@Override
+				public void onScroll(AbsListView view, int firstVisibleItem,
+						int visibleItemCount, int totalItemCount) {
+					// TODO Auto-generated method stub
+					boolean larger = firstVisibleItem + visibleItemCount >= totalItemCount;
 
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub				
-				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-					view.invalidateViews();
+					if (!isLoadingMore && larger
+							&& mCurrentScrollState != SCROLL_STATE_IDLE) {
+						isLoadingMore = true;
+						mProgressBarLoadMore.setVisibility(View.VISIBLE);
+						if(actionType.equals("news_action")){
+							new RepoRetriever("https://api.github.com/users/"
+									+ userName + "/received_events?page="
+									+ pageCount, header, true);
+						}else{
+							new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/events?page="+pageCount,header,false);
+						}
+						
+						pageCount++;
+					}
 				}
-				mCurrentScrollState = scrollState;
-				isLoadingMore = false;
-			}
-			
-		});
+
+				@Override
+				public void onScrollStateChanged(AbsListView view,
+						int scrollState) {
+					// TODO Auto-generated method stub
+					if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+						view.invalidateViews();
+					}
+					mCurrentScrollState = scrollState;
+					isLoadingMore = false;
+				}
+
+			});
+		}
 
 		loadingProgress = new ProgressDialog(getActivity());
         loadingProgress.setMessage("Loading......");
@@ -145,7 +160,7 @@ public class TheListFragment extends ListFragment {
 		case "repo_news_action":
 			int position2 = repoList.getFirstVisiblePosition();
 			mProgressBarLoadMore.setVisibility(View.GONE);
-			repoList.setAdapter(new RepoNewsListAdapter(this,datas,layoutInflator));
+			repoList.setAdapter(new NewsListAdapter(this,datas,layoutInflator));
 			if(shouldLoadMore){
 				repoList.setSelectionFromTop(position2+1, 0);
 				//isLoadingMore = false;
@@ -174,7 +189,7 @@ public class TheListFragment extends ListFragment {
 				newsBuilder.execute(result);
 				break;
 			case "repo_news_action":
-				RepoNewsJSONParser repoNewsBuilder = new RepoNewsJSONParser(thisContext,loadMore);
+				NewsJSONParser repoNewsBuilder = new NewsJSONParser(thisContext,loadMore);
 				repoNewsBuilder.execute(result);
 				break;
 			}					
