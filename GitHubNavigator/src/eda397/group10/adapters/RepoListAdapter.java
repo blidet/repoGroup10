@@ -1,11 +1,12 @@
 package eda397.group10.adapters;
 
 import java.util.ArrayList;
-
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.RepositoryPOJO;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import android.widget.TextView;
  * since the each item of the list contains more than one value from of the JSON array,
  * it's better to set use the adapter.
  */
-public class RepoListAdapter extends BaseAdapter {
+@SuppressLint("NewApi") public class RepoListAdapter extends BaseAdapter {
 	
 	private TheListFragment contex;
 	private ArrayList<RepositoryPOJO> datas;
@@ -63,6 +64,13 @@ public class RepoListAdapter extends BaseAdapter {
 		description = (TextView)convertView.findViewById(R.id.repo_discrib);
 		star = (TextView)convertView.findViewById(R.id.star_count);
 		image = (ImageView)convertView.findViewById(R.id.owner_icon);
+		
+		convertView.setOnClickListener(new View.OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				Log.println(Log.ASSERT, "repo adapter", "Clicked an item!");
+			}
+		});
 				
 		RepositoryPOJO pojo = datas.get(pos);
 		String des = pojo.getDescription();
