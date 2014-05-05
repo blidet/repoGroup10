@@ -9,6 +9,7 @@ package eda397.group10.pojo;
 public class RepositoryPOJO{
 	
 	private String name;
+	private String fullName;
 	private String starCount;
 	private String description;
 	private UserPOJO owner;
@@ -34,6 +35,14 @@ public class RepositoryPOJO{
 
 	public UserPOJO getOwner() {
 		return owner;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 	
 	

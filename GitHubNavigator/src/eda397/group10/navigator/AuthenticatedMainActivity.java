@@ -338,6 +338,29 @@ public class AuthenticatedMainActivity extends Activity{
 		}
 	}
 	
+	public void openRepository(String fullName){
+		
+		//======= Variables =======
+		
+		SharedPreferences sh_Pref;
+		Editor toEdit;
+		
+		//===== Functionality =====
+		
+		/**
+		 * Store the repository in the shared preferences.
+		 */
+		sh_Pref = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+		toEdit = sh_Pref.edit();
+		toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), fullName);
+        toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
+        toEdit.commit();
+        
+        //TODO Open the repository news view.
+        displayView(99);
+		
+	}
+	
 	
 	/**
 	 * Opens the clicked repository in the slider menu, as well as storing it 

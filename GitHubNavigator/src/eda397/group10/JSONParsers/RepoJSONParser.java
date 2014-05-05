@@ -64,7 +64,10 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 				int userId = userObj.getInt("id");
 				UserPOJO userPojo = new UserPOJO();
 				userPojo.setUserId(userId);
-				RepositoryPOJO pojo = new RepositoryPOJO(name,star,discription,userPojo);				
+				RepositoryPOJO pojo = new RepositoryPOJO(name,star,discription,userPojo);		
+				
+				pojo.setFullName(obj.getString("full_name"));
+				
 				datas.add(pojo);
 			}
 		}catch(JSONException ex){

@@ -1,6 +1,8 @@
 package eda397.group10.adapters;
 
 import java.util.ArrayList;
+
+import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.RepositoryPOJO;
@@ -56,7 +58,7 @@ import android.widget.TextView;
 	}
 
 	@Override
-	public View getView(int pos, View convertView, ViewGroup parent) {
+	public View getView(final int pos, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		convertView = layoutInflater.inflate (R.layout.repo_list_row, parent, false);
 		sh_Pref = contex.getActivity().getSharedPreferences(contex.getActivity().getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
@@ -68,7 +70,18 @@ import android.widget.TextView;
 		convertView.setOnClickListener(new View.OnClickListener() {	
 			@Override
 			public void onClick(View v) {
-				Log.println(Log.ASSERT, "repo adapter", "Clicked an item!");
+				Log.println(Log.ASSERT, "repo adapter", datas.get(pos).getFullName());
+				
+				/**
+				 * Get the main activity.
+				 */
+				AuthenticatedMainActivity ama = (AuthenticatedMainActivity)contex.getActivity();
+				
+				/**
+				 * Store the repository in the shared preferences.
+				 */
+				ama.openRepository(datas.get(pos).getFullName());
+				
 			}
 		});
 				
