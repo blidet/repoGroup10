@@ -18,6 +18,7 @@
     <string name="NEWS_ACTION">news_action</string>
     <string name="REPO_NEWS_ACTION">repo_news_action</string>
     <string name="LOGOUT_ACTION">logout_action</string>
+    <string name="action_refresh">Refresh</string>
     
     <!-- The credentials for the test user of the github project. -->
     <string name="TEST_USER_USERNAME">group10testuser</string>

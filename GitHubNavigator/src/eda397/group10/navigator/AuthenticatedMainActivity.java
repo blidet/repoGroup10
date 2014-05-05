@@ -39,6 +39,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -63,6 +64,10 @@ public class AuthenticatedMainActivity extends Activity{
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
 	private SharedPreferences sh_Pref;
+	//private Menu theMenu;
+	//private MenuItem theItem;
+	private int currentPosition;
+	private boolean showRefresh = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +191,6 @@ public class AuthenticatedMainActivity extends Activity{
 	}
 	
 	
-	
 
 	/**
 	 * Slide menu item click listener
@@ -206,10 +210,13 @@ public class AuthenticatedMainActivity extends Activity{
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		//theItem = menu.findItem(R.id.action_refresh);
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -221,6 +228,8 @@ public class AuthenticatedMainActivity extends Activity{
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			return true;
+		case R.id.action_refresh:
+			displayView(currentPosition);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -234,6 +243,12 @@ public class AuthenticatedMainActivity extends Activity{
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.refresh, menu);
+	    MenuItem item = menu.findItem(R.id.action_refresh);
+	    item.setVisible(showRefresh);
+	    
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -242,16 +257,20 @@ public class AuthenticatedMainActivity extends Activity{
 	 * */
 	private void displayView(int position) {
 		// update the main content by replacing fragments
+		currentPosition = position;
 		Fragment fragment = null;
 		ListFragment listFragment = null;
 		switch (position) {
 		case 0:
+			showRefresh = true;
 			listFragment = new TheListFragment(getResources().getString(R.string.NEWS_ACTION));
 			break;
 		case 1:
+			showRefresh = false;
 			//fragment = new FindPeopleFragment();
 			break;
-		case 2:
+		case 2:	
+		    showRefresh = false;		    
 			fragment = new SettingsFragment();
 			//fragment = new PhotosFragment();
 			break;
@@ -266,6 +285,7 @@ public class AuthenticatedMainActivity extends Activity{
 			 startActivity(firstpage);
 			break;
 		case 4:
+			showRefresh = true;
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));			
 			break;
 		case 5:
@@ -275,12 +295,15 @@ public class AuthenticatedMainActivity extends Activity{
 		 * Currently used for the repository news feed.
 		 */
 		case 99:
+			showRefresh = true;
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
 			break;
 
 		default:
 			break;
 		}
+		
+		invalidateOptionsMenu();
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
@@ -313,6 +336,7 @@ public class AuthenticatedMainActivity extends Activity{
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
+	
 	
 	/**
 	 * Opens the clicked repository in the slider menu, as well as storing it 

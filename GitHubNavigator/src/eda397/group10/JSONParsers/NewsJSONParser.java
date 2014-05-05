@@ -86,30 +86,7 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 				String avatarUrlKey = actorObj.getString("avatar_url");
 				URL avatarUrl = new URL(avatarUrlKey);
 				
-		        Bitmap myBitmap = null;
-				
-//				String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-//				File file = new File(extStorageDirectory, actorName+".PNG");
-//				if(!file.exists()){					
-//					InputStream istr = avatarUrl.openStream();
-//					myBitmap = BitmapFactory.decodeStream(istr);
-//					istr.close();
-//					imageBitmap.put(actorName, myBitmap);
-//					
-//					FileOutputStream outStream = new FileOutputStream(file);
-//				    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-//				    outStream.flush();
-//				    outStream.close();
-//				}else{
-//					if(imageBitmap.containsKey(actorName)){
-//						myBitmap = imageBitmap.get(actorName);
-//					}else{
-//						FileInputStream inputStream = new FileInputStream(file);
-//						myBitmap = BitmapFactory.decodeStream(inputStream);
-//					    imageBitmap.put(actorName, myBitmap);
-//					}
-//					
-//				}	
+		        Bitmap myBitmap = null;	
 				
 				if(imageBitmap.containsKey(actorName)){
 					myBitmap = imageBitmap.get(actorName);
