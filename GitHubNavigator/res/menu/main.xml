@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="eda397.group10.navigator.MainActivity" >
 
-   
+    <item android:id="@+id/action_refresh"
+          android:icon="@drawable/ic_action_refresh"
+          android:title="@string/action_refresh"
+          android:showAsAction="ifRoom" />
     
     <item
         android:id="@+id/action_settings"

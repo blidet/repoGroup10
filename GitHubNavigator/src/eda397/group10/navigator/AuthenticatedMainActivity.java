@@ -243,11 +243,12 @@ public class AuthenticatedMainActivity extends Activity{
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_refresh).setVisible(showRefresh);
 		
-		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.refresh, menu);
-	    MenuItem item = menu.findItem(R.id.action_refresh);
-	    item.setVisible(showRefresh);
+//		MenuInflater inflater = getMenuInflater();
+//	    inflater.inflate(R.menu.refresh, menu);
+//	    MenuItem item = menu.findItem(R.id.action_refresh);
+//	    item.setVisible(showRefresh);
 	    
 		return super.onPrepareOptionsMenu(menu);
 	}
