@@ -42,7 +42,6 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 	private static ArrayList<EventPOJO> datas;
 	private boolean loadMore;
 	private HashMap<String, Bitmap> imageBitmap;
-	SharedPreferences  mPrefs;
 	
 	
 	public NewsJSONParser(TheListFragment context, boolean loadMore){
@@ -52,9 +51,6 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 		}
 		imageBitmap = new HashMap<String,Bitmap>();
 		this.loadMore = loadMore;
-		//TODO Possible null pointer exception.
-		mPrefs = context.getActivity().getPreferences(0);
-		mPrefs.edit().clear().commit();
 	}
 	
 	@Override
@@ -66,7 +62,7 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 			reader = new BufferedReader(new InputStreamReader(params[0].getEntity().getContent(), "UTF-8"));
 			StringBuilder builder = new StringBuilder();
 			for (String line = null; (line = reader.readLine()) != null;) {
-			    builder.append(line).append("\n");
+			    builder.append(line).append("\n");			    
 			}
 			
 			JSONTokener tokener = new JSONTokener(builder.toString());
@@ -128,6 +124,20 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 					JSONObject forkeeObj = payLoadObj.getJSONObject("forkee");
 					String forkee = forkeeObj.getString("name");
 					event.setRepoName(forkee);
+					datas.add(event);
+					break;
+				case "IssueCommentEvent":
+					JSONObject issueObj = payLoadObj.getJSONObject("issue");
+					int issueN = issueObj.getInt("number");
+					event.setIssueNumber(Integer.toString(issueN));
+					datas.add(event);
+					break;
+				case "IssuesEvent":
+					JSONObject issueObj1 = payLoadObj.getJSONObject("issue");
+					String action = payLoadObj.getString("action");
+					int issueN1 = issueObj1.getInt("number");
+					event.setIssueNumber(Integer.toString(issueN1));
+					event.setAction(action);
 					datas.add(event);
 					break;
 				}				

@@ -11,6 +11,8 @@ public class EventPOJO {
 	private String repoName;
 	private String ref;
 	private String refType;
+	private String action;
+	private String issueNumber;
 	public String getRefType() {
 		return refType;
 	}
@@ -56,5 +58,18 @@ public class EventPOJO {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public String getIssueNumber() {
+		return issueNumber;
+	}
+	public void setIssueNumber(String issueNumber) {
+		this.issueNumber = issueNumber;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
+	
 
 }

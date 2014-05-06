@@ -53,7 +53,6 @@ public class RepoCommitJSONParser extends AsyncTask<HttpResponse, Void, ArrayLis
 			StringBuilder builder = new StringBuilder();
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");
-			    Log.println(Log.INFO, "************", line);
 			}
 
 			JSONTokener tokener = new JSONTokener(builder.toString());

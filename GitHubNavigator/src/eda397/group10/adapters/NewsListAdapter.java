@@ -55,9 +55,7 @@ public class NewsListAdapter extends BaseAdapter {
 		convertView = layoutInflater.inflate(R.layout.news_list_row, parent, false);
 		actionText = (TextView)convertView.findViewById(R.id.actiontext);
 		avatar = (ImageView)convertView.findViewById(R.id.owner_icon2);
-		
-		
-		
+
 		EventPOJO event = datas.get(pos);
 		String type = event.getType();
 		UserPOJO user= event.getActor();
@@ -84,6 +82,14 @@ public class NewsListAdapter extends BaseAdapter {
 			break;
 		case "ForkEvent":
 			action = actorName + " forked " + repoName;
+			actionText.setText(action);
+			break;
+		case "IssueCommentEvent":
+			action = actorName + " commented on issue " + repoName + "#" + event.getIssueNumber();
+			actionText.setText(action);
+			break;
+		case "IssuesEvent":
+			action = actorName + event.getAction() + " issue " + repoName + "#" + event.getIssueNumber();
 			actionText.setText(action);
 			break;
 		}
