@@ -8,7 +8,7 @@ public class NavDrawerItem {
 	 * @author Oscar
 	 *
 	 */
-	public enum NavDrawerItemType {REPOSITORY, NEWS, SETTINGS, REPOSITORIES, LOGOUT, NONE};
+	public enum NavDrawerItemType {REPOSITORY, NEWS, SETTINGS, REPOSITORIES, LOGOUT, NONE, TASKS};
 	
 	/**
 	 * The type of nav drawer item this is.

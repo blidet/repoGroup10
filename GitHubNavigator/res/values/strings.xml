@@ -63,6 +63,7 @@
         <item >Settings</item> 
         <item >Logout</item>    
         <item >Repositories</item>
+        <item>Tasks</item>
         
     </string-array>
     
@@ -79,7 +80,7 @@
         <!--Logout-->
         <item>@drawable/logout</item>        
         <!--Repositories-->
-        <item>@drawable/repository</item>        
+        <item>@drawable/repository</item> 
     </array>
     
     

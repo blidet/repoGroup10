@@ -129,17 +129,17 @@ public class AuthenticatedMainActivity extends Activity{
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1), 
 				NavDrawerItem.NavDrawerItemType.NEWS));		
 		// Settings
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(2, -1),
 				NavDrawerItem.NavDrawerItemType.SETTINGS));
 
-		// Profile
-		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+		// Tasks
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(1, -1), NavDrawerItem.NavDrawerItemType.TASKS));
 
 		// Logout
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(3, -1),
 				NavDrawerItem.NavDrawerItemType.LOGOUT));
 		// Repositories
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(4, -1),
 				NavDrawerItem.NavDrawerItemType.REPOSITORIES));
 
 		navMenuIcons.recycle();
@@ -396,6 +396,12 @@ public class AuthenticatedMainActivity extends Activity{
 			showRefresh = true;
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
 			newsListFragment = listFragment;
+			break;
+		case TASKS:
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			showTabs = false;
+		    showRefresh = false;		    
+			fragment = new TaskFragment();
 			break;
 		default:
 			break;
