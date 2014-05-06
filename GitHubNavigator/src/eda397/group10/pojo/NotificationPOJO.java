@@ -49,8 +49,8 @@ public class NotificationPOJO {
 					new NotificationCompat.Builder(context)
 			.setSmallIcon(R.drawable.git_logo)
 			.setContentTitle(title)
-			.setContentText(text);
-			//.setAutoCancel(true);
+			.setContentText(text)
+			.setAutoCancel(true);
 
 			//set the notification icon
 			new URLRequester().execute(actor.getString("avatar_url"));
@@ -148,7 +148,7 @@ public class NotificationPOJO {
 					//Set the action for the intent. This will decide which fragment will be opened 
 					//when the user clicks the notification.
 					resultIntent.setAction(Intent.ACTION_RUN);
-					resultIntent.putExtra(Intent.EXTRA_TEXT, action);
+					resultIntent.putExtra("ACTION", action);
 					resultIntent.putExtra("REPONAME", repoName);
 
 					// The stack builder object will contain an artificial back stack for the

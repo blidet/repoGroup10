@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
+import eda397.group10.navigator.AuthenticatedMainActivity;
+import eda397.group10.navigator.R;
 import eda397.group10.pojo.NotificationPOJO;
 
 public class IssuesEvent extends NotificationPOJO {
@@ -11,6 +13,7 @@ public class IssuesEvent extends NotificationPOJO {
 	public IssuesEvent(JSONObject input, Service context) throws JSONException {
 		super(input, context);
 
+		JSONObject repo = input.getJSONObject("repo");
 		JSONObject payload = input.getJSONObject("payload");
 		JSONObject issue = payload.getJSONObject("issue");
 		String action = payload.getString("action");
@@ -32,6 +35,10 @@ public class IssuesEvent extends NotificationPOJO {
 		
 		setText(text);
 		setTitle(title);
+		
+		String clickAction = context.getResources().getString(R.string.REPO_NEWS_ACTION);
+		String repoName = repo.getString("name");
+		setTarget(AuthenticatedMainActivity.class, context, clickAction, repoName);
 	}
 
 }
