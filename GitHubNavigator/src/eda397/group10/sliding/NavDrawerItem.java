@@ -8,7 +8,7 @@ public class NavDrawerItem {
 	 * @author Oscar
 	 *
 	 */
-	public enum NavDrawerItemType {REPOSITORY, NONE};
+	public enum NavDrawerItemType {REPOSITORY, NEWS, SETTINGS, REPOSITORIES, LOGOUT, NONE, TASKS};
 	
 	/**
 	 * The type of nav drawer item this is.
@@ -39,6 +39,14 @@ public class NavDrawerItem {
 		this.icon = icon;
 		this.isCounterVisible = isCounterVisible;
 		this.count = count;
+	}
+	
+	public NavDrawerItem(String title, int icon, boolean isCounterVisible, String count, NavDrawerItemType type){
+		this.title = title;
+		this.icon = icon;
+		this.isCounterVisible = isCounterVisible;
+		this.count = count;
+		this.type = type;
 	}
 	
 	public String getTitle(){
