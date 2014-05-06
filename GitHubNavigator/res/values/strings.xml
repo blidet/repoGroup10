@@ -59,9 +59,9 @@
     <string-array name="nav_drawer_items">
         <!--<item >Home</item>-->
         <item >News</item>
-        <item >Profile</item>
+        <!--<item >Profile</item>-->
         <item >Settings</item> 
-        <item >Logout</item>       
+        <item >Logout</item>    
         <item >Repositories</item>
         
     </string-array>
