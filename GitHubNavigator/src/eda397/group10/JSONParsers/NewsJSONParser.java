@@ -52,6 +52,7 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 		}
 		imageBitmap = new HashMap<String,Bitmap>();
 		this.loadMore = loadMore;
+		//TODO Possible null pointer exception.
 		mPrefs = context.getActivity().getPreferences(0);
 		mPrefs.edit().clear().commit();
 	}
