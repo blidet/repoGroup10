@@ -72,6 +72,11 @@ public class AuthenticatedMainActivity extends Activity{
 	private ActionBar actionBar;
 	private ListFragment newsListFragment = null;
 	private boolean firstLoad = true;
+	
+	/**
+	 * The string of the currently displayed list fragment.
+	 */
+	private String currentListFragmentString = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +181,8 @@ public class AuthenticatedMainActivity extends Activity{
 
 		if (savedInstanceState == null) {
 			//TODO on first time display view for first nav item
-			displayView(-1);
+			if(mDrawerList.getItemAtPosition(0) instanceof NavDrawerItem)
+				displayView(0, (NavDrawerItem)mDrawerList.getItemAtPosition(0));
 		}
 
 		/*
@@ -268,8 +274,10 @@ public class AuthenticatedMainActivity extends Activity{
 		case R.id.action_settings:
 			return true;
 		case R.id.action_refresh:
-			if(mDrawerList.getItemAtPosition(currentPosition) instanceof NavDrawerItem)
-				displayView(currentPosition, (NavDrawerItem)mDrawerList.getItemAtPosition(currentPosition));
+//			if(mDrawerList.getItemAtPosition(currentPosition) instanceof NavDrawerItem)
+//				displayView(currentPosition, (NavDrawerItem)mDrawerList.getItemAtPosition(currentPosition));
+			if(!currentListFragmentString.equals(""))
+				refreshCurrentFragment();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -357,7 +365,8 @@ public class AuthenticatedMainActivity extends Activity{
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 			showRefresh = true;
-			listFragment = new TheListFragment(getResources().getString(R.string.NEWS_ACTION));
+			currentListFragmentString = getResources().getString(R.string.NEWS_ACTION);
+			listFragment = new TheListFragment(currentListFragmentString);
 			break;
 		case SETTINGS : 
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -378,7 +387,8 @@ public class AuthenticatedMainActivity extends Activity{
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 			showRefresh = true;
-			listFragment = new TheListFragment(getResources().getString(R.string.REPO_ACTION));			
+			currentListFragmentString = getResources().getString(R.string.REPO_ACTION);
+			listFragment = new TheListFragment(currentListFragmentString);			
 			break;
 		case REPOSITORY:
 
@@ -394,7 +404,8 @@ public class AuthenticatedMainActivity extends Activity{
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			showTabs = true;
 			showRefresh = true;
-			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
+			currentListFragmentString = getResources().getString(R.string.REPO_NEWS_ACTION);
+			listFragment = new TheListFragment(currentListFragmentString);
 			newsListFragment = listFragment;
 			break;
 		case TASKS:
@@ -473,13 +484,31 @@ public class AuthenticatedMainActivity extends Activity{
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		showTabs = true;
 		showRefresh = true;
-		listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
+		currentListFragmentString = getResources().getString(R.string.REPO_NEWS_ACTION);
+		listFragment = new TheListFragment(currentListFragmentString);
 		newsListFragment = listFragment;
 
 		setTitle(fullName);
 
 		switchFragment(listFragment);
 
+	}
+	
+	/**
+	 * Refreshes the current list fragment.
+	 */
+	private void refreshCurrentFragment(){
+		
+		//======= Variables =======
+		
+		ListFragment listFragment;
+		
+		//===== Functionality =====
+		
+		listFragment = new TheListFragment(currentListFragmentString);
+		
+		switchFragment(listFragment);
+		
 	}
 
 	@Override
