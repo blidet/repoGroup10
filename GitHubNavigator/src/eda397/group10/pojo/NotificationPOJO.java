@@ -138,6 +138,10 @@ public class NotificationPOJO {
 	}
 	
 	protected void setTarget(Class<?> target, Service context, String action) {
+		setTarget(target, context, action, "");
+	}
+	
+	protected void setTarget(Class<?> target, Service context, String action, String repoName) {
 		// Creates an explicit intent for an Activity in your app
 					Intent resultIntent = new Intent(context, target);
 					
@@ -145,6 +149,7 @@ public class NotificationPOJO {
 					//when the user clicks the notification.
 					resultIntent.setAction(Intent.ACTION_RUN);
 					resultIntent.putExtra(Intent.EXTRA_TEXT, action);
+					resultIntent.putExtra("REPONAME", repoName);
 
 					// The stack builder object will contain an artificial back stack for the
 					// started Activity.

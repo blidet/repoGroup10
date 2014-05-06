@@ -401,7 +401,7 @@ public class AuthenticatedMainActivity extends Activity{
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 		    showRefresh = false;		    
-			fragment = new TaskFragment();
+			listFragment = new TaskFragment();
 			break;
 		default:
 			break;
@@ -589,7 +589,12 @@ public class AuthenticatedMainActivity extends Activity{
 		String action;
 		if(extras != null) {
 			action= extras.getString(Intent.EXTRA_TEXT);
+			String repoName= extras.getString("REPONAME");
 			Log.println(Log.ASSERT, "resume", action);
+			Log.println(Log.ASSERT, "reponame", repoName);
+			if (repoName != null) {
+				openRepository(repoName);
+			}
 			//TODO: set fragment according to action
 		}
 	}
