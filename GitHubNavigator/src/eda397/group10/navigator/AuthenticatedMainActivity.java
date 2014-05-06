@@ -50,7 +50,7 @@ public class AuthenticatedMainActivity extends Activity{
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	
+
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -77,38 +77,38 @@ public class AuthenticatedMainActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_authenticated_main);
-		
+
 		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-	        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-	            // show the given tab
-	        	switch(tab.getPosition()){
-	        	case 0:
-	        		if(!firstLoad){
-	        			displayView(-2);
-	        		}	        		
-	        		break;
-	        	case 1:
-	        		firstLoad = false;
-	        		displayView(-1);
-	        		break;
-	        	}
-	        }
+			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+				// show the given tab
+				switch(tab.getPosition()){
+				case 0:
+					if(!firstLoad){
+						displayView(-2);
+					}	        		
+					break;
+				case 1:
+					firstLoad = false;
+					displayView(-1);
+					break;
+				}
+			}
 
-	        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	            // hide the given tab
-	        }
+			public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+				// hide the given tab
+			}
 
-	        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	            // probably ignore this event
-	        }
-	    };
-	    
-	    actionBar.addTab(actionBar.newTab().setText("Events").setTabListener(tabListener));
-	    actionBar.addTab(actionBar.newTab().setText("Commits").setTabListener(tabListener));
+			public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+				// probably ignore this event
+			}
+		};
 
-	    
+		actionBar.addTab(actionBar.newTab().setText("Events").setTabListener(tabListener));
+		actionBar.addTab(actionBar.newTab().setText("Commits").setTabListener(tabListener));
+
+
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -122,9 +122,9 @@ public class AuthenticatedMainActivity extends Activity{
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
 		navDrawerItems = new ArrayList<NavDrawerItem>();
-		
+
 		sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
-		
+
 		// News
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));		
 		// Settings
@@ -135,7 +135,7 @@ public class AuthenticatedMainActivity extends Activity{
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 		// Repositories
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-		
+
 		navMenuIcons.recycle();
 
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
@@ -153,7 +153,7 @@ public class AuthenticatedMainActivity extends Activity{
 				R.drawable.ic_drawer, //nav menu toggle icon
 				R.string.app_name, // nav drawer open - description for accessibility
 				R.string.app_name // nav drawer close - description for accessibility
-		) {
+				) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
 				// calling onPrepareOptionsMenu() to show action bar icons
@@ -172,54 +172,54 @@ public class AuthenticatedMainActivity extends Activity{
 			// on first time display view for first nav item
 			displayView(0);
 		}
-		
+
 		/*
 		 * Here we are searching the repo name 
 		 */
 		SharedPreferences sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
-        boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
-        
-        if (authenticated) {
-        	//Update timestamp to ignore events before current time
-        	SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);        	
-        	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
+
+		if (authenticated) {
+			//Update timestamp to ignore events before current time
+			SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);        	
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        	Editor toEdit = settings.edit();
-        	toEdit.putString(getResources().getString(R.string.LAST_POLL), dateFormat.format(cal.getTime()));
-        	toEdit.commit();
-        	
-    		//Create alarm that polls for notifications
-            NotificationAlarm alarm = new NotificationAlarm();
-            alarm.startAlarm(this);
-        	
-        	//Create a Header with the username and password saved in "Shared Preferences":
-        	Header header = BasicScheme.authenticate(
-                    new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
-                    		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
-                    HTTP.UTF_8, false);
-        	//Send HTTP request to retrieve user repos:
-    		new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL),header);
-        } else {
-        	//If you are not loged going back to login page
-        	Intent intent = new Intent(this, MainActivity.class);
-        	startActivity(intent);
-        }
+			Editor toEdit = settings.edit();
+			toEdit.putString(getResources().getString(R.string.LAST_POLL), dateFormat.format(cal.getTime()));
+			toEdit.commit();
+
+			//Create alarm that polls for notifications
+			NotificationAlarm alarm = new NotificationAlarm();
+			alarm.startAlarm(this);
+
+			//Create a Header with the username and password saved in "Shared Preferences":
+			Header header = BasicScheme.authenticate(
+					new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
+							sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
+							HTTP.UTF_8, false);
+			//Send HTTP request to retrieve user repos:
+			new RepoRetriever(getResources().getString(R.string.FETCH_REPOS_URL),header);
+		} else {
+			//If you are not loged going back to login page
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		}
 	}
-	
-	
+
+
 
 	/**
 	 * Slide menu item click listener
 	 * */
 	private class SlideMenuClickListener implements
-			ListView.OnItemClickListener {
+	ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// display view for selected nav drawer item
 			displayView(position);
-			
+
 			if(parent.getItemAtPosition(position) instanceof NavDrawerItem)
 				openRepository((NavDrawerItem)parent.getItemAtPosition(position));
 
@@ -232,8 +232,8 @@ public class AuthenticatedMainActivity extends Activity{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	
+
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -260,7 +260,7 @@ public class AuthenticatedMainActivity extends Activity{
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-		
+
 		if(drawerOpen){
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			menu.findItem(R.id.action_refresh).setVisible(false);
@@ -270,7 +270,7 @@ public class AuthenticatedMainActivity extends Activity{
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			}
 		}
-		
+
 
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -305,22 +305,22 @@ public class AuthenticatedMainActivity extends Activity{
 		case 2:	
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
-		    showRefresh = false;		    
+			showRefresh = false;		    
 			fragment = new SettingsFragment();
 			//fragment = new PhotosFragment();
 			break;
 		case 3:
-//----------------add confirmation for logout ----------------------------------
+			//----------------add confirmation for logout ----------------------------------
 
-			
-			
-//---------------------------------------------------------------------
+
+
+			//---------------------------------------------------------------------
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
-		    showRefresh = false;
+			showRefresh = false;
 			sh_Pref.edit().clear().commit();
-			 Intent firstpage=new Intent(this,MainActivity.class);			 
-			 startActivity(firstpage);
+			Intent firstpage=new Intent(this,MainActivity.class);			 
+			startActivity(firstpage);
 			break;
 		case 4:
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -331,9 +331,9 @@ public class AuthenticatedMainActivity extends Activity{
 		case 5:
 			//fragment = new WhatsHotFragment();
 			break;
-		/**
-		 * Currently used for the repository news feed.
-		 */
+			/**
+			 * Currently used for the repository news feed.
+			 */
 		case 99:
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			showTabs = true;
@@ -345,16 +345,16 @@ public class AuthenticatedMainActivity extends Activity{
 		default:
 			break;
 		}
-		
+
 		if(position>=0){
 			invalidateOptionsMenu();
 		}
-		
+
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+			.replace(R.id.frame_container, fragment).commit();
 
 			// update selected item and title, then close the drawer
 			if(position <= mDrawerList.getCount()){
@@ -362,12 +362,12 @@ public class AuthenticatedMainActivity extends Activity{
 				mDrawerList.setSelection(position);
 				setTitle(navMenuTitles[position]);
 			}
-			
+
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}else if(listFragment != null){
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, listFragment).commit();
+			.replace(R.id.frame_container, listFragment).commit();
 
 			// update selected item and title, then close the drawer
 			if(position>=0){
@@ -378,39 +378,39 @@ public class AuthenticatedMainActivity extends Activity{
 				}			
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
-			
-			
-			
+
+
+
 		} else {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
-	
+
 	public void openRepository(String fullName){
-		
+
 		//======= Variables =======
-		
+
 		SharedPreferences sh_Pref;
 		Editor toEdit;
-		
+
 		//===== Functionality =====
-		
+
 		/**
 		 * Store the repository in the shared preferences.
 		 */
 		sh_Pref = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 		toEdit = sh_Pref.edit();
 		toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), fullName);
-        toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
-        toEdit.commit();
-        
-        //TODO Open the repository news view.
-        displayView(99);
-		
+		toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
+		toEdit.commit();
+
+		//TODO Open the repository news view.
+		displayView(99);
+
 	}
-	
-	
+
+
 	/**
 	 * Opens the clicked repository in the slider menu, as well as storing it 
 	 * as the most recent repository in the shared preferences.
@@ -418,32 +418,32 @@ public class AuthenticatedMainActivity extends Activity{
 	 * @param navDrawerItem
 	 */
 	private void openRepository(NavDrawerItem navDrawerItem){
-		
+
 		//======= Variables =======
-		
+
 		SharedPreferences sh_Pref;
 		Editor toEdit;
-		
+
 		//===== Functionality =====
-		
+
 		/**
 		 * Makes sure that this nav drawer item repressents a repository.
 		 */
 		if(navDrawerItem.getType() != NavDrawerItem.NavDrawerItemType.REPOSITORY)
 			return;
-		
+
 		/**
 		 * Store the repository in the shared preferences.
 		 */
 		sh_Pref = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 		toEdit = sh_Pref.edit();
 		toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), navDrawerItem.getTitle());
-        toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
-        toEdit.commit();
-        
-        //TODO Open the repository news view.
-        displayView(99);
-		
+		toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
+		toEdit.commit();
+
+		//TODO Open the repository news view.
+		displayView(99);
+
 	}
 
 	@Override
@@ -470,7 +470,7 @@ public class AuthenticatedMainActivity extends Activity{
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	
+
 	/**
 	 * Retrieves the current users repositories, then passes them on to RepoBuilder.
 	 *
@@ -479,26 +479,26 @@ public class AuthenticatedMainActivity extends Activity{
 		public RepoRetriever(String url, Header header) {
 			super(url, header);
 		}
-		
+
 		@Override
-    	public void onPostExecute(HttpResponse result) {
+		public void onPostExecute(HttpResponse result) {
 			Integer statusCode = result.getStatusLine().getStatusCode();
 			Log.println(Log.ASSERT, "get repos", "status code: "+statusCode+"");
-			
+
 			RepoBuilder repoBuilder = new RepoBuilder();
 			repoBuilder.execute(result);
 		}
 	}
-	
+
 	/**
 	 * Extracts repo information from the HTTP response.
 	 *
 	 */
 	private class RepoBuilder extends JsonExtractor {
 		@Override
-    	public void onPostExecute(JSONArray json) {
-			Log.println(Log.ASSERT, "REPO BUILDER:::", json.toString());
-			
+		public void onPostExecute(JSONArray json) {
+			//Log.println(Log.ASSERT, "REPO BUILDER:::", json.toString());
+
 			try {
 				for (int i = 0; i < json.length(); i++) {
 					String name = json.getJSONObject(i).get(getResources().getString(R.string.REPOSITORY_JSON_KEY)).toString();
@@ -513,7 +513,7 @@ public class AuthenticatedMainActivity extends Activity{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			/*
 			 *Creating the nav menu
 			 */
@@ -532,8 +532,37 @@ public class AuthenticatedMainActivity extends Activity{
 			getActionBar().setHomeButtonEnabled(true);
 
 			mDrawerLayout.setDrawerListener(mDrawerToggle);
-			
+
 		}
 	}
 
+	/**
+	 * Updates the intent if the activity is already started when it recieves an intent.
+	 */
+	@Override
+	protected void onNewIntent (Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+	}
+
+	private void displayView(String action) {
+
+	}
+
+	@Override
+	protected void onResume () {
+		super.onResume();
+
+
+		Bundle extras = getIntent().getExtras();
+		String action;
+		if(extras == null) {
+			action= "inget....";
+		} else {
+			action= extras.getString(Intent.EXTRA_TEXT);
+		}
+
+
+		Log.println(Log.ASSERT, "resume", action);
+	}
 }

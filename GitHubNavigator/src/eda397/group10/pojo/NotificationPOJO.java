@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
 
@@ -48,13 +49,13 @@ public class NotificationPOJO {
 					new NotificationCompat.Builder(context)
 			.setSmallIcon(R.drawable.git_logo)
 			.setContentTitle(title)
-			.setContentText(text)
-			.setAutoCancel(true);
+			.setContentText(text);
+			//.setAutoCancel(true);
 
 			//set the notification icon
 			new URLRequester().execute(actor.getString("avatar_url"));
 
-			setTarget(MainActivity.class, context);
+			setTarget(AuthenticatedMainActivity.class, context, context.getResources().getString(R.string.NEWS_ACTION));
 			
 			notificationManager =
 					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -136,9 +137,14 @@ public class NotificationPOJO {
 		notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
-	protected void setTarget(Class<?> target, Service context) {
+	protected void setTarget(Class<?> target, Service context, String action) {
 		// Creates an explicit intent for an Activity in your app
 					Intent resultIntent = new Intent(context, target);
+					
+					//Set the action for the intent. This will decide which fragment will be opened 
+					//when the user clicks the notification.
+					resultIntent.setAction(Intent.ACTION_RUN);
+					resultIntent.putExtra(Intent.EXTRA_TEXT, action);
 
 					// The stack builder object will contain an artificial back stack for the
 					// started Activity.

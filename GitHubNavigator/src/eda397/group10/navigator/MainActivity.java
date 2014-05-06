@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,4 +59,33 @@ public class MainActivity extends ActionBarActivity {
     	startActivity(intent);
     	
     }  */
+    
+ /*   @Override
+    public void startActivity (Intent intent) {
+    	super.startActivity(intent);
+    	Bundle extras = getIntent().getExtras();
+    	String action;
+        if(extras == null) {
+            action= "inget.g.g.g.g";
+        } else {
+            action= extras.getString(Intent.EXTRA_TEXT);
+        }
+    	
+    	Log.println(Log.ASSERT, "action", action);
+    }
+    
+    @Override
+    public void startActivity (Intent intent, Bundle options) {
+    	super.startActivity(intent, options);
+    	Bundle extras = getIntent().getExtras();
+    	String action;
+        if(extras == null) {
+            action= "inget....";
+        } else {
+            action= extras.getString(Intent.EXTRA_TEXT);
+        }
+    	
+    	
+    	Log.println(Log.ASSERT, "action", action);
+    }*/
 }
