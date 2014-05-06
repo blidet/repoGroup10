@@ -113,7 +113,6 @@ public class RepoCommitJSONParser extends AsyncTask<HttpResponse, Void, ArrayLis
 				EventPOJO event = new EventPOJO();
 				event.setType("commitEvent");
 				event.setActor(author);
-				event.setRepoName("undefined");
 
 				JSONObject commitObject = obj.getJSONObject("commit");
 				String message = commitObject.getString("message");

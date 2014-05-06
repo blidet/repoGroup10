@@ -63,28 +63,8 @@ public class RepoCommitListAdapter extends BaseAdapter {
 		Bitmap imageBitmap = user.getAvatarBitmap();
 		avatar.setImageBitmap(imageBitmap);
 		String action = null;
-		String repoName = event.getRepoName();
 		switch(type){
-		case "PushEvent":			
-			String branch = event.getRef();			
-			action = actorName + " pushed to " + branch + " at " + repoName;	
-			actionText.setText(action);
-			break;
-		case "CreateEvent":
-			System.out.println("----------------------------------------------------------------------");
-			String refType = event.getRefType();
-			if(refType.equals("repository")){
-				action = actorName + " created repository " + repoName;
-			}else{
-				String ref = event.getRef();
-				action = actorName + " created " + refType + " " + ref + " at " + repoName;
-			}
-			actionText.setText(action);
-			break;
-		case "ForkEvent":
-			action = actorName + " forked " + repoName;
-			actionText.setText(action);
-			break;
+		
 		case "commitEvent" :
 			action = actorName + " : " + event.getComment();
 			actionText.setText(action);
