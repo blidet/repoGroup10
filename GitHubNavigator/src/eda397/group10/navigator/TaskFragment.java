@@ -16,6 +16,7 @@ import org.json.JSONTokener;
 
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
+import eda397.group10.database.PathDataBase;
 import eda397.group10.pojo.EventPOJO;
 import android.app.Fragment;
 import android.app.ListFragment;
@@ -27,6 +28,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+//For SQLite
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Toast;
+
+
 
 public class TaskFragment extends ListFragment {
 	private ListView dataList;
@@ -45,10 +59,30 @@ public class TaskFragment extends ListFragment {
 						HTTP.UTF_8, false);
 
 		new DataRetriever("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da", header);
-
+			
+		//Test of the Database
+		//Creation of Database
+        PathDataBase PathTry = new PathDataBase(this.getActivity());
+        String pathtest = "testapath";
+	       
+        //Opening the database
+        PathTry.open();
+        //adding a path
+        PathTry.addPath(pathtest);
+ 
+        //Trying to find it
+       String test1 =  PathTry.findPath("testapath").toString();
+        Log.println(Log.ASSERT, "DB", test1);
+        String test2 =  PathTry.findPath("awrongpath").toString();
+        Log.println(Log.ASSERT, "DB", test2);
+        PathTry.addPath("test2");
+        Log.println(Log.ASSERT, "DB", PathTry.findPath("test2").toString());
+        PathTry.close();
+        
+        
 		return rootView;
 	}
-
+			
 	private class DataRetriever extends GithubRequest {
 
 		public DataRetriever(String url, Header header) {
