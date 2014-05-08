@@ -16,7 +16,6 @@ import org.json.JSONTokener;
 
 import eda397.group10.adapters.TaskListAdapter;
 import eda397.group10.communication.GithubRequest;
-import eda397.group10.database.PathDataBase;
 import eda397.group10.pojo.FilePOJO;
 import android.app.ListFragment;
 import android.content.SharedPreferences;
@@ -47,7 +46,6 @@ public class TaskFragment extends ListFragment {
 	
 	public void showFolder(String url) {
 		SharedPreferences sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
-		final String userName = sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), "");
 		final Header header = BasicScheme.authenticate(
 				new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
 						sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
