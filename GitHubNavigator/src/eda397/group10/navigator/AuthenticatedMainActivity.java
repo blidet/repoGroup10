@@ -382,7 +382,7 @@ public class AuthenticatedMainActivity extends Activity{
 					
 			android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 			alertDialog.setTitle("Logout...");
-			alertDialog.setMessage("Are you sure?");
+			alertDialog.setMessage("Are you sure you want to logout?");
 			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
