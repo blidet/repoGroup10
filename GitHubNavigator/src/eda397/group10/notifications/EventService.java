@@ -44,7 +44,7 @@ public class EventService extends Service {
 	/**
 	 * The default vibration length.
 	 */
-	public static final int DEFAULT_VIBRATION_MS = 5000;
+	public static final int DEFAULT_VIBRATION_MS = 1000;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
