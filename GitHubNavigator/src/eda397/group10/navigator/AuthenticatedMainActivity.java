@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 
@@ -23,10 +24,12 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.animation.AnimatorSet.Builder;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -134,17 +137,18 @@ public class AuthenticatedMainActivity extends Activity{
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1), 
 				NavDrawerItem.NavDrawerItemType.NEWS));		
 		// Settings
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(2, -1),
-				NavDrawerItem.NavDrawerItemType.SETTINGS));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1),
+				NavDrawerItem.NavDrawerItemType.TASKS));
 
 		// Tasks
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(1, -1), NavDrawerItem.NavDrawerItemType.TASKS));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), 
+				NavDrawerItem.NavDrawerItemType.SETTINGS));
 
 		// Logout
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(3, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
 				NavDrawerItem.NavDrawerItemType.LOGOUT));
 		// Repositories
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(4, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1),
 				NavDrawerItem.NavDrawerItemType.REPOSITORIES));
 
 		navMenuIcons.recycle();
@@ -375,13 +379,25 @@ public class AuthenticatedMainActivity extends Activity{
 			fragment = new SettingsFragment();
 			break;
 		case LOGOUT :
-			//TODO Add logout confirmation???
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			showTabs = false;
-		    showRefresh = false;
-		    sh_Pref.edit().clear().commit();
-			 Intent firstpage=new Intent(this,MainActivity.class);			 
-			 startActivity(firstpage);
+					
+			android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+			alertDialog.setTitle("Logout...");
+			alertDialog.setMessage("Are you sure you want to logout?");
+			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+					showTabs = false;
+					showRefresh = false;
+					sh_Pref.edit().clear().commit();
+					Intent firstpage=new Intent(getBaseContext(),MainActivity.class);	
+					startActivity(firstpage);						
+				}
+			
+			});	
+			alertDialog.setNegativeButton("Cancel", null);
+			alertDialog.setIcon(R.drawable.logout);
+			alertDialog.show();
 			break;
 		case REPOSITORIES :
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
