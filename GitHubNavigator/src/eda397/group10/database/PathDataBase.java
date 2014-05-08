@@ -8,6 +8,7 @@ import eda397.group10.database.BaseSqlite;
 
 //Tool for adding, remove or check paths
 public class PathDataBase {
+	private static PathDataBase instance = null;
 	 
 	private static final int DB_VERSION = 1;
 	private static final String DB_NAME = "Tasks_Data.db";
@@ -19,9 +20,16 @@ public class PathDataBase {
  
 	private BaseSqlite MyBaseSqlite;
  
-	public PathDataBase(Context context){
+	private PathDataBase(Context context){
 		//Creating the DataBase
 		MyBaseSqlite = new BaseSqlite(context, TASKS_DATA, null, DB_VERSION);
+	}
+	
+	public static PathDataBase getInstance(Context context) {
+		if (instance == null) {
+			instance = new PathDataBase(context);
+		}
+		return instance;
 	}
  
 
@@ -49,9 +57,9 @@ public class PathDataBase {
 	}
  
  
-	public int removeTasks(String Path){
+	public int removePath(String Path){
 		//Deleting a path
-		return bdd.delete(TASKS_DATA, ROW_PATH + " = " +Path, null);
+		return bdd.delete(TASKS_DATA, ROW_PATH + " = '" +Path+"'", null);
 	}
  
 	//Return True if the path is find, false otherwise
