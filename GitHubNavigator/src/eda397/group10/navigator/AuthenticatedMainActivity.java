@@ -379,14 +379,7 @@ public class AuthenticatedMainActivity extends Activity{
 			fragment = new SettingsFragment();
 			break;
 		case LOGOUT :
-			//TODO Add logout confirmation???
-			//actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			//showTabs = false;
-		    //showRefresh = false;
-		    //sh_Pref.edit().clear().commit();
-			 //Intent firstpage=new Intent(this,MainActivity.class);			 
-			 //startActivity(firstpage);
-			
+					
 			android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 			alertDialog.setTitle("Logout...");
 			alertDialog.setMessage("Are you sure?");
