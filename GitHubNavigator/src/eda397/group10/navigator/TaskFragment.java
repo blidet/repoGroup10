@@ -104,6 +104,7 @@ public class TaskFragment extends ListFragment {
 			try {
 				tree = result.getJSONArray("tree");
 				ArrayList<FilePOJO> fileList = new ArrayList<FilePOJO>();
+				ArrayList<FilePOJO> folderList = new ArrayList<FilePOJO>();
 				
 				for (int i = 0; i < tree.length(); i++) {
 					JSONObject object = tree.getJSONObject(i);
@@ -111,10 +112,14 @@ public class TaskFragment extends ListFragment {
 					String type = object.getString("type");
 					String fullUrl = object.getString("url");
 					FilePOJO file = new FilePOJO(path, type, fullUrl);
-					fileList.add(file);
+					if(type.equals("tree")){
+						folderList.add(file);
+					}else{
+						fileList.add(file);
+					}					
 				}
-				
-				dataList.setAdapter(new TaskListAdapter(TaskFragment.this, fileList, inflater));
+				folderList.addAll(fileList);
+				dataList.setAdapter(new TaskListAdapter(TaskFragment.this, folderList, inflater));
 				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

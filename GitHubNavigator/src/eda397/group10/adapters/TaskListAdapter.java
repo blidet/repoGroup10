@@ -48,23 +48,16 @@ public class TaskListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View rowView = layoutInflater.inflate(R.layout.task_list_row, parent, false);
+		View rowView = null;
 		final FilePOJO file = fileList.get(position);
 
-		//Set row label
-		TextView pathName = (TextView) rowView.findViewById(R.id.path_name);
 		String filename = file.getFilename();
-		pathName.setText(filename);
-		
-		CheckBox checkbox = (CheckBox) rowView.findViewById(R.id.checkbox);
-		ImageView folderIcon = (ImageView) rowView.findViewById(R.id.folder_icon);
 		
 		if (file.getType().equals("tree")) {
-			//FOLDER
 			
-			//Hide checkbox and show folder icon instead
-			checkbox.setVisibility(View.GONE);
-			folderIcon.setVisibility(View.VISIBLE);
+			rowView = layoutInflater.inflate(R.layout.folder_list_row, parent, false);
+			TextView folderName = (TextView) rowView.findViewById(R.id.folder_name);
+			folderName.setText(filename);
 			
 			//Create on click listener for the row itself
 			rowView.setOnClickListener(new OnClickListener() {
@@ -78,7 +71,10 @@ public class TaskListAdapter extends BaseAdapter {
 			});
 		} else if (file.getType().equals("blob")) {
 			//FILE
-			
+			rowView = layoutInflater.inflate(R.layout.file_list_row, parent, false);
+			CheckBox checkbox = (CheckBox) rowView.findViewById(R.id.file_check);
+			TextView fileName = (TextView) rowView.findViewById(R.id.file_name);
+			fileName.setText(filename);
 			//Create on-click-listener for checkbox
 			db.open();
 			checkbox.setChecked(db.findPath(file.getFullUrl()));

@@ -14,7 +14,6 @@ public class EventPOJO {
 	private String action;
 	private String issueNumber;
 	private String commitId;
-	private String text;
 	public String getRefType() {
 		return refType;
 	}
