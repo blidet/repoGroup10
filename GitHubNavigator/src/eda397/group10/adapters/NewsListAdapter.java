@@ -95,6 +95,11 @@ public class NewsListAdapter extends BaseAdapter {
 			action = getBoldBlue(actorName) +" "+ event.getAction() + " issue " + getBoldBlue(repoName + "#" + event.getIssueNumber());
 			actionText.setText(Html.fromHtml(action));
 			break;
+		case "CommitCommentEvent":
+			String commitId = event.getCommitId().substring(0, 9);
+			action = getBoldBlue(actorName) + " commented on commit " + getBoldBlue(repoName+"@"+commitId);
+			actionText.setText(Html.fromHtml(action));
+			break;
 		}
 		
 

@@ -65,6 +65,7 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 			    builder.append(line).append("\n");			    
 			}
 			
+			System.out.println("*************************** "+builder.toString());
 			JSONTokener tokener = new JSONTokener(builder.toString());
 			json = new JSONArray(tokener);			
 			
@@ -138,6 +139,12 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 					int issueN1 = issueObj1.getInt("number");
 					event.setIssueNumber(Integer.toString(issueN1));
 					event.setAction(action);
+					datas.add(event);
+					break;
+				case "CommitCommentEvent":
+					JSONObject commitObj = payLoadObj.getJSONObject("comment");
+					String commitId = commitObj.getString("commit_id");
+					event.setCommitId(commitId);
 					datas.add(event);
 					break;
 				}				

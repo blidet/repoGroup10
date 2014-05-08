@@ -13,6 +13,8 @@ public class EventPOJO {
 	private String refType;
 	private String action;
 	private String issueNumber;
+	private String commitId;
+	private String text;
 	public String getRefType() {
 		return refType;
 	}
@@ -70,6 +72,11 @@ public class EventPOJO {
 	public void setAction(String action) {
 		this.action = action;
 	}
+	public String getCommitId() {
+		return commitId;
+	}
+	public void setCommitId(String commitId) {
+		this.commitId = commitId;
+	}
 	
-
 }
