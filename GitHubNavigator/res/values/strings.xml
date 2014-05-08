@@ -79,7 +79,9 @@
         <!--Logout-->
         <item>@drawable/logout</item>        
         <!--Repositories-->
-        <item>@drawable/repository</item>        
+        <item>@drawable/repository</item>
+        <!--Repository-->
+        <item>@drawable/repo</item>  
     </array>
     
     

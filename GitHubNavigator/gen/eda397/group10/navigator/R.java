@@ -1020,13 +1020,14 @@ containing a value of this type.
         public static final int logout=0x7f020067;
         public static final int news=0x7f020068;
         public static final int profile=0x7f020069;
-        public static final int repository=0x7f02006a;
-        public static final int rowbackground=0x7f02006b;
-        public static final int rowbackgroundselected=0x7f02006c;
-        public static final int rowselector=0x7f02006d;
-        public static final int setting=0x7f02006e;
-        public static final int settings=0x7f02006f;
-        public static final int tasks=0x7f020070;
+        public static final int repo=0x7f02006a;
+        public static final int repository=0x7f02006b;
+        public static final int rowbackground=0x7f02006c;
+        public static final int rowbackgroundselected=0x7f02006d;
+        public static final int rowselector=0x7f02006e;
+        public static final int setting=0x7f02006f;
+        public static final int settings=0x7f020070;
+        public static final int tasks=0x7f020071;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
