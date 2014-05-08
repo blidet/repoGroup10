@@ -26,6 +26,8 @@ public class PushEvent extends NotificationPOJO {
 		setText(text);
 		setExpandedText(text);
 		
+		setLight(NotificationPOJO.LEDColor.GREEN);
+		
 		String action = context.getResources().getString(R.string.REPO_NEWS_ACTION);
 		String repoName = repo.getString("name");
 		setTarget(AuthenticatedMainActivity.class, context, action, repoName);

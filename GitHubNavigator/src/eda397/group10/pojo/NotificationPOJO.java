@@ -25,8 +25,17 @@ import eda397.group10.navigator.R;
 
 @SuppressLint("NewApi")
 public class NotificationPOJO {
+	
+	public enum LEDColor {WHITE, GREEN, RED, NONE};
+	
 	private NotificationCompat.Builder notificationBuilder;
 	private NotificationManager notificationManager;
+	
+	/**
+	 * The default on and off interval for the notification light.
+	 */
+	public static final int DEFAULT_NOTIFICATION_LIGHT_ON_MS = 2000;
+	public static final int DEFAULT_NOTIFICATION_LIGHT_OFF_MS = 1000;
 
 	// notificationId allows the notification to be updated later on.
 	private int notificationId;
@@ -120,6 +129,26 @@ public class NotificationPOJO {
 	 */
 	protected void setText(String text) {
 		notificationBuilder.setContentText(text);
+		notificationManager.notify(notificationId, notificationBuilder.build());
+	}
+	
+	/**
+	 * Applies a notification light with the color argb.
+	 * 
+	 * @param argb
+	 */
+	protected void setLight(LEDColor color) {
+		
+		int hexColorCode = 0xFFFFFFFF;
+		
+		switch(color){
+			case WHITE : hexColorCode = 0xFFFFFFFF; break;
+			case GREEN : hexColorCode = 0xFF00CD00; break;
+			case RED : hexColorCode = 0xFFff0000; break;
+			case NONE :return;
+			default : return;
+		}
+		notificationBuilder.setLights(hexColorCode, DEFAULT_NOTIFICATION_LIGHT_ON_MS, DEFAULT_NOTIFICATION_LIGHT_OFF_MS);
 		notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	

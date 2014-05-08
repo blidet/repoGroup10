@@ -23,11 +23,19 @@ import eda397.group10.navigator.R;
 import eda397.group10.pojo.NotificationPOJO;
 import eda397.group10.pojo.notifications.*;
 import eda397.group10.utils.CalendarUtil;
+import eda397.group10.utils.WolfManager;
+import android.app.Notification;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.util.Log;
 
 public class EventService extends Service {
@@ -44,7 +52,7 @@ public class EventService extends Service {
 		handleIntent(intent);
 		return START_NOT_STICKY;
 	}
-
+	
 	private void handleIntent(Intent intent) { 
 		SharedPreferences sh_Pref = getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 		boolean authenticated = sh_Pref.getBoolean(getResources().getString(R.string.AUTH_PREFERENCE), false);
@@ -107,6 +115,17 @@ public class EventService extends Service {
 					GregorianCalendar createdAt = CalendarUtil.convertToCalendar(created_at);
 
 					if (createdAt.after(timeline)) {
+						
+						/**
+						 * Vibrate for 500 milliseconds when you get a valid notification.
+						 */
+						Log.println(Log.DEBUG, "Event service!", "The phone should vibrate now.");
+						Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+						v.vibrate(500);
+						
+						
+						WolfManager.PlayNotificationSound(getApplicationContext());
+						
 						String eventType = json.getJSONObject(i).getString("type");
 						switch(eventType) {
 						case "PushEvent":
