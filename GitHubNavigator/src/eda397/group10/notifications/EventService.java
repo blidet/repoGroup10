@@ -23,13 +23,13 @@ import eda397.group10.navigator.R;
 import eda397.group10.pojo.NotificationPOJO;
 import eda397.group10.pojo.notifications.*;
 import eda397.group10.utils.CalendarUtil;
-import eda397.group10.utils.WolfManager;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -40,6 +40,11 @@ import android.util.Log;
 
 public class EventService extends Service {
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	
+	/**
+	 * The default vibration length.
+	 */
+	public static final int DEFAULT_VIBRATION_MS = 5000;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -119,12 +124,12 @@ public class EventService extends Service {
 						/**
 						 * Vibrate for 500 milliseconds when you get a valid notification.
 						 */
-						Log.println(Log.DEBUG, "Event service!", "The phone should vibrate now.");
-						Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-						v.vibrate(500);
-						
-						
-						WolfManager.PlayNotificationSound(getApplicationContext());
+						AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+					    if(audioManager.getRingerMode() != AudioManager.RINGER_MODE_SILENT)
+					    {
+					    	Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+							v.vibrate(DEFAULT_VIBRATION_MS);
+					    }
 						
 						String eventType = json.getJSONObject(i).getString("type");
 						switch(eventType) {
