@@ -24,6 +24,7 @@ public class RepoCommitListAdapter extends BaseAdapter {
 	private ImageView avatar;
 	private LayoutInflater layoutInflater;
 	private TheListFragment contex;
+	private TextView actorNameText;
 
 	public RepoCommitListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
 		this.contex = contex;
@@ -52,22 +53,35 @@ public class RepoCommitListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		convertView = layoutInflater.inflate(R.layout.news_list_row, parent, false);
-		actionText = (TextView)convertView.findViewById(R.id.actiontext);
-		avatar = (ImageView)convertView.findViewById(R.id.owner_icon2);
+		convertView = layoutInflater.inflate(R.layout.repo_commit_list_row, parent, false);
+		actionText = (TextView)convertView.findViewById(R.id.commit_action);
+		avatar = (ImageView)convertView.findViewById(R.id.commit_owner_icon2);
+		actorNameText = (TextView)convertView.findViewById(R.id.commit_actor);
 
 		EventPOJO event = datas.get(pos);
 		String type = event.getType();
 		UserPOJO user= event.getActor();
 		String actorName = user.getName();
 		Bitmap imageBitmap = user.getAvatarBitmap();
-		avatar.setImageBitmap(imageBitmap);
+		if(!actorName.equals("Unknown")){
+			avatar.setImageBitmap(imageBitmap);
+		}else{
+			avatar.setImageResource(R.drawable.ic_avatar);
+		}
+		
 		String action = null;
 		switch(type){
 		
 		case "commitEvent" :
-			action = actorName + " : " + event.getComment();
+			action = event.getComment();			
+			if(action.length()>40){
+				action = action.substring(0, 39) + "...";
+			}
+			
 			actionText.setText(action);
+			
+			actorNameText.setText(actorName);
+			
 			break;
 		}
 
