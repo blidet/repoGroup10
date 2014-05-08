@@ -8,7 +8,13 @@ import eda397.group10.pojo.EventPOJO;
 import eda397.group10.pojo.UserPOJO;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,36 +69,40 @@ public class NewsListAdapter extends BaseAdapter {
 		String repoName = event.getRepoName();
 		switch(type){
 		case "PushEvent":			
-			String branch = event.getRef();			
-			action = actorName + " pushed to " + branch + " at " + repoName;	
-			actionText.setText(action);
+			String branch = event.getRef();	
+			action = getBoldBlue(actorName) + " pushed to " + getBoldBlue(branch) + " at " + getBoldBlue(repoName);
+			actionText.setText(Html.fromHtml(action));
 			break;
 		case "CreateEvent":
 			String refType = event.getRefType();
 			if(refType.equals("repository")){
-				action = actorName + " created repository " + repoName;
+				action = getBoldBlue(actorName) + " created repository " + getBoldBlue(repoName);
 			}else{
 				String ref = event.getRef();
-				action = actorName + " created " + refType + " " + ref + " at " + repoName;
+				action = getBoldBlue(actorName) + " created " + getBoldBlue(refType) + " " +  getBoldBlue(ref) + " at " + getBoldBlue(repoName);
 			}
-			actionText.setText(action);
+			actionText.setText(Html.fromHtml(action));
 			break;
 		case "ForkEvent":
-			action = actorName + " forked " + repoName;
-			actionText.setText(action);
+			action = getBoldBlue(actorName) + " forked " + getBoldBlue(repoName);
+			actionText.setText(Html.fromHtml(action));
 			break;
 		case "IssueCommentEvent":
-			action = actorName + " commented on issue " + repoName + "#" + event.getIssueNumber();
-			actionText.setText(action);
+			action = getBoldBlue(actorName) + " commented on issue " + getBoldBlue(repoName + "#" + event.getIssueNumber());
+			actionText.setText(Html.fromHtml(action));
 			break;
 		case "IssuesEvent":
-			action = actorName + event.getAction() + " issue " + repoName + "#" + event.getIssueNumber();
-			actionText.setText(action);
+			action = getBoldBlue(actorName) +" "+ event.getAction() + " issue " + getBoldBlue(repoName + "#" + event.getIssueNumber());
+			actionText.setText(Html.fromHtml(action));
 			break;
 		}
 		
 
 		return convertView;
+	}
+	
+	private String getBoldBlue(String target){
+		return "<font color='#0020C2'><b>"+target+"</b></font>";
 	}
 
 }
