@@ -33,13 +33,11 @@ public class NewsListAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return datas.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return datas.get(arg0);
 	}
 
@@ -51,7 +49,6 @@ public class NewsListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		convertView = layoutInflater.inflate(R.layout.news_list_row, parent, false);
 		actionText = (TextView)convertView.findViewById(R.id.actiontext);
 		avatar = (ImageView)convertView.findViewById(R.id.owner_icon2);
