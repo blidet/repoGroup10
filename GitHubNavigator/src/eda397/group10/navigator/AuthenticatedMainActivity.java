@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 
@@ -23,10 +24,12 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.animation.AnimatorSet.Builder;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -377,12 +380,31 @@ public class AuthenticatedMainActivity extends Activity{
 			break;
 		case LOGOUT :
 			//TODO Add logout confirmation???
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			showTabs = false;
-		    showRefresh = false;
-		    sh_Pref.edit().clear().commit();
-			 Intent firstpage=new Intent(this,MainActivity.class);			 
-			 startActivity(firstpage);
+			//actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			//showTabs = false;
+		    //showRefresh = false;
+		    //sh_Pref.edit().clear().commit();
+			 //Intent firstpage=new Intent(this,MainActivity.class);			 
+			 //startActivity(firstpage);
+			
+			android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+			alertDialog.setTitle("Logout...");
+			alertDialog.setMessage("Are you sure?");
+			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+					showTabs = false;
+					showRefresh = false;
+					sh_Pref.edit().clear().commit();
+					Intent firstpage=new Intent(getBaseContext(),MainActivity.class);	
+					startActivity(firstpage);						
+				}
+			
+			});	
+			alertDialog.setNegativeButton("Cancel", null);
+			alertDialog.setIcon(R.drawable.logout);
+			alertDialog.show();
 			break;
 		case REPOSITORIES :
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
