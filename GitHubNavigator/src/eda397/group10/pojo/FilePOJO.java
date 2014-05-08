@@ -1,19 +1,25 @@
 package eda397.group10.pojo;
 
 public class FilePOJO {
-	private String path;
+	private String filename;
 	private String type;
+	private String fullUrl;
 
-	public FilePOJO(String path, String type) {
-		this.path = path;
+	public FilePOJO(String filename, String type, String fullUrl) {
+		this.filename = filename;
 		this.type = type;
+		this.fullUrl = fullUrl;
 	}
 	
-	public String getPath() {
-		return path;
+	public String getFilename() {
+		return filename;
 	}
 	
 	public String getType() {
 		return type;
+	}
+
+	public String getFullUrl() {
+		return fullUrl;
 	}
 }
