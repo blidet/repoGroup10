@@ -72,14 +72,16 @@
         <!--<item>@drawable/ic_home</item>-->
         <!--News-->
         <item>@drawable/news</item>
-        <!--Profile-->
-        <item>@drawable/profile</item>
+        <!--Tasks-->
+        <item>@drawable/tasks</item>
         <!--Settings-->
         <item>@drawable/settings</item>
         <!--Logout-->
         <item>@drawable/logout</item>        
         <!--Repositories-->
-        <item>@drawable/repository</item>        
+        <item>@drawable/repository</item>
+        <!--Repository-->
+        <item>@drawable/repo</item>  
     </array>
     
     

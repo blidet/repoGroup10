@@ -14,10 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import eda397.group10.adapters.TaskListAdapter;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.database.PathDataBase;
 import eda397.group10.pojo.EventPOJO;
+import eda397.group10.pojo.FilePOJO;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.SharedPreferences;
@@ -44,11 +46,13 @@ import android.widget.Toast;
 
 public class TaskFragment extends ListFragment {
 	private ListView dataList;
+	private LayoutInflater inflater;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
+		this.inflater = inflater;
 		dataList = (ListView)rootView.findViewById(android.R.id.list);
 
 		SharedPreferences sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
@@ -125,17 +129,18 @@ public class TaskFragment extends ListFragment {
 			JSONArray tree;
 			try {
 				tree = result.getJSONArray("tree");
+				ArrayList<FilePOJO> fileList = new ArrayList<FilePOJO>();
 				
 				for (int i = 0; i < tree.length(); i++) {
 					JSONObject object = tree.getJSONObject(i);
-					if(object.getString("type").equals("blob")) {
-						Log.println(Log.ASSERT, "FILE", object.getString("path"));
-						
-					} else if(object.getString("type").equals("tree")) {
-
-						Log.println(Log.ASSERT, "DIR", object.getString("path"));
-					}
+					String path = object.getString("path");
+					String type = object.getString("type");
+					FilePOJO file = new FilePOJO(path, type);
+					fileList.add(file);
+					Log.println(Log.ASSERT, file.getType(), file.getPath());
 				}
+				
+				dataList.setAdapter(new TaskListAdapter(fileList, inflater));
 				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

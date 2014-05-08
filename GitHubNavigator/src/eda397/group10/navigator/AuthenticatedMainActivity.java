@@ -144,14 +144,14 @@ public class AuthenticatedMainActivity extends Activity{
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), 
 				NavDrawerItem.NavDrawerItemType.SETTINGS));
 
-		// Logout
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
-				NavDrawerItem.NavDrawerItemType.LOGOUT));
+//		// Logout
+//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
+//				NavDrawerItem.NavDrawerItemType.LOGOUT));
 		// Repositories
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1),
 				NavDrawerItem.NavDrawerItemType.REPOSITORIES));
 
-		navMenuIcons.recycle();
+		//navMenuIcons.recycle();
 
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
@@ -382,7 +382,7 @@ public class AuthenticatedMainActivity extends Activity{
 					
 			android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 			alertDialog.setTitle("Logout...");
-			alertDialog.setMessage("Are you sure?");
+			alertDialog.setMessage("Are you sure you want to logout?");
 			alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
@@ -581,19 +581,26 @@ public class AuthenticatedMainActivity extends Activity{
 			//Log.println(Log.ASSERT, "REPO BUILDER:::", json.toString());
 
 			try {
-				for (int i = 0; i < json.length(); i++) {
+				/**
+				 * TODO Change the shown repositories from the 3 first to the 3 most recent ones.
+				 */
+				for (int i = 0; i < 3; i++) {
 					String name = json.getJSONObject(i).get(getResources().getString(R.string.REPOSITORY_JSON_KEY)).toString();
 					//Log.println(Log.ASSERT, "NAME", name);
 					/*
 					 * Writing the repo names
 					 */
-					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(3, -1), 
+					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(5, -1), 
 							NavDrawerItem.NavDrawerItemType.REPOSITORY));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace(); 
+				e.printStackTrace();
 			}
+			
+			// Logout
+			navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
+					NavDrawerItem.NavDrawerItemType.LOGOUT));
 
 			/*
 			 *Creating the nav menu
