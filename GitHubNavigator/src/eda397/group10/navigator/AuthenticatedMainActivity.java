@@ -134,17 +134,18 @@ public class AuthenticatedMainActivity extends Activity{
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1), 
 				NavDrawerItem.NavDrawerItemType.NEWS));		
 		// Settings
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(2, -1),
-				NavDrawerItem.NavDrawerItemType.SETTINGS));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1),
+				NavDrawerItem.NavDrawerItemType.TASKS));
 
 		// Tasks
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(1, -1), NavDrawerItem.NavDrawerItemType.TASKS));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), 
+				NavDrawerItem.NavDrawerItemType.SETTINGS));
 
 		// Logout
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(3, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
 				NavDrawerItem.NavDrawerItemType.LOGOUT));
 		// Repositories
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(4, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1),
 				NavDrawerItem.NavDrawerItemType.REPOSITORIES));
 
 		navMenuIcons.recycle();
