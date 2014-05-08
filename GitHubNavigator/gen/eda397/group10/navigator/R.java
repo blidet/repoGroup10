@@ -1026,6 +1026,7 @@ containing a value of this type.
         public static final int rowselector=0x7f02006d;
         public static final int setting=0x7f02006e;
         public static final int settings=0x7f02006f;
+        public static final int tasks=0x7f020070;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;

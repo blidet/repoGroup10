@@ -72,8 +72,8 @@
         <!--<item>@drawable/ic_home</item>-->
         <!--News-->
         <item>@drawable/news</item>
-        <!--Profile-->
-        <item>@drawable/profile</item>
+        <!--Tasks-->
+        <item>@drawable/tasks</item>
         <!--Settings-->
         <item>@drawable/settings</item>
         <!--Logout-->
