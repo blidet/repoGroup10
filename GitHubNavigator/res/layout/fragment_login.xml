@@ -27,6 +27,8 @@
         android:layout_marginTop="17dp"
         android:background="#d8d8d8"
         android:ems="10"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         android:hint="@string/password_message"
         android:inputType="textPassword" />
 
@@ -39,6 +41,8 @@
         android:layout_below="@+id/logo"
         android:layout_marginTop="14dp"
         android:background="#d8d8d8"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
         android:ems="10"
         android:hint="@string/username_message" >
 
