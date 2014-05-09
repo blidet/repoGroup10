@@ -112,10 +112,12 @@ public class PushEvent extends NotificationPOJO {
 				for(int i = 0; i < tree.length(); ++i){
 					JSONObject file = (JSONObject)tree.get(i);
 					String url = file.getString("url");
+					String path = file.getString("path");
+					Log.println(Log.DEBUG, "Notification Checker", "Checking for conflicts with file: " + path);
 					isConflict = PathDataBase.getInstance(notificationContext).findPath(url);
 					if(isConflict){
 						Log.println(Log.DEBUG, "Notification checker", "Found conflicting file: " + url);
-						Log.println(Log.DEBUG, "Notification checker", "Name of conflicting file: " + file.getString("path"));
+						Log.println(Log.DEBUG, "Notification checker", "Name of conflicting file: " + path);
 						setLight(NotificationPOJO.LEDColor.RED);
 						break;
 					}
