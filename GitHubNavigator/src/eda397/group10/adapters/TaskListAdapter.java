@@ -3,6 +3,7 @@ package eda397.group10.adapters;
 import java.util.ArrayList;
 
 import eda397.group10.database.PathDataBase;
+import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TaskFragment;
 import eda397.group10.pojo.FilePOJO;
@@ -68,7 +69,11 @@ public class TaskListAdapter extends BaseAdapter {
 				public void onClick(View v) {
 					if (file.getType().equals("tree")) {
 						//TODO: create back stack
-						taskFragment.showFolder(file.getFullUrl());
+						//taskFragment.showFolder(file.getFullUrl());
+						//taskFragment.getActivity()
+						AuthenticatedMainActivity mainActivity = (AuthenticatedMainActivity)taskFragment.getActivity();
+						TaskFragment childFragment = new TaskFragment(file.getFullUrl());
+						mainActivity.switchAndAddFragment(childFragment);						
 					}
 				}
 			});

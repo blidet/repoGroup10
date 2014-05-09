@@ -34,6 +34,11 @@ public class TaskFragment extends ListFragment {
 	private LayoutInflater inflater;
 	private TaskFragment thisContext;
 	public ProgressDialog loadingProgress;
+	private String workingUrl;
+	
+	public TaskFragment(String workingUrl){
+		this.workingUrl = workingUrl;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +49,8 @@ public class TaskFragment extends ListFragment {
 		dataList = (ListView)rootView.findViewById(android.R.id.list);
 		
 		//TODO: static url.....
-		showFolder("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");  
+		//showFolder("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");  
+		showFolder();
 		
 		loadingProgress = new ProgressDialog(getActivity());
         loadingProgress.setMessage("Loading......");
@@ -54,14 +60,14 @@ public class TaskFragment extends ListFragment {
 		return rootView;
 	}
 	
-	public void showFolder(String url) {
+	public void showFolder() {
 		SharedPreferences sh_Pref = getActivity().getSharedPreferences(getResources().getString(R.string.LOGIN_CREDENTIALS_PREFERENCE_NAME),0);
 		final Header header = BasicScheme.authenticate(
 				new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
 						sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
 						HTTP.UTF_8, false);
 
-		new DataRetriever(url, header);
+		new DataRetriever(workingUrl, header);
 	}
 	
 	/**
@@ -85,4 +91,6 @@ public class TaskFragment extends ListFragment {
 	public void setList(ArrayList<FilePOJO> fileList){
 		dataList.setAdapter(new TaskListAdapter(TaskFragment.this, fileList, inflater));
 	}
+	
+	
 }
