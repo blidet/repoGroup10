@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import eda397.group10.JSONParsers.ShaParser;
 import eda397.group10.JSONParsers.TasksJSONParser;
 
 public class TaskFragment extends ListFragment {
@@ -35,8 +36,10 @@ public class TaskFragment extends ListFragment {
 	private TaskFragment thisContext;
 	public ProgressDialog loadingProgress;
 	private String workingUrl;
+	private boolean needsSha;
 	
-	public TaskFragment(String workingUrl){
+	public TaskFragment(String workingUrl,boolean needsSha){
+		this.needsSha = needsSha;
 		this.workingUrl = workingUrl;
 	}
 
@@ -81,10 +84,15 @@ public class TaskFragment extends ListFragment {
 		}
 
 		@Override
-		public void onPostExecute(HttpResponse result) {
-			//JsonParser parser = new JsonParser();
-			TasksJSONParser parser = new TasksJSONParser(thisContext);
-			parser.execute(result);
+		public void onPostExecute(HttpResponse result) {			
+			if(!needsSha){
+				TasksJSONParser parser = new TasksJSONParser(thisContext);
+				parser.execute(result);
+			}else{
+				ShaParser parser = new ShaParser(thisContext);
+				parser.execute(result);			
+			}
+			
 		}
 	}
 	

@@ -235,8 +235,8 @@ public class AuthenticatedMainActivity extends Activity{
 			fragmentManager.popBackStack("task_fragment",0);
 		}
 		if(keyCode == KeyEvent.KEYCODE_BACK&&addedCount == 0){
-			TaskFragment listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
-			switchAndAddFragment(listFragment);
+			//TaskFragment listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
+			//switchAndAddFragment(listFragment);
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -339,7 +339,10 @@ public class AuthenticatedMainActivity extends Activity{
 
 		switch (position) {
 		case -3:
-			listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
+			//listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
+			SharedPreferences settings_preferences = this.getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+			String currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");			
+			listFragment = new TaskFragment("https://api.github.com/repos/" + currentRepository + "/branches",true);
 			switchAndAddFragment(listFragment);
 			break;
 		case -2:

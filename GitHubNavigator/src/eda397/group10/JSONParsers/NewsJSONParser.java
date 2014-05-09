@@ -64,8 +64,6 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 			for (String line = null; (line = reader.readLine()) != null;) {
 			    builder.append(line).append("\n");			    
 			}
-			
-			System.out.println("*************************** "+builder.toString());
 			JSONTokener tokener = new JSONTokener(builder.toString());
 			json = new JSONArray(tokener);			
 			

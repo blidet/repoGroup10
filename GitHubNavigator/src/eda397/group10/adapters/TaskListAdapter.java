@@ -72,7 +72,7 @@ public class TaskListAdapter extends BaseAdapter {
 						//taskFragment.showFolder(file.getFullUrl());
 						//taskFragment.getActivity()
 						AuthenticatedMainActivity mainActivity = (AuthenticatedMainActivity)taskFragment.getActivity();
-						TaskFragment childFragment = new TaskFragment(file.getFullUrl());
+						TaskFragment childFragment = new TaskFragment(file.getFullUrl(),false);
 						mainActivity.switchAndAddFragment(childFragment);						
 					}
 				}
