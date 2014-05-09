@@ -101,6 +101,10 @@ public class AuthenticatedMainActivity extends Activity{
 	        		firstLoad = false;
 	        		displayView(-1);
 	        		break;
+	        	case 2:
+	        		firstLoad = false;
+	        		displayView(-3);
+	        		break;
 	        	}
 	        }
 
@@ -115,6 +119,7 @@ public class AuthenticatedMainActivity extends Activity{
 
 	    actionBar.addTab(actionBar.newTab().setText("Events").setTabListener(tabListener));
 	    actionBar.addTab(actionBar.newTab().setText("Commits").setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab().setText("Tasks").setTabListener(tabListener));
 
 
 		mTitle = mDrawerTitle = getTitle();
@@ -141,14 +146,14 @@ public class AuthenticatedMainActivity extends Activity{
 				NavDrawerItem.NavDrawerItemType.TASKS));
 
 		// Tasks
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), 
-				NavDrawerItem.NavDrawerItemType.SETTINGS));
+//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), 
+//				NavDrawerItem.NavDrawerItemType.SETTINGS));
 
 //		// Logout
 //		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
 //				NavDrawerItem.NavDrawerItemType.LOGOUT));
 		// Repositories
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
 				NavDrawerItem.NavDrawerItemType.REPOSITORIES));
 
 		//navMenuIcons.recycle();
@@ -322,11 +327,15 @@ public class AuthenticatedMainActivity extends Activity{
 		//===== Functionality =====
 
 		switch (position) {
+		case -3:
+			listFragment = new TaskFragment();
+			break;
 		case -2:
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
 			break;
 		case -1:
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_COMMIT_NEWS_ACTION));
+			break;
 			default : break;
 		}
 
@@ -424,12 +433,12 @@ public class AuthenticatedMainActivity extends Activity{
 			listFragment = new TheListFragment(currentListFragmentString);
 			newsListFragment = listFragment;
 			break;
-		case TASKS:
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			showTabs = false;
-		    showRefresh = false;		    
-			listFragment = new TaskFragment();
-			break;
+//		case TASKS:
+//			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+//			showTabs = false;
+//		    showRefresh = false;		    
+//			listFragment = new TaskFragment();
+//			break;
 		default:
 			break;
 		}
@@ -599,7 +608,7 @@ public class AuthenticatedMainActivity extends Activity{
 			}
 			
 			// Logout
-			navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
+			navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(2, -1),
 					NavDrawerItem.NavDrawerItemType.LOGOUT));
 
 			/*

@@ -64,7 +64,7 @@
     <string-array name="nav_drawer_items">
         <!--<item >Home</item>-->
         <item>News</item>
-        <item>Tasks</item>
+        <!--<item>Tasks</item>-->
         <item>Settings</item> 
         <item>Logout</item>       
         <item>Repositories</item>
@@ -78,7 +78,7 @@
         <!--News-->
         <item>@drawable/news</item>
         <!--Tasks-->
-        <item>@drawable/tasks</item>
+        <!--<item>@drawable/tasks</item>-->
         <!--Settings-->
         <item>@drawable/settings</item>
         <!--Logout-->
