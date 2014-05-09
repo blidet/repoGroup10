@@ -15,6 +15,7 @@ import android.util.Log;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.communication.JsonObjectExtractor;
+import eda397.group10.database.PathDataBase;
 import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.pojo.NotificationPOJO;
@@ -99,16 +100,25 @@ public class PushEvent extends NotificationPOJO {
 			//======= Variables =======
 			
 			JSONArray tree = new JSONArray();
+			boolean isConflict = false;
+			PathDataBase db = PathDataBase.getInstance(notificationContext);
 			
 			//===== Functionality =====
 			
 			try {
 				tree = json.getJSONArray("tree");
-			
+				db.open();
+				
 				for(int i = 0; i < tree.length(); ++i){
 					JSONObject file = (JSONObject)tree.get(i);
 					String url = file.getString("url");
+					isConflict = PathDataBase.getInstance(notificationContext).findPath(url);
+					if(isConflict){
+						Log.println(Log.DEBUG, "Notification checker", "Found conflicting file: " + url);
+						break;
+					}
 				}
+				db.close();
 				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
