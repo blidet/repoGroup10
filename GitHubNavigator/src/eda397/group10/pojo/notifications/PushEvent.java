@@ -115,6 +115,8 @@ public class PushEvent extends NotificationPOJO {
 					isConflict = PathDataBase.getInstance(notificationContext).findPath(url);
 					if(isConflict){
 						Log.println(Log.DEBUG, "Notification checker", "Found conflicting file: " + url);
+						Log.println(Log.DEBUG, "Notification checker", "Name of conflicting file: " + file.getString("path"));
+						setLight(NotificationPOJO.LEDColor.RED);
 						break;
 					}
 				}
