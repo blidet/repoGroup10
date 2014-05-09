@@ -183,7 +183,7 @@ public class AuthenticatedMainActivity extends Activity{
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		if (savedInstanceState == null) {
+		if (savedInstanceState == null && getIntent().getExtras() == null) {
 			//TODO on first time display view for first nav item
 			if(mDrawerList.getItemAtPosition(0) instanceof NavDrawerItem)
 				displayView(0, (NavDrawerItem)mDrawerList.getItemAtPosition(0));
