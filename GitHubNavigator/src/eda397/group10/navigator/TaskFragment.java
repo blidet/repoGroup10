@@ -18,6 +18,7 @@ import eda397.group10.adapters.TaskListAdapter;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.pojo.FilePOJO;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,20 +27,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import eda397.group10.JSONParsers.TasksJSONParser;
 
 public class TaskFragment extends ListFragment {
 	private ListView dataList;
 	private LayoutInflater inflater;
+	private TaskFragment thisContext;
+	public ProgressDialog loadingProgress;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
+		thisContext = this;
 		this.inflater = inflater;
 		dataList = (ListView)rootView.findViewById(android.R.id.list);
 		
 		//TODO: static url.....
 		showFolder("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");  
+		
+		loadingProgress = new ProgressDialog(getActivity());
+        loadingProgress.setMessage("Loading......");
+        loadingProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loadingProgress.show();
         
 		return rootView;
 	}
@@ -66,66 +76,13 @@ public class TaskFragment extends ListFragment {
 
 		@Override
 		public void onPostExecute(HttpResponse result) {
-			JsonParser parser = new JsonParser();
+			//JsonParser parser = new JsonParser();
+			TasksJSONParser parser = new TasksJSONParser(thisContext);
 			parser.execute(result);
 		}
 	}
-
-	/**
-	 * Translates retrieved from github api into java objects
-	 *
-	 */
-	private class JsonParser extends AsyncTask<HttpResponse, Void, JSONObject> {
-
-		@Override
-		protected JSONObject doInBackground(HttpResponse... params) {
-			BufferedReader reader;
-			JSONObject finalResult = new JSONObject();
-			try {
-				reader = new BufferedReader(new InputStreamReader(params[0].getEntity().getContent(), "UTF-8"));
-				StringBuilder builder = new StringBuilder();
-				for (String line = null; (line = reader.readLine()) != null;) {
-					builder.append(line).append("\n");
-				}
-				JSONTokener tokener = new JSONTokener(builder.toString());
-				finalResult = new JSONObject(tokener);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Log.println(Log.ASSERT, "catch", e.toString());
-				e.printStackTrace();
-			} 
-
-			return finalResult;
-		}
-
-		@Override
-		public void onPostExecute(JSONObject result) {
-			JSONArray tree;
-			try {
-				tree = result.getJSONArray("tree");
-				ArrayList<FilePOJO> fileList = new ArrayList<FilePOJO>();
-				ArrayList<FilePOJO> folderList = new ArrayList<FilePOJO>();
-				
-				for (int i = 0; i < tree.length(); i++) {
-					JSONObject object = tree.getJSONObject(i);
-					String path = object.getString("path");
-					String type = object.getString("type");
-					String fullUrl = object.getString("url");
-					FilePOJO file = new FilePOJO(path, type, fullUrl);
-					if(type.equals("tree")){
-						folderList.add(file);
-					}else{
-						fileList.add(file);
-					}					
-				}
-				folderList.addAll(fileList);
-				dataList.setAdapter(new TaskListAdapter(TaskFragment.this, folderList, inflater));
-				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+	
+	public void setList(ArrayList<FilePOJO> fileList){
+		dataList.setAdapter(new TaskListAdapter(TaskFragment.this, fileList, inflater));
 	}
 }
