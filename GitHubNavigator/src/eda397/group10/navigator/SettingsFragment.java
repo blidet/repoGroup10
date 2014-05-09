@@ -17,24 +17,36 @@ import android.widget.Spinner;
 
 @SuppressLint("NewApi")
 public class SettingsFragment extends Fragment implements OnItemSelectedListener{	
+	Spinner notificationSpinner;
+	Spinner intervalSpinner;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
-
-		Spinner spinner = (Spinner) rootView.findViewById(R.id.interval_spinner);
-		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-				R.array.intervals_array, android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
-		spinner.setOnItemSelectedListener(this);
-
 		SharedPreferences settingsPrefs = getActivity().getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
-		int selectedValue = settingsPrefs.getInt(getResources().getString(R.string.INTERVAL_SPINNER_SELECTED), 2);
-		spinner.setSelection(selectedValue);
+
+
+		//NOTIFICATION SETTING SPINNER
+		notificationSpinner = (Spinner) rootView.findViewById(R.id.notification_spinner);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+				R.array.notification_setting_array, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		notificationSpinner.setAdapter(adapter);
+		notificationSpinner.setOnItemSelectedListener(this);
+		int selectedValue = settingsPrefs.getInt(getResources().getString(R.string.CHECK_FOR_NOTIFICATIONS), 0);
+		notificationSpinner.setSelection(selectedValue);
+
+
+		//NOTIFICATION INTERVAL SPINNER
+		intervalSpinner = (Spinner) rootView.findViewById(R.id.interval_spinner);
+		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(),
+				R.array.intervals_array, android.R.layout.simple_spinner_item);
+		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		intervalSpinner.setAdapter(adapter2);
+		int selectedValue2 = settingsPrefs.getInt(getResources().getString(R.string.INTERVAL_SPINNER_SELECTED), 2);
+		intervalSpinner.setSelection(selectedValue2);
+		intervalSpinner.setOnItemSelectedListener(this);
 
 		return rootView;
 	}
@@ -42,43 +54,62 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, 
 			int pos, long id) {
-		//Value in spinner changed (notification interval)
 		SharedPreferences settingsPrefs = getActivity().getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 		Editor toEdit = settingsPrefs.edit();
-		toEdit.putInt(getResources().getString(R.string.INTERVAL_SPINNER_SELECTED), pos);
+		if (parent.equals(notificationSpinner)) {
+			toEdit.putInt(getResources().getString(R.string.CHECK_FOR_NOTIFICATIONS), pos);
 
-		String selectedInterval = parent.getItemAtPosition(pos).toString();
-		int seconds = 0;
-		switch(selectedInterval) {
-		case "15 seconds":
-			seconds = 15;
-			break;
-		case "30 seconds":
-			seconds = 30;
-			break;
-		case "1 minute":
-			seconds = 1*60;
-			break;
-		case "5 minutes":
-			seconds = 5*60;
-			break;
-		case "10 minutes":
-			seconds = 10*60;
-			break;
-		case "15 minutes":
-			seconds = 15*60;
-			break;
-		case "30 minutes":
-			seconds = 30*60;
-			break;
-		case "Turn notifications off":
-			seconds=0;
-			break;
-		default:
-			Log.println(Log.ASSERT, "Spinner", "could not set interval");
-			break;
+			String selectedInterval = parent.getItemAtPosition(pos).toString();
+			switch(selectedInterval) {
+			case "On":
+				int intervalPos = intervalSpinner.getSelectedItemPosition();
+				intervalSpinner.setEnabled(true);
+				onItemSelected(intervalSpinner, view, intervalPos, id);
+				break;
+			case "Off":
+				toEdit.putInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), 0);
+				intervalSpinner.setEnabled(false);
+				break;
+			default:
+				Log.println(Log.ASSERT, "Spinner", "could not set interval");
+				break;
+			}
+
+		} else if(parent.equals(intervalSpinner)) {
+			//Value in spinner changed (notification interval)
+			toEdit.putInt(getResources().getString(R.string.INTERVAL_SPINNER_SELECTED), pos);
+
+			String selectedInterval = parent.getItemAtPosition(pos).toString();
+			int seconds = 0;
+			switch(selectedInterval) {
+			case "15 seconds":
+				seconds = 15;
+				break;
+			case "30 seconds":
+				seconds = 30;
+				break;
+			case "1 minute":
+				seconds = 1*60;
+				break;
+			case "5 minutes":
+				seconds = 5*60;
+				break;
+			case "10 minutes":
+				seconds = 10*60;
+				break;
+			case "15 minutes":
+				seconds = 15*60;
+				break;
+			case "30 minutes":
+				seconds = 30*60;
+				break;
+			default:
+				Log.println(Log.ASSERT, "Spinner", "could not set interval");
+				break;
+			}
+			toEdit.putInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), seconds);
 		}
-		toEdit.putInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), seconds);
+
 		toEdit.commit();
 		
 		//restart the notification alarm with the new interval settings
