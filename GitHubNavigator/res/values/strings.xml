@@ -38,6 +38,8 @@
     <string name="SETTINGS_PREFERENCES">Application Settings</string>
     <string name="CHECK_FOR_NOTIFICATIONS">Check for notifications</string>
     <string name="INTERVAL_SPINNER_SELECTED">Interval spinner selected</string>
+    <string name="VIBRATION_VALUE_SELECTED">Vibration on/off</string>
+    <string name="LED_LIGHT_VALUE_SELECTED">Flash LED lights on/off</string>
     <string name="SECONDS_BETWEEN_UPDATES">Github notifications interval</string>
     <string name="LAST_POLL">Last poll for new events</string>
     <string name="CURRENT_REPOSITORY_PREFERENCE">Current Repository</string>
@@ -45,7 +47,7 @@
     
     <!-- Settings page  -->
      <string name="notification_setting">Notifications: </string>
-     <string-array name="notification_setting_array">
+     <string-array name="on_off_array">
         <item>On</item>
         <item>Off</item>
     </string-array>
@@ -59,6 +61,8 @@
         <item>15 minutes</item>
         <item>30 minutes</item>
     </string-array>
+    <string name="vibration_setting">Vibrate: </string>
+    <string name="led_setting">Flash LED Lights: </string>
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">

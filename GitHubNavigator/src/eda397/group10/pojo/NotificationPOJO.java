@@ -14,6 +14,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -160,18 +161,23 @@ public class NotificationPOJO {
 	 * @param argb
 	 */
 	protected void setLight(LEDColor color) {
+		SharedPreferences settingsPrefs = notificationContext.getSharedPreferences(notificationContext.getString(R.string.SETTINGS_PREFERENCES),0);
+		int lightValue = settingsPrefs.getInt(notificationContext.getResources().getString(R.string.LED_LIGHT_VALUE_SELECTED), 0);
+		//lightvalue 0 = lights on
+		//TODO: change to string or boolean
 		
-		int hexColorCode = 0xFFFFFFFF;
-		
-		switch(color){
-			case WHITE : hexColorCode = 0xFFFFFFFF; break;
-			case GREEN : hexColorCode = 0xFF00CD00; break;
-			case RED : hexColorCode = 0xFFff0000; break;
-			case NONE :return;
-			default : return;
+		if (lightValue==0) {
+			int hexColorCode = 0xFFFFFFFF;
+			
+			switch(color){
+				case WHITE : hexColorCode = 0xFFFFFFFF; break;
+				case GREEN : hexColorCode = 0xFF00CD00; break;
+				case RED : hexColorCode = 0xFFff0000; break;
+				case NONE :return;
+				default : return;
+			}
+			notificationBuilder.setLights(hexColorCode, DEFAULT_NOTIFICATION_LIGHT_ON_MS, DEFAULT_NOTIFICATION_LIGHT_OFF_MS);
 		}
-		notificationBuilder.setLights(hexColorCode, DEFAULT_NOTIFICATION_LIGHT_ON_MS, DEFAULT_NOTIFICATION_LIGHT_OFF_MS);
-		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
 	/**

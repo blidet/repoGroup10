@@ -115,8 +115,11 @@ import android.util.Log;
 						 * Vibrate for 500 milliseconds when you get a valid notification.
 						 */
 						AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-					    if(audioManager.getRingerMode() != AudioManager.RINGER_MODE_SILENT)
-					    {
+						SharedPreferences settingsPrefs = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+						int vibrationValue = settingsPrefs.getInt(getResources().getString(R.string.VIBRATION_VALUE_SELECTED), 0);
+						//vibrationValue == 0 : vibration ON
+						//TODO: change to string or boolean
+					    if(audioManager.getRingerMode() != AudioManager.RINGER_MODE_SILENT && vibrationValue==0) {
 					    	Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 							v.vibrate(DEFAULT_VIBRATION_MS);
 					    }

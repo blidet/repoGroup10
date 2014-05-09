@@ -19,6 +19,8 @@ import android.widget.Spinner;
 public class SettingsFragment extends Fragment implements OnItemSelectedListener{	
 	Spinner notificationSpinner;
 	Spinner intervalSpinner;
+	Spinner vibrationSpinner;
+	Spinner ledSpinner;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +32,7 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 		//NOTIFICATION SETTING SPINNER
 		notificationSpinner = (Spinner) rootView.findViewById(R.id.notification_spinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-				R.array.notification_setting_array, android.R.layout.simple_spinner_item);
+				R.array.on_off_array, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		notificationSpinner.setAdapter(adapter);
 		notificationSpinner.setOnItemSelectedListener(this);
@@ -47,7 +49,28 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 		int selectedValue2 = settingsPrefs.getInt(getResources().getString(R.string.INTERVAL_SPINNER_SELECTED), 2);
 		intervalSpinner.setSelection(selectedValue2);
 		intervalSpinner.setOnItemSelectedListener(this);
-
+		
+		
+		//VIBRATION SPINNER
+		vibrationSpinner = (Spinner) rootView.findViewById(R.id.vibration_spinner);
+		ArrayAdapter<CharSequence> vibrationAdapter = ArrayAdapter.createFromResource(getActivity(),
+				R.array.on_off_array, android.R.layout.simple_spinner_item);
+		vibrationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		vibrationSpinner.setAdapter(vibrationAdapter);
+		int vibrationValue = settingsPrefs.getInt(getResources().getString(R.string.VIBRATION_VALUE_SELECTED), 0);
+		vibrationSpinner.setSelection(vibrationValue);
+		vibrationSpinner.setOnItemSelectedListener(this);
+		
+		//LED LIGHTS SPINNER
+		ledSpinner = (Spinner) rootView.findViewById(R.id.led_spinner);
+		ArrayAdapter<CharSequence> ledAdapter = ArrayAdapter.createFromResource(getActivity(),
+				R.array.on_off_array, android.R.layout.simple_spinner_item);
+		ledAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ledSpinner.setAdapter(ledAdapter);
+		int ledValue = settingsPrefs.getInt(getResources().getString(R.string.LED_LIGHT_VALUE_SELECTED), 0);
+		ledSpinner.setSelection(ledValue);
+		ledSpinner.setOnItemSelectedListener(this);
+		
 		return rootView;
 	}
 
@@ -64,11 +87,15 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 			case "On":
 				int intervalPos = intervalSpinner.getSelectedItemPosition();
 				intervalSpinner.setEnabled(true);
+				vibrationSpinner.setEnabled(true);
+				ledSpinner.setEnabled(true);
 				onItemSelected(intervalSpinner, view, intervalPos, id);
 				break;
 			case "Off":
 				toEdit.putInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), 0);
 				intervalSpinner.setEnabled(false);
+				vibrationSpinner.setEnabled(false);
+				ledSpinner.setEnabled(false);
 				break;
 			default:
 				Log.println(Log.ASSERT, "Spinner", "could not set interval");
@@ -108,6 +135,10 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 				break;
 			}
 			toEdit.putInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), seconds);
+		} else if (parent.equals(vibrationSpinner)) {
+			toEdit.putInt(getResources().getString(R.string.VIBRATION_VALUE_SELECTED), pos);
+		} else if (parent.equals(ledSpinner)) {
+			toEdit.putInt(getResources().getString(R.string.LED_LIGHT_VALUE_SELECTED), pos);
 		}
 
 		toEdit.commit();
