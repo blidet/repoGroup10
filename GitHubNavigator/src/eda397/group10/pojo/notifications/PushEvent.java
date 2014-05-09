@@ -109,6 +109,8 @@ public class PushEvent extends NotificationPOJO {
 				tree = json.getJSONArray("tree");
 				db.open();
 				
+				Log.println(Log.DEBUG, "Notification Checker", "Sha tree: " + tree);
+				
 				for(int i = 0; i < tree.length(); ++i){
 					JSONObject file = (JSONObject)tree.get(i);
 					String url = file.getString("url");
