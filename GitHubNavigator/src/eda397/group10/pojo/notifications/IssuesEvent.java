@@ -41,6 +41,8 @@ public class IssuesEvent extends NotificationPOJO {
 		String clickAction = context.getResources().getString(R.string.REPO_NEWS_ACTION);
 		String repoName = repo.getString("name");
 		setTarget(AuthenticatedMainActivity.class, context, clickAction, repoName);
+		
+		BuildNotification();
 	}
 
 }

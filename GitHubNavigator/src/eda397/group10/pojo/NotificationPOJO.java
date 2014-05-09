@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
@@ -30,6 +31,11 @@ public class NotificationPOJO {
 	
 	private NotificationCompat.Builder notificationBuilder;
 	private NotificationManager notificationManager;
+	
+	/**
+	 * The context that handles this notification.
+	 */
+	protected Context notificationContext;
 	
 	/**
 	 * The default on and off interval for the notification light.
@@ -52,6 +58,8 @@ public class NotificationPOJO {
 			String title = "";
 			JSONObject actor = input.getJSONObject("actor");
 
+			notificationContext = context;
+
 			//TODO: only part of the title is visible
 			//Design the notification
 			notificationBuilder =
@@ -66,15 +74,29 @@ public class NotificationPOJO {
 
 			setTarget(AuthenticatedMainActivity.class, context, context.getResources().getString(R.string.NEWS_ACTION));
 			
-			notificationManager =
-					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-			notificationManager.notify(notificationId, notificationBuilder.build());
-
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+	
+	/**
+	 * Builds/Fires the notification.
+	 */
+	protected void BuildNotification(){
+		
+		/**
+		 * Makes sure that there is a context connected with this notification.
+		 */
+		if(notificationContext == null){
+			Log.println(Log.ERROR, "Notification", "Context of notification not specified.");
+			return;
+		}
+		
+		notificationManager =
+				(NotificationManager) notificationContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 
 	/**
@@ -111,7 +133,7 @@ public class NotificationPOJO {
 	 */
 	protected void setIcon(Bitmap image) {
 		notificationBuilder.setLargeIcon(image);
-		notificationManager.notify(notificationId, notificationBuilder.build());
+		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
 	/**
@@ -120,7 +142,7 @@ public class NotificationPOJO {
 	 */
 	protected void setTitle(String title) {
 		notificationBuilder.setContentTitle(title);
-		notificationManager.notify(notificationId, notificationBuilder.build());
+		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
 	/**
@@ -129,7 +151,7 @@ public class NotificationPOJO {
 	 */
 	protected void setText(String text) {
 		notificationBuilder.setContentText(text);
-		notificationManager.notify(notificationId, notificationBuilder.build());
+		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
 	/**
@@ -149,7 +171,7 @@ public class NotificationPOJO {
 			default : return;
 		}
 		notificationBuilder.setLights(hexColorCode, DEFAULT_NOTIFICATION_LIGHT_ON_MS, DEFAULT_NOTIFICATION_LIGHT_OFF_MS);
-		notificationManager.notify(notificationId, notificationBuilder.build());
+		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
 	/**
@@ -163,7 +185,7 @@ public class NotificationPOJO {
 				new NotificationCompat.BigTextStyle()
 		.bigText(text);
 		notificationBuilder.setStyle(bigStyle);
-		notificationManager.notify(notificationId, notificationBuilder.build());
+		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
 	protected void setTarget(Class<?> target, Service context, String action) {

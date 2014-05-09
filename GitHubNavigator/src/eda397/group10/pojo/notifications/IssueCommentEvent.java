@@ -29,6 +29,8 @@ public class IssueCommentEvent extends NotificationPOJO {
 		String action = context.getResources().getString(R.string.REPO_NEWS_ACTION);
 		String repoName = repo.getString("name");
 		setTarget(AuthenticatedMainActivity.class, context, action, repoName);
+		
+		BuildNotification();
 	}
 
 }

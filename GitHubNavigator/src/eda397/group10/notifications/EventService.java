@@ -1,13 +1,10 @@
 package eda397.group10.notifications;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -15,30 +12,23 @@ import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
-import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
-import eda397.group10.pojo.NotificationPOJO;
 import eda397.group10.pojo.notifications.*;
 import eda397.group10.utils.CalendarUtil;
-import android.app.Notification;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.AudioManager;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
 
-public class EventService extends Service {
+@SuppressLint("SimpleDateFormat") public class EventService extends Service {
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	/**

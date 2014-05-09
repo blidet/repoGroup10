@@ -584,7 +584,7 @@ public class AuthenticatedMainActivity extends Activity{
 				/**
 				 * TODO Change the shown repositories from the 3 first to the 3 most recent ones.
 				 */
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 3 && i < json.length(); i++) {
 					String name = json.getJSONObject(i).get(getResources().getString(R.string.REPOSITORY_JSON_KEY)).toString();
 					//Log.println(Log.ASSERT, "NAME", name);
 					/*
