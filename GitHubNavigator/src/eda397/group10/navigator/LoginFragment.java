@@ -20,8 +20,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.view.KeyEvent;
 
 public class LoginFragment extends Fragment {
 	
@@ -64,6 +67,21 @@ public class LoginFragment extends Fragment {
          * TODO: check github credentials
          * @param view
          */
+        
+     // login when Done key is pressed
+          passwordEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+              @Override
+              public boolean onEditorAction(TextView v, int actionId,
+                      KeyEvent event) {
+                  if (actionId == EditorInfo.IME_ACTION_DONE) {
+                  	loginButton.performClick();
+                      return true;
+                  }
+                  return false;
+              }
+          });
+   
+        
         loginButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

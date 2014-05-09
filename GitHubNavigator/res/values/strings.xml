@@ -36,6 +36,7 @@
     
     <!-- Shared preferences settings -->
     <string name="SETTINGS_PREFERENCES">Application Settings</string>
+    <string name="CHECK_FOR_NOTIFICATIONS">Check for notifications</string>
     <string name="INTERVAL_SPINNER_SELECTED">Interval spinner selected</string>
     <string name="SECONDS_BETWEEN_UPDATES">Github notifications interval</string>
     <string name="LAST_POLL">Last poll for new events</string>
@@ -43,6 +44,11 @@
     <string name="HAS_CURRENT_REPOSITORY_PREFERENCE">Has Current Repository</string>
     
     <!-- Settings page  -->
+     <string name="notification_setting">Notifications: </string>
+     <string-array name="notification_setting_array">
+        <item>On</item>
+        <item>Off</item>
+    </string-array>
     <string name="notification_interval">Check for new notifications every: </string>
     <string-array name="intervals_array">
         <item>15 seconds</item>
@@ -52,14 +58,13 @@
         <item>10 minutes</item>
         <item>15 minutes</item>
         <item>30 minutes</item>
-        <item>Turn notifications off</item>
     </string-array>
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <!--<item >Home</item>-->
         <item>News</item>
-        <item>Tasks</item>
+        <!--<item>Tasks</item>-->
         <item>Settings</item> 
         <item>Logout</item>       
         <item>Repositories</item>
@@ -73,7 +78,7 @@
         <!--News-->
         <item>@drawable/news</item>
         <!--Tasks-->
-        <item>@drawable/tasks</item>
+        <!--<item>@drawable/tasks</item>-->
         <!--Settings-->
         <item>@drawable/settings</item>
         <!--Logout-->

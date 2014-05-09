@@ -41,6 +41,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,6 +76,7 @@ public class AuthenticatedMainActivity extends Activity{
 	private ActionBar actionBar;
 	private ListFragment newsListFragment = null;
 	private boolean firstLoad = true;
+	private boolean isTaskFragment = false;
 	
 	/**
 	 * The string of the currently displayed list fragment.
@@ -93,13 +95,20 @@ public class AuthenticatedMainActivity extends Activity{
 	            // show the given tab
 	        	switch(tab.getPosition()){
 	        	case 0:
+	        		isTaskFragment = false;
 	        		if(!firstLoad){
 	        			displayView(-2);
 	        		}	        		
 	        		break;
 	        	case 1:
+	        		isTaskFragment = false;
 	        		firstLoad = false;
 	        		displayView(-1);
+	        		break;
+	        	case 2:
+	        		isTaskFragment = true;
+	        		firstLoad = false;
+	        		displayView(-3);
 	        		break;
 	        	}
 	        }
@@ -115,6 +124,7 @@ public class AuthenticatedMainActivity extends Activity{
 
 	    actionBar.addTab(actionBar.newTab().setText("Events").setTabListener(tabListener));
 	    actionBar.addTab(actionBar.newTab().setText("Commits").setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab().setText("Tasks").setTabListener(tabListener));
 
 
 		mTitle = mDrawerTitle = getTitle();
@@ -136,19 +146,8 @@ public class AuthenticatedMainActivity extends Activity{
 		// News
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1), 
 				NavDrawerItem.NavDrawerItemType.NEWS));		
-		// Settings
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1),
-				NavDrawerItem.NavDrawerItemType.TASKS));
-
-		// Tasks
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), 
-				NavDrawerItem.NavDrawerItemType.SETTINGS));
-
-//		// Logout
-//		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
-//				NavDrawerItem.NavDrawerItemType.LOGOUT));
 		// Repositories
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1),
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
 				NavDrawerItem.NavDrawerItemType.REPOSITORIES));
 
 		//navMenuIcons.recycle();
@@ -223,7 +222,18 @@ public class AuthenticatedMainActivity extends Activity{
         }
 	}
 
-
+    /**
+     * The hardware go back button used to go back to the previous folder in TaskFragment
+     */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(keyCode == KeyEvent.KEYCODE_BACK && isTaskFragment){
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.popBackStack("task_fragment",0);
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 	/**
 	 * Slide menu item click listener
@@ -313,7 +323,7 @@ public class AuthenticatedMainActivity extends Activity{
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
 	 */
-	private void displayView(int position) {
+	public void displayView(int position) {
 
 		//======= Variables =======
 
@@ -322,19 +332,23 @@ public class AuthenticatedMainActivity extends Activity{
 		//===== Functionality =====
 
 		switch (position) {
+		case -3:
+			listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
+			switchAndAddFragment(listFragment);
+			break;
 		case -2:
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
+			switchFragment(listFragment);
 			break;
 		case -1:
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_COMMIT_NEWS_ACTION));
+			switchFragment(listFragment);
+			break;
 			default : break;
 		}
 
 		if(listFragment == null)
 			return;
-
-		switchFragment(listFragment);
-
 	}
 
 	/**
@@ -363,9 +377,12 @@ public class AuthenticatedMainActivity extends Activity{
 		 * Set the current position.
 		 */
 		currentPosition = position;
+		
+		setTitle(item.getTitle());
 
 		switch (item.getType()) {
 		case NEWS : 
+			isTaskFragment = false;
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 			showRefresh = true;
@@ -373,13 +390,14 @@ public class AuthenticatedMainActivity extends Activity{
 			listFragment = new TheListFragment(currentListFragmentString);
 			break;
 		case SETTINGS : 
+			isTaskFragment = false;
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 		    showRefresh = false;		    
 			fragment = new SettingsFragment();
 			break;
 		case LOGOUT :
-					
+			isTaskFragment = false;
 			android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 			alertDialog.setTitle("Logout...");
 			alertDialog.setMessage("Are you sure you want to logout?");
@@ -400,6 +418,7 @@ public class AuthenticatedMainActivity extends Activity{
 			alertDialog.show();
 			break;
 		case REPOSITORIES :
+			isTaskFragment = false;
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 			showRefresh = true;
@@ -407,10 +426,7 @@ public class AuthenticatedMainActivity extends Activity{
 			listFragment = new TheListFragment(currentListFragmentString);			
 			break;
 		case REPOSITORY:
-
-			/**
-			 * Store the repository in the shared preferences.
-			 */
+			isTaskFragment = false;
 			sharedPreferences = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 			toEdit = sharedPreferences.edit();
 			toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), item.getTitle());
@@ -424,12 +440,7 @@ public class AuthenticatedMainActivity extends Activity{
 			listFragment = new TheListFragment(currentListFragmentString);
 			newsListFragment = listFragment;
 			break;
-		case TASKS:
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			showTabs = false;
-		    showRefresh = false;		    
-			listFragment = new TaskFragment();
-			break;
+
 		default:
 			break;
 		}
@@ -443,7 +454,6 @@ public class AuthenticatedMainActivity extends Activity{
 			if(position < mDrawerList.getCount()){
 				mDrawerList.setItemChecked(position, true);
 				mDrawerList.setSelection(position);
-				setTitle(navMenuTitles[position]);
 			}
 
 			mDrawerLayout.closeDrawer(mDrawerList);
@@ -455,9 +465,6 @@ public class AuthenticatedMainActivity extends Activity{
 				if(position < mDrawerList.getCount()){
 					mDrawerList.setItemChecked(position, true);
 					mDrawerList.setSelection(position);
-					//TODO fix titles.
-					if(position < navMenuTitles.length)
-						setTitle(navMenuTitles[position]);
 				}			
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
@@ -475,8 +482,15 @@ public class AuthenticatedMainActivity extends Activity{
 	private void switchFragment(Fragment fragment){
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.frame_container, fragment).commit();
+		.replace(R.id.frame_container, fragment).commit();
 	}
+	
+	public void switchAndAddFragment(Fragment fragment){
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+		.replace(R.id.frame_container, fragment).addToBackStack("task_fragment").commit();
+	}
+	
 
 	public void openRepository(String fullName){
 
@@ -590,7 +604,7 @@ public class AuthenticatedMainActivity extends Activity{
 					/*
 					 * Writing the repo names
 					 */
-					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(5, -1), 
+					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(4, -1), 
 							NavDrawerItem.NavDrawerItemType.REPOSITORY));
 				}
 			} catch (JSONException e) {
@@ -598,8 +612,12 @@ public class AuthenticatedMainActivity extends Activity{
 				e.printStackTrace();
 			}
 			
+			// Settings
+			navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1),
+					NavDrawerItem.NavDrawerItemType.SETTINGS));
+			
 			// Logout
-			navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1),
+			navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1),
 					NavDrawerItem.NavDrawerItemType.LOGOUT));
 
 			/*
@@ -649,7 +667,5 @@ public class AuthenticatedMainActivity extends Activity{
 		}
 	}
 	
-	private void switchFragment(String action) {
-		
-	}
+	
 }
