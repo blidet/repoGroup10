@@ -77,6 +77,7 @@ public class AuthenticatedMainActivity extends Activity{
 	private ListFragment newsListFragment = null;
 	private boolean firstLoad = true;
 	private boolean isTaskFragment = false;
+	private int addedCount = 0;
 	
 	/**
 	 * The string of the currently displayed list fragment.
@@ -226,11 +227,16 @@ public class AuthenticatedMainActivity extends Activity{
      * The hardware go back button used to go back to the previous folder in TaskFragment
      */
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-		if(keyCode == KeyEvent.KEYCODE_BACK && isTaskFragment){
+	public boolean onKeyDown(int keyCode, KeyEvent event) {	
+		int aa = this.getFragmentManager().getBackStackEntryCount();
+		if(keyCode == KeyEvent.KEYCODE_BACK && isTaskFragment && aa>0 && addedCount > 0){
 			FragmentManager fragmentManager = getFragmentManager();
+			//fragmentManager.findFragmentByTag(tag)
 			fragmentManager.popBackStack("task_fragment",0);
+		}
+		if(keyCode == KeyEvent.KEYCODE_BACK&&addedCount == 0){
+			TaskFragment listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
+			switchAndAddFragment(listFragment);
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -482,10 +488,11 @@ public class AuthenticatedMainActivity extends Activity{
 	private void switchFragment(Fragment fragment){
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-		.replace(R.id.frame_container, fragment).commit();
+		.replace(R.id.frame_container, fragment).addToBackStack(null).commit();
 	}
 	
 	public void switchAndAddFragment(Fragment fragment){
+		addedCount++;
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
 		.replace(R.id.frame_container, fragment).addToBackStack("task_fragment").commit();
