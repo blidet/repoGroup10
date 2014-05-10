@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import eda397.group10.communication.GithubRequest;
+import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TaskFragment;
 import android.content.SharedPreferences;
@@ -22,9 +23,11 @@ import android.util.Log;
 public class ShaParser extends AsyncTask<HttpResponse, Void, String> {
 	
 	private TaskFragment context;
+	private AuthenticatedMainActivity mainActivity;
 	
 	public ShaParser(TaskFragment context){
 		this.context = context;
+		mainActivity = (AuthenticatedMainActivity)context.getActivity();
 	}
 
 	@Override
@@ -69,6 +72,7 @@ public class ShaParser extends AsyncTask<HttpResponse, Void, String> {
 		String currentRepository = settings_preferences.getString(context.getActivity().getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
 		
 		String workingUrl = "https://api.github.com/repos/" + currentRepository + "/git/trees/"+result;
+		mainActivity.tasksUrlStack.push(workingUrl);
 		new DataRetriever(workingUrl, header);
 		super.onPostExecute(result);
 	}

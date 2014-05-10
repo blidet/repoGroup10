@@ -27,11 +27,13 @@ public class TaskListAdapter extends BaseAdapter {
 	private LayoutInflater layoutInflater;
 	private TaskFragment taskFragment;
 	private PathDataBase db;
+	private AuthenticatedMainActivity mainActivity;
 
 	public TaskListAdapter(TaskFragment taskFragment, ArrayList<FilePOJO> files, LayoutInflater layoutInflater) {
 		this.fileList = files;
 		this.layoutInflater = layoutInflater;
 		this.taskFragment = taskFragment;
+		this.mainActivity = (AuthenticatedMainActivity)taskFragment.getActivity();
 		db = PathDataBase.getInstance(taskFragment.getActivity());
 	}
 
@@ -68,12 +70,9 @@ public class TaskListAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					if (file.getType().equals("tree")) {
-						//TODO: create back stack
-						//taskFragment.showFolder(file.getFullUrl());
-						//taskFragment.getActivity()
-						AuthenticatedMainActivity mainActivity = (AuthenticatedMainActivity)taskFragment.getActivity();
 						TaskFragment childFragment = new TaskFragment(file.getFullUrl(),false);
-						mainActivity.switchAndAddFragment(childFragment);						
+						mainActivity.tasksUrlStack.push(file.getFullUrl());
+						mainActivity.switchAndAddFragment(childFragment,true);						
 					}
 				}
 			});
@@ -95,6 +94,7 @@ public class TaskListAdapter extends BaseAdapter {
 			fileName.setText(filename);
 			
 			db.open();
+			//mainActivity.tasksUrlStack.push(file.getFullUrl());
 			checkbox.setChecked(db.findPath(file.getFullUrl()));
 			db.close();
 

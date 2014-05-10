@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Stack;
 import java.util.TimeZone;
 
 import android.content.DialogInterface;
@@ -74,10 +75,11 @@ public class AuthenticatedMainActivity extends Activity{
 	private boolean showRefresh = true;
 	private boolean showTabs = false;
 	private ActionBar actionBar;
-	private ListFragment newsListFragment = null;
+	//public String currentTaskUrl;
 	private boolean firstLoad = true;
 	private boolean isTaskFragment = false;
-	private int addedCount = 0;
+	//private int addedCount = 0;
+	public Stack<String> tasksUrlStack;
 	
 	/**
 	 * The string of the currently displayed list fragment.
@@ -89,11 +91,13 @@ public class AuthenticatedMainActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_authenticated_main);
 
+		tasksUrlStack = new Stack<String>();
 		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 	        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 	            // show the given tab
+	        	currentPosition = tab.getPosition();
 	        	switch(tab.getPosition()){
 	        	case 0:
 	        		isTaskFragment = false;
@@ -228,16 +232,27 @@ public class AuthenticatedMainActivity extends Activity{
      */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {	
-		int aa = this.getFragmentManager().getBackStackEntryCount();
-		if(keyCode == KeyEvent.KEYCODE_BACK && isTaskFragment && aa>0 && addedCount > 0){
-			FragmentManager fragmentManager = getFragmentManager();
-			//fragmentManager.findFragmentByTag(tag)
-			fragmentManager.popBackStack("task_fragment",0);
+//		if(keyCode == KeyEvent.KEYCODE_BACK && isTaskFragment && tasksUrlStack.size()>1){
+//			tasksUrlStack.pop();
+//			FragmentManager fragmentManager = getFragmentManager();
+//			fragmentManager.popBackStack("task_fragment",0);
+//		}
+//		if(keyCode == KeyEvent.KEYCODE_BACK && tasksUrlStack.size()==1){
+//			TaskFragment listFragment = new TaskFragment(tasksUrlStack.peek(),false);
+//			switchAndAddFragment(listFragment);
+//		}
+		
+		FragmentManager fragmentManager = getFragmentManager();
+		if(keyCode == KeyEvent.KEYCODE_BACK && fragmentManager.getBackStackEntryCount()>1 && isTaskFragment){
+			tasksUrlStack.pop();
+			fragmentManager.popBackStack();
+		}else if(keyCode == KeyEvent.KEYCODE_BACK && fragmentManager.getBackStackEntryCount()<=1 && isTaskFragment){
+			TaskFragment listFragment = new TaskFragment(tasksUrlStack.peek(),false);
+			switchAndAddFragment(listFragment,false);
 		}
-		if(keyCode == KeyEvent.KEYCODE_BACK&&addedCount == 0){
-			//TaskFragment listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
-			//switchAndAddFragment(listFragment);
-		}
+		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! "+fragmentManager.getBackStackEntryCount());
+		
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -294,8 +309,6 @@ public class AuthenticatedMainActivity extends Activity{
 		case R.id.action_settings:
 			return true;
 		case R.id.action_refresh:
-//			if(mDrawerList.getItemAtPosition(currentPosition) instanceof NavDrawerItem)
-//				displayView(currentPosition, (NavDrawerItem)mDrawerList.getItemAtPosition(currentPosition));
 			if(!currentListFragmentString.equals(""))
 				refreshCurrentFragment();
 		default:
@@ -339,11 +352,11 @@ public class AuthenticatedMainActivity extends Activity{
 
 		switch (position) {
 		case -3:
-			//listFragment = new TaskFragment("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");
 			SharedPreferences settings_preferences = this.getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
-			String currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");			
-			listFragment = new TaskFragment("https://api.github.com/repos/" + currentRepository + "/branches",true);
-			switchAndAddFragment(listFragment);
+			String currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
+			String theUrl = "https://api.github.com/repos/" + currentRepository + "/branches";
+			listFragment = new TaskFragment(theUrl,true);
+			switchAndAddFragment(listFragment,true);
 			break;
 		case -2:
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
@@ -391,7 +404,6 @@ public class AuthenticatedMainActivity extends Activity{
 
 		switch (item.getType()) {
 		case NEWS : 
-			isTaskFragment = false;
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 			showRefresh = true;
@@ -399,14 +411,12 @@ public class AuthenticatedMainActivity extends Activity{
 			listFragment = new TheListFragment(currentListFragmentString);
 			break;
 		case SETTINGS : 
-			isTaskFragment = false;
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 		    showRefresh = false;		    
 			fragment = new SettingsFragment();
 			break;
 		case LOGOUT :
-			isTaskFragment = false;
 			android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 			alertDialog.setTitle("Logout...");
 			alertDialog.setMessage("Are you sure you want to logout?");
@@ -426,8 +436,7 @@ public class AuthenticatedMainActivity extends Activity{
 			alertDialog.setIcon(R.drawable.logout);
 			alertDialog.show();
 			break;
-		case REPOSITORIES :
-			isTaskFragment = false;
+		case REPOSITORIES :			
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 			showTabs = false;
 			showRefresh = true;
@@ -435,7 +444,6 @@ public class AuthenticatedMainActivity extends Activity{
 			listFragment = new TheListFragment(currentListFragmentString);			
 			break;
 		case REPOSITORY:
-			isTaskFragment = false;
 			sharedPreferences = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 			toEdit = sharedPreferences.edit();
 			toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), item.getTitle());
@@ -447,12 +455,12 @@ public class AuthenticatedMainActivity extends Activity{
 			showRefresh = true;
 			currentListFragmentString = getResources().getString(R.string.REPO_NEWS_ACTION);
 			listFragment = new TheListFragment(currentListFragmentString);
-			newsListFragment = listFragment;
 			break;
 
 		default:
 			break;
 		}
+		isTaskFragment = false;
 
 		invalidateOptionsMenu();
 
@@ -491,14 +499,19 @@ public class AuthenticatedMainActivity extends Activity{
 	private void switchFragment(Fragment fragment){
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
-		.replace(R.id.frame_container, fragment).addToBackStack(null).commit();
+		.replace(R.id.frame_container, fragment).commit();
 	}
 	
-	public void switchAndAddFragment(Fragment fragment){
-		addedCount++;
+	public void switchAndAddFragment(Fragment fragment,boolean addStack){
 		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
-		.replace(R.id.frame_container, fragment).addToBackStack("task_fragment").commit();
+		if(addStack){
+			fragmentManager.beginTransaction()
+			.replace(R.id.frame_container, fragment).addToBackStack(null).commit();
+		}else{
+			fragmentManager.beginTransaction()
+			.replace(R.id.frame_container, fragment).commit();
+		}
+		
 	}
 	
 
@@ -526,7 +539,6 @@ public class AuthenticatedMainActivity extends Activity{
 		showRefresh = true;
 		currentListFragmentString = getResources().getString(R.string.REPO_NEWS_ACTION);
 		listFragment = new TheListFragment(currentListFragmentString);
-		newsListFragment = listFragment;
 
 		setTitle(fullName);
 
@@ -544,10 +556,26 @@ public class AuthenticatedMainActivity extends Activity{
 		ListFragment listFragment;
 		
 		//===== Functionality =====
-		
-		listFragment = new TheListFragment(currentListFragmentString);
-		
-		switchFragment(listFragment);
+		if(!showTabs){
+			listFragment = new TheListFragment(currentListFragmentString);		
+			switchFragment(listFragment);
+		}else{
+			switch(currentPosition){
+			case 0:
+				displayView(-2);
+				break;
+			case 1:
+				displayView(-1);
+				break;
+			case 2:
+				System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ "+tasksUrlStack.size());
+				listFragment = new TaskFragment(tasksUrlStack.peek(),false);
+				switchAndAddFragment(listFragment,false);
+				break;
+			
+			}
+		}
+				
 		
 	}
 
