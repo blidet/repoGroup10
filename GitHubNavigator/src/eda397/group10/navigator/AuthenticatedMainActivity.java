@@ -76,10 +76,8 @@ public class AuthenticatedMainActivity extends Activity{
 	private boolean showRefresh = true;
 	private boolean showTabs = false;
 	private ActionBar actionBar;
-	//public String currentTaskUrl;
 	private boolean firstLoad = true;
 	private boolean isTaskFragment = false;
-	//private int addedCount = 0;
 	public Stack<String> tasksUrlStack;
 	public int taskFragId = 0;
 	
@@ -131,9 +129,9 @@ public class AuthenticatedMainActivity extends Activity{
 	        }
 	    };
 
-	    actionBar.addTab(actionBar.newTab().setText("Events").setTabListener(tabListener));
-	    actionBar.addTab(actionBar.newTab().setText("Commits").setTabListener(tabListener));
-	    actionBar.addTab(actionBar.newTab().setText("Tasks").setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab().setText("Events").setTabListener(tabListener),true);
+	    actionBar.addTab(actionBar.newTab().setText("Commits").setTabListener(tabListener),false);
+	    actionBar.addTab(actionBar.newTab().setText("Tasks").setTabListener(tabListener),false);
 
 
 		mTitle = mDrawerTitle = getTitle();
@@ -265,8 +263,7 @@ public class AuthenticatedMainActivity extends Activity{
 			NavDrawerItem item = null;
 			if(item == null && parent.getItemAtPosition(position) instanceof NavDrawerItem)
 				item = (NavDrawerItem)parent.getItemAtPosition(position);
-			displayView(position, item);
-
+				displayView(position, item);
 		}
 	}
 
@@ -281,7 +278,7 @@ public class AuthenticatedMainActivity extends Activity{
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// toggle nav drawer on selecting action bar app icon/title
+		// toggle nav drawer on selecting action bar app icon/title		
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
@@ -296,6 +293,8 @@ public class AuthenticatedMainActivity extends Activity{
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	
 
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
@@ -554,7 +553,6 @@ public class AuthenticatedMainActivity extends Activity{
 				break;
 			case 2:
 				listFragment = new TaskFragment(tasksUrlStack.peek(),false);
-				//switchFragment(listFragment);
 				refreshTheFragment(listFragment,Integer.toString(taskFragId));
 				break;
 			
