@@ -49,6 +49,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class AuthenticatedMainActivity extends Activity{
@@ -80,6 +81,7 @@ public class AuthenticatedMainActivity extends Activity{
 	private boolean isTaskFragment = false;
 	//private int addedCount = 0;
 	public Stack<String> tasksUrlStack;
+	public int taskFragId = 0;
 	
 	/**
 	 * The string of the currently displayed list fragment.
@@ -111,11 +113,13 @@ public class AuthenticatedMainActivity extends Activity{
 	        		displayView(-1);
 	        		break;
 	        	case 2:
+	        		showRefresh = false;
 	        		isTaskFragment = true;
 	        		firstLoad = false;
 	        		displayView(-3);
 	        		break;
 	        	}
+	        	
 	        }
 
 	        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -232,26 +236,19 @@ public class AuthenticatedMainActivity extends Activity{
      */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {	
-//		if(keyCode == KeyEvent.KEYCODE_BACK && isTaskFragment && tasksUrlStack.size()>1){
-//			tasksUrlStack.pop();
-//			FragmentManager fragmentManager = getFragmentManager();
-//			fragmentManager.popBackStack("task_fragment",0);
-//		}
-//		if(keyCode == KeyEvent.KEYCODE_BACK && tasksUrlStack.size()==1){
-//			TaskFragment listFragment = new TaskFragment(tasksUrlStack.peek(),false);
-//			switchAndAddFragment(listFragment);
-//		}
 		
 		FragmentManager fragmentManager = getFragmentManager();
 		if(keyCode == KeyEvent.KEYCODE_BACK && fragmentManager.getBackStackEntryCount()>1 && isTaskFragment){
+			taskFragId--;
 			tasksUrlStack.pop();
 			fragmentManager.popBackStack();
 		}else if(keyCode == KeyEvent.KEYCODE_BACK && fragmentManager.getBackStackEntryCount()<=1 && isTaskFragment){
-			TaskFragment listFragment = new TaskFragment(tasksUrlStack.peek(),false);
-			switchAndAddFragment(listFragment,false);
+			Toast.makeText(getApplicationContext(), "Root folder!", Toast.LENGTH_SHORT).show();
 		}
 		
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! "+fragmentManager.getBackStackEntryCount());
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			return true;
+		}
 		
 		return super.onKeyDown(keyCode, event);
 	}
@@ -265,24 +262,9 @@ public class AuthenticatedMainActivity extends Activity{
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 
-			//======= Variables =======
-
-			/**
-			 * The clicked item.
-			 */
 			NavDrawerItem item = null;
-
-			//===== Functionality =====
-
-			/**
-			 * Get the nav drawer item at the clicked position.
-			 */
 			if(item == null && parent.getItemAtPosition(position) instanceof NavDrawerItem)
 				item = (NavDrawerItem)parent.getItemAtPosition(position);
-
-			/**
-			 * Display the view of the clicked item.
-			 */
 			displayView(position, item);
 
 		}
@@ -299,7 +281,6 @@ public class AuthenticatedMainActivity extends Activity{
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
 		// toggle nav drawer on selecting action bar app icon/title
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
@@ -356,7 +337,8 @@ public class AuthenticatedMainActivity extends Activity{
 			String currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
 			String theUrl = "https://api.github.com/repos/" + currentRepository + "/branches";
 			listFragment = new TaskFragment(theUrl,true);
-			switchAndAddFragment(listFragment,true);
+			taskFragId++;
+			switchAndAddFragment(listFragment,Integer.toString(taskFragId));			
 			break;
 		case -2:
 			listFragment = new TheListFragment(getResources().getString(R.string.REPO_NEWS_ACTION));
@@ -502,16 +484,19 @@ public class AuthenticatedMainActivity extends Activity{
 		.replace(R.id.frame_container, fragment).commit();
 	}
 	
-	public void switchAndAddFragment(Fragment fragment,boolean addStack){
+	private void refreshTheFragment(Fragment fragment,String tag){
 		FragmentManager fragmentManager = getFragmentManager();
-		if(addStack){
-			fragmentManager.beginTransaction()
-			.replace(R.id.frame_container, fragment).addToBackStack(null).commit();
-		}else{
-			fragmentManager.beginTransaction()
-			.replace(R.id.frame_container, fragment).commit();
-		}
-		
+		Fragment fg = fragmentManager.findFragmentByTag(tag);
+		final FragmentTransaction ft = fragmentManager.beginTransaction();
+		ft.detach(fg);
+		ft.attach(fg);
+		ft.commit();
+	}
+	
+	public void switchAndAddFragment(Fragment fragment,String tag){
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+		.replace(R.id.frame_container, fragment,tag).addToBackStack(null).commit();		
 	}
 	
 
@@ -568,9 +553,9 @@ public class AuthenticatedMainActivity extends Activity{
 				displayView(-1);
 				break;
 			case 2:
-				System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ "+tasksUrlStack.size());
 				listFragment = new TaskFragment(tasksUrlStack.peek(),false);
-				switchAndAddFragment(listFragment,false);
+				//switchFragment(listFragment);
+				refreshTheFragment(listFragment,Integer.toString(taskFragId));
 				break;
 			
 			}

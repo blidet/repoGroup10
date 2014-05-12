@@ -72,7 +72,8 @@ public class TaskListAdapter extends BaseAdapter {
 					if (file.getType().equals("tree")) {
 						TaskFragment childFragment = new TaskFragment(file.getFullUrl(),false);
 						mainActivity.tasksUrlStack.push(file.getFullUrl());
-						mainActivity.switchAndAddFragment(childFragment,true);						
+						mainActivity.taskFragId++;
+						mainActivity.switchAndAddFragment(childFragment,Integer.toString(mainActivity.taskFragId));						
 					}
 				}
 			});
