@@ -67,6 +67,7 @@ public class NewsListAdapter extends BaseAdapter {
 		avatar.setImageBitmap(bitmap);
 		String action = null;
 		String repoName = event.getRepoName();
+		boolean moreToShow = event.isMoreToShow();
 		switch(type){
 		case "PushEvent":			
 			String branch = event.getRef();	
@@ -100,6 +101,17 @@ public class NewsListAdapter extends BaseAdapter {
 			action = getBoldBlue(actorName) + " commented on commit " + getBoldBlue(repoName+"@"+commitId);
 			actionText.setText(Html.fromHtml(action));
 			break;
+		}
+		
+		if(moreToShow){
+			convertView.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 		
 

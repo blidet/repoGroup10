@@ -108,6 +108,7 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 				case "PushEvent":	
 					String branch = payLoadObj.getString("ref");
 					event.setRef(branch);
+					event.setMoreToShow(true);
 					datas.add(event);				
 					break;
 				case "CreateEvent":

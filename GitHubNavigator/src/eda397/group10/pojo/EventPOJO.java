@@ -14,6 +14,7 @@ public class EventPOJO {
 	private String action;
 	private String issueNumber;
 	private String commitId;
+	private boolean moreToShow;
 	public String getRefType() {
 		return refType;
 	}
@@ -77,5 +78,12 @@ public class EventPOJO {
 	public void setCommitId(String commitId) {
 		this.commitId = commitId;
 	}
+	public boolean isMoreToShow() {
+		return moreToShow;
+	}
+	public void setMoreToShow(boolean moreToShow) {
+		this.moreToShow = moreToShow;
+	}
+	
 	
 }
