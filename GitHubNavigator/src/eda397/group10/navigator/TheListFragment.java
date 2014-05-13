@@ -19,9 +19,13 @@ import eda397.group10.JSONParsers.RepoJSONParser;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +51,8 @@ public class TheListFragment extends ListFragment{
 	public ProgressDialog loadingProgress;
 	private String actionType;
 	private boolean isRepoListAction = false;
+	public Dialog messageDialog;
+	private Builder dialogBuilder;
 	
 	private ProgressBar mProgressBarLoadMore;
 	
@@ -158,6 +164,26 @@ public class TheListFragment extends ListFragment{
 		this.layoutInflator = inflater;
 			
 		return rootView;
+	}
+	
+//	public void showMessageDialog(View messageDialogView){
+//		dialogBuilder = new AlertDialog.Builder(getActivity());
+//		dialogBuilder.setView(messageDialogView);
+//		
+//		dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				// TODO Auto-generated method stub
+//				messageDialog.dismiss();
+//			}
+//		});
+//		messageDialog = dialogBuilder.create();
+//		messageDialog.show();
+//	}
+	
+	public void showMessageDialog(Dialog d){
+		d.show();
 	}
 	
 	public void setList(ArrayList datas, boolean shouldLoadMore){

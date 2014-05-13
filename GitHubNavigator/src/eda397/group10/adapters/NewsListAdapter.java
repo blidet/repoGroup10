@@ -6,6 +6,10 @@ import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.EventPOJO;
 import eda397.group10.pojo.UserPOJO;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -30,6 +34,10 @@ public class NewsListAdapter extends BaseAdapter {
 	private ImageView avatar;
 	private LayoutInflater layoutInflater;
 	private TheListFragment contex;
+	private View dialogView;
+	private ImageView dialogAvatar;
+	private TextView dialogAvatarName;
+	
 	
 	public NewsListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
 		this.contex = contex;
@@ -54,7 +62,7 @@ public class NewsListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int pos, View convertView, ViewGroup parent) {
+	public View getView(int pos, View convertView, final ViewGroup parent) {
 		convertView = layoutInflater.inflate(R.layout.news_list_row, parent, false);
 		actionText = (TextView)convertView.findViewById(R.id.actiontext);
 		avatar = (ImageView)convertView.findViewById(R.id.owner_icon2);
@@ -63,7 +71,7 @@ public class NewsListAdapter extends BaseAdapter {
 		String type = event.getType();
 		UserPOJO user= event.getActor();
 		String actorName = user.getName();
-		Bitmap bitmap = user.getAvatarBitmap();
+		final Bitmap bitmap = user.getAvatarBitmap();
 		avatar.setImageBitmap(bitmap);
 		String action = null;
 		String repoName = event.getRepoName();
@@ -104,12 +112,21 @@ public class NewsListAdapter extends BaseAdapter {
 		}
 		
 		if(moreToShow){
+					
+			dialogView = layoutInflater.inflate(R.layout.message_dialog, null);
+			//((ViewGroup)dialogView.getParent()).removeView(dialogView);
+			
+			dialogAvatar = (ImageView)dialogView.findViewById(R.id.message_avatar);
+			dialogAvatarName = (TextView)dialogView.findViewById(R.id.message_avatar_name);
+			dialogAvatar.setImageBitmap(bitmap);
+			dialogAvatarName.setText(actorName);
+			
+			
 			convertView.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					
+				public void onClick(View v) {	
+					showMessageDialog(dialogView);					
 				}
 			});
 		}
@@ -117,6 +134,24 @@ public class NewsListAdapter extends BaseAdapter {
 
 		return convertView;
 	}
+	
+	public void showMessageDialog(View messageDialogView){
+		Builder dialogBuilder = new AlertDialog.Builder(contex.getActivity());
+		dialogBuilder.setView(messageDialogView);
+		Dialog messageDialog;
+		
+		dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				//messageDialog.dismiss();
+			}
+		});
+		messageDialog = dialogBuilder.create();
+		contex.showMessageDialog(messageDialog);
+	}
+	
 	
 	private String getBoldBlue(String target){
 		return "<font color='#0020C2'><b>"+target+"</b></font>";
