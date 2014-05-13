@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public class NewsListAdapter extends BaseAdapter {
@@ -37,6 +38,7 @@ public class NewsListAdapter extends BaseAdapter {
 	private View dialogView;
 	private ImageView dialogAvatar;
 	private TextView dialogAvatarName;
+	private TextView dialogMessage;
 	
 	
 	public NewsListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
@@ -112,44 +114,27 @@ public class NewsListAdapter extends BaseAdapter {
 		}
 		
 		if(moreToShow){
-					
+								
 			dialogView = layoutInflater.inflate(R.layout.message_dialog, null);
-			//((ViewGroup)dialogView.getParent()).removeView(dialogView);
 			
 			dialogAvatar = (ImageView)dialogView.findViewById(R.id.message_avatar);
 			dialogAvatarName = (TextView)dialogView.findViewById(R.id.message_avatar_name);
+			dialogMessage = (TextView)dialogView.findViewById(R.id.message_message);
 			dialogAvatar.setImageBitmap(bitmap);
 			dialogAvatarName.setText(actorName);
-			
-			
+			dialogMessage.setText("Ma Shengnan wo ai ni yi bei zi ajfjaklr asfkjanva adfjajkj fdnt fafjafjqjv caajsnjfnvi avjajfjivgj");
+
 			convertView.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {	
-					showMessageDialog(dialogView);					
+					contex.showPop(dialogView,parent);
 				}
 			});
 		}
 		
 
 		return convertView;
-	}
-	
-	public void showMessageDialog(View messageDialogView){
-		Builder dialogBuilder = new AlertDialog.Builder(contex.getActivity());
-		dialogBuilder.setView(messageDialogView);
-		Dialog messageDialog;
-		
-		dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				//messageDialog.dismiss();
-			}
-		});
-		messageDialog = dialogBuilder.create();
-		contex.showMessageDialog(messageDialog);
 	}
 	
 	

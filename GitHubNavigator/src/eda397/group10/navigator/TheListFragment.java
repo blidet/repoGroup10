@@ -27,12 +27,17 @@ import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
@@ -61,6 +66,7 @@ public class TheListFragment extends ListFragment{
 	private int mCurrentScrollState;
 	private int pageCount = 2;
 	private String currentRepository;
+	private PopupWindow pop;
 	
 	public TheListFragment(String actionType){
 		this.actionType = actionType;
@@ -166,24 +172,14 @@ public class TheListFragment extends ListFragment{
 		return rootView;
 	}
 	
-//	public void showMessageDialog(View messageDialogView){
-//		dialogBuilder = new AlertDialog.Builder(getActivity());
-//		dialogBuilder.setView(messageDialogView);
-//		
-//		dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(DialogInterface dialog, int which) {
-//				// TODO Auto-generated method stub
-//				messageDialog.dismiss();
-//			}
-//		});
-//		messageDialog = dialogBuilder.create();
-//		messageDialog.show();
-//	}
-	
-	public void showMessageDialog(Dialog d){
-		d.show();
+	public void showPop(View popView,final View vv){
+		pop = new PopupWindow(popView,LayoutParams.WRAP_CONTENT,  
+                LayoutParams.WRAP_CONTENT);
+		pop.setFocusable(true);
+		pop.setBackgroundDrawable(new BitmapDrawable());
+		pop.setOutsideTouchable(true);
+		
+		pop.showAtLocation(vv, Gravity.CENTER, 10, 10);
 	}
 	
 	public void setList(ArrayList datas, boolean shouldLoadMore){
