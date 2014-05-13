@@ -7,6 +7,8 @@ import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TaskFragment;
 import eda397.group10.pojo.FilePOJO;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -90,9 +92,12 @@ public class TaskListAdapter extends BaseAdapter {
 			TextView fileName = (TextView) rowView.findViewById(R.id.file_name);
 			fileName.setText(filename);
 			
+			SharedPreferences preferences = taskFragment.getActivity().getSharedPreferences(taskFragment.getResources().getString(R.string.SETTINGS_PREFERENCES),0);
+			final String currentRepository = preferences.getString(taskFragment.getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
+			
 			db.open();
 			//mainActivity.tasksUrlStack.push(file.getFullUrl());
-			checkbox.setChecked(db.findPath(file.getFullUrl()));
+			checkbox.setChecked(db.findPath(currentRepository+"/"+file.getFilename()));
 			db.close();
 
 			//Create on-click-listener for checkbox
@@ -101,11 +106,14 @@ public class TaskListAdapter extends BaseAdapter {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					db.open();
 					if (isChecked) {
-						db.addPath(file.getFullUrl());
+						db.addPath(currentRepository+"/"+file.getFilename());
 					} else {
-						db.removePath(file.getFullUrl());
+						db.removePath(currentRepository+"/"+file.getFilename());
 					}
 					db.close();
+					Log.println(Log.ASSERT, "file", currentRepository + "/" + file.getFilename());
+					
+					//TODO: full path
 				}
 			});
 					
