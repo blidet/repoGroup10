@@ -22,7 +22,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import eda397.group10.navigator.AuthenticatedMainActivity;
-import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
 
 @SuppressLint("NewApi")

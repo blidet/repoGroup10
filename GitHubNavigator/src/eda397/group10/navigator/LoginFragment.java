@@ -86,9 +86,9 @@ public class LoginFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {				
-				
-		    	username = userNameEdit.getText().toString();
-				password = passwordEdit.getText().toString();
+				//reads username and password and removes all spaces from them
+		    	username = userNameEdit.getText().toString().replace(" ", "");
+				password = passwordEdit.getText().toString().replace(" ", "");
 				
 				//Creates a basic authentication Header object, which is then used to create a GithubRequest object to handle the authentication 
 				if(username.equals("")||password.equals("")){

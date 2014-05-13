@@ -12,7 +12,6 @@ import org.json.JSONTokener;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import eda397.group10.adapters.TaskListAdapter;
 import eda397.group10.navigator.TaskFragment;
 import eda397.group10.pojo.FilePOJO;
 

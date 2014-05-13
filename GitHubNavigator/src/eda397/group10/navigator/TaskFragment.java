@@ -1,28 +1,19 @@
 package eda397.group10.navigator;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import eda397.group10.adapters.TaskListAdapter;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.pojo.FilePOJO;
+import android.annotation.SuppressLint;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +21,7 @@ import android.widget.ListView;
 import eda397.group10.JSONParsers.ShaParser;
 import eda397.group10.JSONParsers.TasksJSONParser;
 
+@SuppressLint("ValidFragment")
 public class TaskFragment extends ListFragment {
 	private ListView dataList;
 	private LayoutInflater inflater;
@@ -51,8 +43,6 @@ public class TaskFragment extends ListFragment {
 		this.inflater = inflater;
 		dataList = (ListView)rootView.findViewById(android.R.id.list);
 		
-		//TODO: static url.....
-		//showFolder("https://api.github.com/repos/blidet/repoGroup10/git/trees/1564202c2ff0da75228a255240f8c043c77e45da");  
 		showFolder();
 		
 		loadingProgress = new ProgressDialog(getActivity());
