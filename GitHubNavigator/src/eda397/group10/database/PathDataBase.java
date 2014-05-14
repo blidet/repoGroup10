@@ -84,4 +84,24 @@ public class PathDataBase {
 			return true;
 		}	
 	}
+
+	/**
+	 * Get's the SHA of the last commit for the given repository
+	 * @param repoName
+	 * @return
+	 */
+	public String getSha(String repoName) {
+		// TODO implement!!!!!
+		return "7feee30b4cf00e2d591926058473090a0669e568";
+	}
+
+	/**
+	 * Stores the SHA of the last commit for the given repository
+	 * @param repoName
+	 * @param newSha
+	 */
+	public void setSha(String repoName, String newSha) {
+		// TODO implement!!!!
+		
+	}
 }

@@ -23,6 +23,7 @@ import eda397.group10.pojo.NotificationPOJO;
 
 public class PushEvent extends NotificationPOJO {
 	private String repoName;
+	PathDataBase db = PathDataBase.getInstance(notificationContext);
 
 	public PushEvent(JSONObject input, Service context) throws JSONException {
 		super(input, context);
@@ -30,7 +31,7 @@ public class PushEvent extends NotificationPOJO {
 		/**
 		 * The sha of the first commit in the push.
 		 */
-		String sha = "";
+		String newSha = "";
 
 		JSONObject actor = input.getJSONObject("actor");
 		JSONObject repo = input.getJSONObject("repo");
@@ -41,8 +42,8 @@ public class PushEvent extends NotificationPOJO {
 		String text = commits.getJSONObject(0).getString("message"); //not sure if it should be first or last commit
 
 		for(int i = 0; i < commits.length(); ++i){
-			sha = commits.getJSONObject(i).getString("sha");
-			Log.println(Log.ASSERT, "Push event", "Sha " + i + ": " + sha);
+			newSha = commits.getJSONObject(i).getString("sha");
+			Log.println(Log.ASSERT, "Push event", "Sha " + i + ": " + newSha);
 		}
 
 		setTitle(title);
@@ -65,11 +66,11 @@ public class PushEvent extends NotificationPOJO {
 			Header header = BasicScheme.authenticate(
 					new UsernamePasswordCredentials(userName, password),
 					HTTP.UTF_8, false);
-			//Header header2 = new BasicHeader("Accept", "application/vnd.github.diff");
-			//Header[] headers = new Header[]{header, header2};
-			//String url = "https://api.github.com/repos/"+repoName+"/git/trees/" + sha;
-			//TODO: store last SHA
-			String url = "https://api.github.com/repos/"+repoName+"/compare/7feee30b4cf00e2d591926058473090a0669e568..."+sha;
+			db.open();
+			String oldSha = db.getSha(repoName);
+			String url = "https://api.github.com/repos/"+repoName+"/compare/"+oldSha+"..."+newSha;
+			db.setSha(repoName, newSha);
+			db.close();
 
 			Log.println(Log.ASSERT, "push event sha url", url);
 			@SuppressWarnings("unused")
@@ -108,7 +109,6 @@ public class PushEvent extends NotificationPOJO {
 
 			JSONArray tree = new JSONArray();
 			boolean isConflict = false;
-			PathDataBase db = PathDataBase.getInstance(notificationContext);
 
 			//===== Functionality =====
 
