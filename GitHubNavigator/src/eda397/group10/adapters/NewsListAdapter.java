@@ -1,6 +1,7 @@
 package eda397.group10.adapters;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
@@ -39,12 +40,14 @@ public class NewsListAdapter extends BaseAdapter {
 	private ImageView dialogAvatar;
 	private TextView dialogAvatarName;
 	private TextView dialogMessage;
+	private HashMap<Integer,View> viewMap;
 	
 	
 	public NewsListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
 		this.contex = contex;
 		this.datas = datas;
 		this.layoutInflater = layoutInflater;
+		viewMap = new HashMap<Integer,View>();
 	}
 	
 	@Override
@@ -64,7 +67,7 @@ public class NewsListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int pos, View convertView, final ViewGroup parent) {
+	public View getView(final int pos, View convertView, final ViewGroup parent) {
 		convertView = layoutInflater.inflate(R.layout.news_list_row, parent, false);
 		actionText = (TextView)convertView.findViewById(R.id.actiontext);
 		avatar = (ImageView)convertView.findViewById(R.id.owner_icon2);
@@ -122,13 +125,15 @@ public class NewsListAdapter extends BaseAdapter {
 			dialogMessage = (TextView)dialogView.findViewById(R.id.message_message);
 			dialogAvatar.setImageBitmap(bitmap);
 			dialogAvatarName.setText(actorName);
-			dialogMessage.setText("Ma Shengnan wo ai ni yi bei zi ajfjaklr asfkjanva adfjajkj fdnt fafjafjqjv caajsnjfnvi avjajfjivgj");
+			dialogMessage.setText(event.getMessage());
+			
+			viewMap.put(pos, dialogView);
 
 			convertView.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {	
-					contex.showPop(dialogView,parent);
+					contex.showPop(viewMap.get(pos));
 				}
 			});
 		}

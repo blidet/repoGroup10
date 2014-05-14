@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#736F6E">
+    android:background="#C0C0C0">
     
     <RelativeLayout 
         android:layout_width="match_parent"
@@ -45,5 +45,6 @@
         android:fontFamily="sans-serif"
         android:maxEms="30"
         android:singleLine="false"
+        android:textStyle="bold"
         android:text="There's a bug for this part :("/>
 </LinearLayout>

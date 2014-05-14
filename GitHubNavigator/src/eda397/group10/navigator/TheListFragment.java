@@ -67,6 +67,7 @@ public class TheListFragment extends ListFragment{
 	private int pageCount = 2;
 	private String currentRepository;
 	private PopupWindow pop;
+	private View theRoot;
 	
 	public TheListFragment(String actionType){
 		this.actionType = actionType;
@@ -80,6 +81,7 @@ public class TheListFragment extends ListFragment{
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.repo_list, container, false);
+		theRoot = rootView;
 		thisContext = this;
 		repoList = (ListView)rootView.findViewById(android.R.id.list);
 		View footerView = inflater.inflate(R.layout.load_more_footer, null, false);
@@ -172,14 +174,14 @@ public class TheListFragment extends ListFragment{
 		return rootView;
 	}
 	
-	public void showPop(View popView,final View vv){
-		pop = new PopupWindow(popView,LayoutParams.WRAP_CONTENT,  
+	public void showPop(View popView){
+		pop = new PopupWindow(popView,LayoutParams.MATCH_PARENT,  
                 LayoutParams.WRAP_CONTENT);
 		pop.setFocusable(true);
 		pop.setBackgroundDrawable(new BitmapDrawable());
 		pop.setOutsideTouchable(true);
 		
-		pop.showAtLocation(vv, Gravity.CENTER, 10, 10);
+		pop.showAtLocation(theRoot, Gravity.CENTER, 10, 10);
 	}
 	
 	public void setList(ArrayList datas, boolean shouldLoadMore){

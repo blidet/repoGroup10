@@ -101,12 +101,16 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 				String repoName = repoObj.getString("name");				
 				JSONObject payLoadObj = obj.getJSONObject("payload");								
 				EventPOJO event = new EventPOJO();
+				String message;
 				event.setType(eventType);
 				event.setActor(actor);
 				event.setRepoName(repoName);
 				switch(eventType){
 				case "PushEvent":	
 					String branch = payLoadObj.getString("ref");
+					JSONArray commitArray = payLoadObj.getJSONArray("commits");
+					message = commitArray.getJSONObject(0).getString("message");
+					event.setMessage(message);
 					event.setRef(branch);
 					event.setMoreToShow(true);
 					datas.add(event);				
