@@ -16,14 +16,14 @@ import android.util.Log;
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
 import eda397.group10.communication.JsonObjectExtractor;
-import eda397.group10.database.PathDataBase;
+import eda397.group10.database.DataBaseTools;
 import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.pojo.NotificationPOJO;
 
 public class PushEvent extends NotificationPOJO {
 	private String repoName;
-	PathDataBase db = PathDataBase.getInstance(notificationContext);
+	DataBaseTools db = DataBaseTools.getInstance(notificationContext);
 
 	public PushEvent(JSONObject input, Service context) throws JSONException {
 		super(input, context);

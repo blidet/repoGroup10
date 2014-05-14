@@ -7,15 +7,16 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
 
 //This class create the database and initialize the Row
-public class BaseSqlite extends SQLiteOpenHelper {
+public class BaseSqliteSha extends SQLiteOpenHelper {
 	 
-	private static final String TASKS_DATA = "Tasks_Data";
-	private static final String ROW_PATH = "Path";
+	private static final String SHA_DATA = "Sha_Data";
+	private static final String ROW_NAME = "Name";
+	private static final String ROW_SHA = "Sha";
+	
+	private static final String CREATE_BDD = "CREATE TABLE " + SHA_DATA + " ("+
+			ROW_NAME + " INTEGER PRIMARY , " + ROW_SHA + " TEXT NOT NULL);";
  
-	private static final String CREATE_BDD = "CREATE TABLE " + TASKS_DATA + " ("
-	 + ROW_PATH + " TEXT NOT NULL);";
- 
-	public BaseSqlite(Context context, String name, CursorFactory factory, int version) {
+	public BaseSqliteSha(Context context, String name, CursorFactory factory, int version) {
 		super(context, name, factory, version);
 	}
  
@@ -29,7 +30,7 @@ public class BaseSqlite extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		//In case of a new version we create the table again
 		//To prevent from SQL changes
-		db.execSQL("DROP TABLE " + TASKS_DATA + ";");
+		db.execSQL("DROP TABLE " + SHA_DATA + ";");
 		onCreate(db);
 	}
 }

@@ -2,7 +2,7 @@ package eda397.group10.adapters;
 
 import java.util.ArrayList;
 
-import eda397.group10.database.PathDataBase;
+import eda397.group10.database.DataBaseTools;
 import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TaskFragment;
@@ -24,7 +24,7 @@ public class TaskListAdapter extends BaseAdapter {
 	private ArrayList<FilePOJO> fileList;
 	private LayoutInflater layoutInflater;
 	private TaskFragment taskFragment;
-	private PathDataBase db;
+	private DataBaseTools db;
 	private AuthenticatedMainActivity mainActivity;
 
 	public TaskListAdapter(TaskFragment taskFragment, ArrayList<FilePOJO> files, LayoutInflater layoutInflater) {
@@ -32,7 +32,7 @@ public class TaskListAdapter extends BaseAdapter {
 		this.layoutInflater = layoutInflater;
 		this.taskFragment = taskFragment;
 		this.mainActivity = (AuthenticatedMainActivity)taskFragment.getActivity();
-		db = PathDataBase.getInstance(taskFragment.getActivity());
+		db = DataBaseTools.getInstance(taskFragment.getActivity());
 	}
 
 	@Override
