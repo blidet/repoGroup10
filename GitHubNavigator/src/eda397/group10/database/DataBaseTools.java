@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import eda397.group10.database.BaseSqlitePath;
+import eda397.group10.navigator.R;
 
 //Tool for adding, remove or check paths
 public class DataBaseTools {
@@ -20,6 +21,8 @@ public class DataBaseTools {
 	private static final String ROW_PATH = "Path";
 	private static final String ROW_NAME = "Name";
 	private static final String ROW_SHA = "Sha";
+	
+	public static final String NULL_SHA_REPOSITORY_KEY = "no_sha";
 	
 	//Database for Files
 	private SQLiteDatabase bdd_files;
@@ -97,7 +100,7 @@ public class DataBaseTools {
 		ContentValues values = new ContentValues();
 		values.put(ROW_NAME, nameRepo);
 		values.put(ROW_SHA, newSha);
-		return bdd_repo.update(SHA_DATA, values, ROW_NAME + " = " +nameRepo, null);
+		return bdd_repo.update(SHA_DATA, values, ROW_NAME + " = \"" + nameRepo + "\"", null);
 	}
  
 	//Return True if the path is find, false otherwise
@@ -110,7 +113,8 @@ public class DataBaseTools {
  
 	//Return the sha corresponding to the name
 	public String getSha(String repoName){
-		Cursor c = bdd_repo.query(SHA_DATA, new String[] {ROW_NAME, ROW_SHA}, ROW_NAME + " LIKE \"" + repoName +"\"", null, null, null, null);
+		Cursor c = null;
+		c = bdd_repo.query(SHA_DATA, new String[] {ROW_NAME, ROW_SHA}, ROW_NAME + " LIKE \"" + repoName +"\"", null, null, null, null);
 		return cursorToSha(c);
 	}
 	
@@ -130,6 +134,14 @@ public class DataBaseTools {
  
 		//returning the sha
 		return sha;
+	}
+	
+	//Return True if the path is find, false otherwise
+	public Boolean findRepo(String repo){
+		//Finding a path in the database
+		//String[] or String ???
+		Cursor c = bdd_repo.query(SHA_DATA, new String[] {ROW_NAME}, ROW_NAME + " LIKE \"" + repo +"\"", null, null, null, null);
+		return checkPath(c);
 	}
 	
 	

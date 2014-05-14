@@ -69,7 +69,7 @@ public class PushEvent extends NotificationPOJO {
 			db.open();
 			String oldSha = db.getSha(repoName);
 			String url = "https://api.github.com/repos/"+repoName+"/compare/"+oldSha+"..."+newSha;
-			db.setSha(repoName, newSha);
+			db.updateSha(repoName, newSha);
 			db.close();
 
 			Log.println(Log.ASSERT, "push event sha url", url);

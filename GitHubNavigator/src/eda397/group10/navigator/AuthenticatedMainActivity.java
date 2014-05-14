@@ -2,6 +2,7 @@ package eda397.group10.navigator;
 
 import eda397.group10.communication.GithubRequest;
 import eda397.group10.communication.JsonExtractor;
+import eda397.group10.database.DataBaseTools;
 import eda397.group10.notifications.NotificationAlarm;
 import eda397.group10.sliding.NavDrawerItem;
 import eda397.group10.sliding.NavDrawerListAdapter;
@@ -80,6 +81,11 @@ public class AuthenticatedMainActivity extends Activity{
 	private boolean isTaskFragment = false;
 	public Stack<String> tasksUrlStack;
 	public int taskFragId = 0;
+	
+	/**
+	 * The database tools utility instance.
+	 */
+	private DataBaseTools db = DataBaseTools.getInstance(this);
 	
 	/**
 	 * The string of the currently displayed list fragment.
@@ -614,7 +620,7 @@ public class AuthenticatedMainActivity extends Activity{
 		@Override
     	public void onPostExecute(JSONArray json) {
 			//Log.println(Log.ASSERT, "REPO BUILDER:::", json.toString());
-
+			
 			try {
 				/**
 				 * TODO Change the shown repositories from the 3 first to the 3 most recent ones.
@@ -628,6 +634,28 @@ public class AuthenticatedMainActivity extends Activity{
 					navDrawerItems.add(new NavDrawerItem(name, navMenuIcons.getResourceId(4, -1), 
 							NavDrawerItem.NavDrawerItemType.REPOSITORY));
 				}
+				
+				/**
+				 * Insert the current sha of the repos into the database.
+				 */
+				for(int i = 0; i < json.length(); ++i){
+					String name = json.getJSONObject(i).get(getResources().getString(R.string.REPOSITORY_JSON_KEY)).toString();
+					
+					db.open();
+					if(!db.findRepo(name))
+						db.addRepo(name, "null");
+					db.close();
+					
+					//Create a Header with the username and password saved in "Shared Preferences":
+		        	Header header = BasicScheme.authenticate(
+		                    new UsernamePasswordCredentials(sh_Pref.getString(getResources().getString(R.string.USERNAME_PREFERENCE), ""), 
+		                    		sh_Pref.getString(getResources().getString(R.string.PASSWORD_PREFERENCE), "")),
+		                    HTTP.UTF_8, false);
+		        	
+		        	//Send HTTP request to retrieve user repos:
+		    		new CommitRetreiver(name, "https://api.github.com/repos/" + name + "/commits", header);
+				}
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -660,6 +688,65 @@ public class AuthenticatedMainActivity extends Activity{
 
 			mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		}
+	}
+	
+	/**
+	 * Gets the commits of a repository to update the sha of the latest commit. 
+	 * 
+	 * @author Oscar
+	 *
+	 */
+	private class CommitRetreiver extends GithubRequest {
+		
+		/**
+		 * The repository name which this retreive commits.
+		 */
+		private String repositoryName;
+		
+		public CommitRetreiver(String repoName, String url, Header header) {
+			super(url, header);
+			repositoryName = repoName;
+		}
+		
+		@Override
+    	public void onPostExecute(HttpResponse result) {
+    		Integer statusCode = result.getStatusLine().getStatusCode();
+			Log.println(Log.ASSERT, "get commits", "status code: "+statusCode+"");
+
+			RepoLastCommitUpdater rlcu = new RepoLastCommitUpdater(repositoryName);
+			rlcu.execute(result);
+		}
+	}
+	
+	/**
+	 * Updates the sha of a repository according to the latest commit.
+	 *
+	 */
+	private class RepoLastCommitUpdater extends JsonExtractor {
+		
+		/**
+		 * The repository name which this should update.
+		 */
+		private String repositoryName;
+		
+		public RepoLastCommitUpdater(String repoName){
+			super();
+			repositoryName = repoName;
+		}
+		
+		@Override
+    	public void onPostExecute(JSONArray json) {
+			try {
+				Log.println(Log.DEBUG, "Repo last commit updater", json.toString());
+				Log.println(Log.DEBUG, "Repo last commit updater", "Repo name: " + repositoryName);
+				db.open();
+				db.updateSha(repositoryName, json.getJSONObject(0).getString("sha"));
+				db.close();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
