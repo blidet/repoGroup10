@@ -106,7 +106,6 @@ public class RepoCommitJSONParser extends AsyncTask<HttpResponse, Void, ArrayLis
 				}
 
 				UserPOJO author = new UserPOJO();
-				//author.setAvatar(imageDrawable);
 				author.setAvatarBitmap(imageBitmap);
 				author.setName(committerName);
 
@@ -116,6 +115,8 @@ public class RepoCommitJSONParser extends AsyncTask<HttpResponse, Void, ArrayLis
 
 				JSONObject commitObject = obj.getJSONObject("commit");
 				String message = commitObject.getString("message");
+				event.setMessage(message);
+				event.setMoreToShow(true);
 				event.setComment(message);
 				datas.add(event);
 			}

@@ -132,22 +132,32 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 					break;
 				case "IssueCommentEvent":
 					JSONObject issueObj = payLoadObj.getJSONObject("issue");
+					JSONObject commentObj = payLoadObj.getJSONObject("comment");
+					message = commentObj.getString("body");
 					int issueN = issueObj.getInt("number");
 					event.setIssueNumber(Integer.toString(issueN));
+					event.setMessage(message);
+					event.setMoreToShow(true);
 					datas.add(event);
 					break;
 				case "IssuesEvent":
 					JSONObject issueObj1 = payLoadObj.getJSONObject("issue");
 					String action = payLoadObj.getString("action");
 					int issueN1 = issueObj1.getInt("number");
+					message = issueObj1.getString("title");
+					event.setMessage(message);
 					event.setIssueNumber(Integer.toString(issueN1));
 					event.setAction(action);
+					event.setMoreToShow(true);
 					datas.add(event);
 					break;
 				case "CommitCommentEvent":
 					JSONObject commitObj = payLoadObj.getJSONObject("comment");
 					String commitId = commitObj.getString("commit_id");
+					message = commitObj.getString("body");
 					event.setCommitId(commitId);
+					event.setMessage(message);
+					event.setMoreToShow(true);
 					datas.add(event);
 					break;
 				}				

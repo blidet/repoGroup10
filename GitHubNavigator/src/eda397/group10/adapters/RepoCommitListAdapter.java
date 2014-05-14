@@ -1,6 +1,7 @@
 package eda397.group10.adapters;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
@@ -25,11 +26,18 @@ public class RepoCommitListAdapter extends BaseAdapter {
 	private LayoutInflater layoutInflater;
 	private TheListFragment contex;
 	private TextView actorNameText;
+	
+	private View dialogView;
+	private ImageView dialogAvatar;
+	private TextView dialogAvatarName;
+	private TextView dialogMessage;
+	private HashMap<Integer,View> viewMap;
 
 	public RepoCommitListAdapter(TheListFragment contex,ArrayList<EventPOJO> datas,LayoutInflater layoutInflater){
 		this.contex = contex;
 		this.datas = datas;
 		this.layoutInflater = layoutInflater;
+		viewMap = new HashMap<Integer,View>();
 	}
 
 	@Override
@@ -51,7 +59,7 @@ public class RepoCommitListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int pos, View convertView, ViewGroup parent) {
+	public View getView(final int pos, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		convertView = layoutInflater.inflate(R.layout.repo_commit_list_row, parent, false);
 		actionText = (TextView)convertView.findViewById(R.id.commit_action);
@@ -84,6 +92,26 @@ public class RepoCommitListAdapter extends BaseAdapter {
 			
 			break;
 		}
+		
+		dialogView = layoutInflater.inflate(R.layout.message_dialog, null);
+		
+		dialogAvatar = (ImageView)dialogView.findViewById(R.id.message_avatar);
+		dialogAvatarName = (TextView)dialogView.findViewById(R.id.message_avatar_name);
+		dialogMessage = (TextView)dialogView.findViewById(R.id.message_message);
+		dialogAvatar.setImageBitmap(imageBitmap);
+		dialogAvatarName.setText(actorName);
+		dialogMessage.setText(event.getMessage());
+		
+		viewMap.put(pos, dialogView);
+
+		convertView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {	
+				contex.showPop(viewMap.get(pos));
+			}
+		});
+		
 
 
 		return convertView;
