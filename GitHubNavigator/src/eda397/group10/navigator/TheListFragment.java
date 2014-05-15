@@ -142,9 +142,9 @@ public class TheListFragment extends ListFragment{
 									+ userName + "/received_events?page="
 									+ pageCount, header, true);
 						}else if(actionType.equals("repo_news_action")){
-							new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/events?page="+pageCount,header,false);
+							new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/events?page="+pageCount,header,true);
 						}else{
-							new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/commits?page=", header, false);
+							new RepoRetriever("https://api.github.com/repos/"+currentRepository+"/commits?page="+pageCount, header, true);
 						}
 						
 						pageCount++;
