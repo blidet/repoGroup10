@@ -41,10 +41,11 @@ public class PushEvent extends NotificationPOJO {
 		JSONArray commits = payload.getJSONArray("commits");
 		text = commits.getJSONObject(0).getString("message"); //not sure if it should be first or last commit
 
-		for(int i = 0; i < commits.length(); ++i){
-			newSha = commits.getJSONObject(i).getString("sha");
-			Log.println(Log.ASSERT, "Push event", "Sha " + i + ": " + newSha);
-		}
+		//for(int i = 0; i < commits.length(); ++i){
+		//TODO: what happens when push contains multiple commits?
+			newSha = commits.getJSONObject(0).getString("sha");
+			//Log.println(Log.ASSERT, "Push event", "Sha " + i + ": " + newSha);
+		//}
 
 		//Set color of led lights and text to green
 		setLight(NotificationPOJO.LEDColor.GREEN);
