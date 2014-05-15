@@ -5,9 +5,7 @@ import org.json.JSONObject;
 
 import android.app.Service;
 import eda397.group10.navigator.AuthenticatedMainActivity;
-import eda397.group10.navigator.MainActivity;
 import eda397.group10.navigator.R;
-import eda397.group10.navigator.SettingsFragment;
 import eda397.group10.pojo.NotificationPOJO;
 
 public class IssueCommentEvent extends NotificationPOJO {

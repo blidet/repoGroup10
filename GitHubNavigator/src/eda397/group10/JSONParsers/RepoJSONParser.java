@@ -12,7 +12,6 @@ import org.json.JSONTokener;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import eda397.group10.communication.JsonExtractor;
 import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.RepositoryPOJO;
 import eda397.group10.pojo.UserPOJO;
@@ -36,7 +35,6 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 	
 	@Override
 	protected ArrayList<RepositoryPOJO> doInBackground(HttpResponse... params) {
-		// TODO Auto-generated method stub
 		BufferedReader reader;
 		JSONArray json = new JSONArray();
 		try {
@@ -79,7 +77,6 @@ public class RepoJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Repo
 	
 	@Override
 	protected void onPostExecute(ArrayList<RepositoryPOJO> pojos) {
-		// TODO Auto-generated method stub		
 		contex.loadingProgress.dismiss();
 		contex.setList(pojos,false);
 	}

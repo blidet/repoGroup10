@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
-import android.util.Log;
 import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
 import eda397.group10.pojo.NotificationPOJO;

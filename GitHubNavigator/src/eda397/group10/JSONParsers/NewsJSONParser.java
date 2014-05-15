@@ -1,13 +1,9 @@
 package eda397.group10.JSONParsers;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,22 +15,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.support.v4.util.LruCache;
 import android.util.Log;
-import eda397.group10.communication.JsonExtractor;
-import eda397.group10.navigator.R;
 import eda397.group10.navigator.TheListFragment;
 import eda397.group10.pojo.EventPOJO;
-import eda397.group10.pojo.RepositoryPOJO;
 import eda397.group10.pojo.UserPOJO;
-import android.widget.BaseAdapter;
 
 public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<EventPOJO>> {
 	
@@ -55,7 +42,6 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 	
 	@Override
 	protected ArrayList<EventPOJO> doInBackground(HttpResponse... params) {
-		// TODO Auto-generated method stub
 		BufferedReader reader;
 		JSONArray json = new JSONArray();
 		try {
@@ -180,7 +166,6 @@ public class NewsJSONParser extends AsyncTask<HttpResponse, Void, ArrayList<Even
 
 	@Override
 	protected void onPostExecute(ArrayList<EventPOJO> pojos) {
-		// TODO Auto-generated method stub
 		context.loadingProgress.dismiss();
 		context.setList(pojos,loadMore);
 	}

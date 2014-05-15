@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.apache.http.HttpResponse;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
