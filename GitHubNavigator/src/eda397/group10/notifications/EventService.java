@@ -113,7 +113,7 @@ import android.util.Log;
 						
 						/**
 						 * Vibrate for 500 milliseconds when you get a valid notification.
-						 */
+						 */ 
 						AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 						SharedPreferences settingsPrefs = getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 						int vibrationValue = settingsPrefs.getInt(getResources().getString(R.string.VIBRATION_VALUE_SELECTED), 0);
