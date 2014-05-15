@@ -4,7 +4,6 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +13,6 @@ import android.app.Service;
 import android.content.SharedPreferences;
 import android.util.Log;
 import eda397.group10.communication.GithubRequest;
-import eda397.group10.communication.JsonExtractor;
 import eda397.group10.communication.JsonObjectExtractor;
 import eda397.group10.database.DataBaseTools;
 import eda397.group10.navigator.AuthenticatedMainActivity;
@@ -24,6 +22,8 @@ import eda397.group10.pojo.NotificationPOJO;
 public class PushEvent extends NotificationPOJO {
 	private String repoName;
 	DataBaseTools db = DataBaseTools.getInstance(notificationContext);
+	private String title;
+	private String text;
 
 	public PushEvent(JSONObject input, Service context) throws JSONException {
 		super(input, context);
@@ -37,17 +37,18 @@ public class PushEvent extends NotificationPOJO {
 		JSONObject repo = input.getJSONObject("repo");
 		JSONObject payload = input.getJSONObject("payload");
 
-		String title = actor.getString("login") + " pushed to " + repo.getString("name");
+		title = actor.getString("login") + " pushed to " + repo.getString("name");
 		JSONArray commits = payload.getJSONArray("commits");
-		String text = commits.getJSONObject(0).getString("message"); //not sure if it should be first or last commit
+		text = commits.getJSONObject(0).getString("message"); //not sure if it should be first or last commit
 
 		for(int i = 0; i < commits.length(); ++i){
 			newSha = commits.getJSONObject(i).getString("sha");
 			Log.println(Log.ASSERT, "Push event", "Sha " + i + ": " + newSha);
 		}
 
-		setTitle(title);
-		setText(text);
+		setTitle("<font color='#59E817'><b>"+title+"</b></font>");
+		setText("<font color='#6CBB3C'><b>"+title+"</b></font>");
+		
 		setExpandedText(text);
 
 		setLight(NotificationPOJO.LEDColor.GREEN);
@@ -136,6 +137,8 @@ public class PushEvent extends NotificationPOJO {
 							Log.println(Log.ASSERT, "Notification checker", "Found conflicting file: " + fileUrl);
 							Log.println(Log.ASSERT, "Notification checker", "Name of conflicting file: " + repoName + "/" + filename);
 							setLight(NotificationPOJO.LEDColor.RED);
+							setTitle("<font color='#FF0000'><b>"+title+"</b></font>");
+							setText("<font color='#C11B17'><b>"+text+"</b></font>");
 							break;
 						}
 					}

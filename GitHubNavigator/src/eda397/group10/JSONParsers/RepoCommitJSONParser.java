@@ -17,7 +17,6 @@ import org.json.JSONTokener;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import eda397.group10.navigator.TheListFragment;
@@ -42,8 +41,6 @@ public class RepoCommitJSONParser extends AsyncTask<HttpResponse, Void, ArrayLis
 
 	@Override
 	protected ArrayList<EventPOJO> doInBackground(HttpResponse... params) {
-		// TODO Auto-generated method stub
-
 		Log.println(Log.DEBUG, "RepoNewsDoInBackground", "Trying to parse json etc.");
 
 		BufferedReader reader;
@@ -136,7 +133,6 @@ public class RepoCommitJSONParser extends AsyncTask<HttpResponse, Void, ArrayLis
 	@Override
 	protected void onPostExecute(ArrayList<EventPOJO> pojos) {
 		Log.println(Log.DEBUG, "RepoNewsOnPostExecute", "Execute done, trying to set list.");
-		// TODO Auto-generated method stub
 		context.loadingProgress.dismiss();
 		context.setList(pojos,loadMore);
 	}

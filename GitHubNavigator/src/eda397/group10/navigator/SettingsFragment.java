@@ -80,6 +80,7 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 		SharedPreferences settingsPrefs = getActivity().getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 		Editor toEdit = settingsPrefs.edit();
 		if (parent.equals(notificationSpinner)) {
+			//value in notifications on/off spinner changed
 			toEdit.putInt(getResources().getString(R.string.CHECK_FOR_NOTIFICATIONS), pos);
 
 			String selectedInterval = parent.getItemAtPosition(pos).toString();
@@ -136,8 +137,10 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 			}
 			toEdit.putInt(getResources().getString(R.string.SECONDS_BETWEEN_UPDATES), seconds);
 		} else if (parent.equals(vibrationSpinner)) {
+			//value in vibrations on/off spinner changed
 			toEdit.putInt(getResources().getString(R.string.VIBRATION_VALUE_SELECTED), pos);
 		} else if (parent.equals(ledSpinner)) {
+			//value in LED lights on/off spinner changed
 			toEdit.putInt(getResources().getString(R.string.LED_LIGHT_VALUE_SELECTED), pos);
 		}
 
@@ -150,8 +153,7 @@ public class SettingsFragment extends Fragment implements OnItemSelectedListener
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		//TODO
-		// Another interface callback
+		//do nothing
 	}
 
 
