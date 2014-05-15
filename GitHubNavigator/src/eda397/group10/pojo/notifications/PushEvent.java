@@ -46,12 +46,13 @@ public class PushEvent extends NotificationPOJO {
 			Log.println(Log.ASSERT, "Push event", "Sha " + i + ": " + newSha);
 		}
 
-		setTitle("<font color='#59E817'><b>"+title+"</b></font>");
-		setText("<font color='#6CBB3C'><b>"+title+"</b></font>");
-		
-		setExpandedText(text);
-
+		//Set color of led lights and text to green
 		setLight(NotificationPOJO.LEDColor.GREEN);
+		setTitle("<font color='#59E817'><b>"+title+"</b></font>");
+		setText("<font color='#6CBB3C'><b>"+text+"</b></font>");
+		setExpandedText("<font color='#6CBB3C'><b>"+text+"</b></font>");
+
+		
 
 		String action = context.getResources().getString(R.string.REPO_NEWS_ACTION);
 		repoName = repo.getString("name");
@@ -136,9 +137,12 @@ public class PushEvent extends NotificationPOJO {
 						if(isConflict){
 							Log.println(Log.ASSERT, "Notification checker", "Found conflicting file: " + fileUrl);
 							Log.println(Log.ASSERT, "Notification checker", "Name of conflicting file: " + repoName + "/" + filename);
+							
+							//Settings color of text and LED lights to red
 							setLight(NotificationPOJO.LEDColor.RED);
-							setTitle("<font color='#FF0000'><b>"+title+"</b></font>");
-							setText("<font color='#C11B17'><b>"+text+"</b></font>");
+							setTitle("<font color='#C11B17'><b>"+title+"</b></font>");
+							setText("<font color='#9F000F'><b>"+text+"</b></font>");
+							setExpandedText("<font color='#9F000F'><b>"+text+"</b></font>");
 							break;
 						}
 					}

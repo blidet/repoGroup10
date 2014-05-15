@@ -189,7 +189,7 @@ public class NotificationPOJO {
 		//Creates the expanded view of the notification (only on Android 4.1 and later)
 		NotificationCompat.BigTextStyle bigStyle =
 				new NotificationCompat.BigTextStyle()
-		.bigText(text);
+		.bigText(Html.fromHtml(text));
 		notificationBuilder.setStyle(bigStyle);
 		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
