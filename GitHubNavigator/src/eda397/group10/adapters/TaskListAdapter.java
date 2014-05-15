@@ -68,6 +68,7 @@ public class TaskListAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					if (file.getType().equals("tree")) {
+						mainActivity.addCurrentTaskTreeFolder(file.getFilename());
 						TaskFragment childFragment = new TaskFragment(file.getFullUrl(),false);
 						mainActivity.tasksUrlStack.push(file.getFullUrl());
 						mainActivity.taskFragId++;
@@ -96,22 +97,34 @@ public class TaskListAdapter extends BaseAdapter {
 			final String currentRepository = preferences.getString(taskFragment.getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
 			
 			db.open();
+			
 			//mainActivity.tasksUrlStack.push(file.getFullUrl());
-			checkbox.setChecked(db.findPath(currentRepository+"/"+file.getFilename()));
+			final String fullPath = currentRepository+"/"+mainActivity.getCurrentTaskTreeFoldersAsString()+file.getFilename();
+			Log.println(Log.DEBUG, "Checking file", "File full path: " + fullPath + " : " + db.findPath(fullPath));
+			checkbox.setChecked(db.findPath(fullPath));
 			db.close();
 
 			//Create on-click-listener for checkbox
 			checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					
+					/**
+					 * Makes sure that the full path of the current.
+					 */
+					if(fullPath.equals("")){
+						Log.println(Log.ERROR, "Task Item Check", "The full path of the checked item is not specified.");
+						return;
+					}
+					
 					db.open();
 					if (isChecked) {
-						db.addPath(currentRepository+"/"+file.getFilename());
+						db.addPath(fullPath);
 					} else {
-						db.removePath(currentRepository+"/"+file.getFilename());
+						db.removePath(fullPath);
 					}
+					Log.println(Log.ASSERT, "file", db.findPath(fullPath) + " : " + fullPath);
 					db.close();
-					Log.println(Log.ASSERT, "file", currentRepository + "/" + file.getFilename());
 					
 					//TODO: full path
 				}

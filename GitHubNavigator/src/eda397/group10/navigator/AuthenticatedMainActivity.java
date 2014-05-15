@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Stack;
 import java.util.TimeZone;
 
@@ -91,6 +92,11 @@ public class AuthenticatedMainActivity extends Activity{
 	 * The string of the currently displayed list fragment.
 	 */
 	private String currentListFragmentString = "";
+	
+	/**
+	 * The current tree path in the task fragment.
+	 */
+	private List<String> currentTaskTreeFolders = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -243,6 +249,7 @@ public class AuthenticatedMainActivity extends Activity{
 		
 		FragmentManager fragmentManager = getFragmentManager();
 		if(keyCode == KeyEvent.KEYCODE_BACK && fragmentManager.getBackStackEntryCount()>1 && isTaskFragment){
+			removeLastCurrentTaskTreeFolder();
 			taskFragId--;
 			tasksUrlStack.pop();
 			fragmentManager.popBackStack();
@@ -338,6 +345,7 @@ public class AuthenticatedMainActivity extends Activity{
 
 		switch (position) {
 		case -3:
+			this.clearCurrentTaskTreeFolder();
 			SharedPreferences settings_preferences = this.getSharedPreferences(getResources().getString(R.string.SETTINGS_PREFERENCES),0);
 			String currentRepository = settings_preferences.getString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), "none");
 			String theUrl = "https://api.github.com/repos/" + currentRepository + "/branches";
@@ -436,6 +444,9 @@ public class AuthenticatedMainActivity extends Activity{
 			toEdit.putString(getResources().getString(R.string.CURRENT_REPOSITORY_PREFERENCE), item.getTitle());
 	        toEdit.putBoolean(getResources().getString(R.string.HAS_CURRENT_REPOSITORY_PREFERENCE), true);
 	        toEdit.commit();
+	        
+	        if(isTaskFragment)
+	        	this.clearCurrentTaskTreeFolder();
 
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			showTabs = true;
@@ -558,6 +569,7 @@ public class AuthenticatedMainActivity extends Activity{
 				displayView(-1);
 				break;
 			case 2:
+				this.clearCurrentTaskTreeFolder();
 				listFragment = new TaskFragment(tasksUrlStack.peek(),false);
 				refreshTheFragment(listFragment,Integer.toString(taskFragId));
 				break;
@@ -774,6 +786,28 @@ public class AuthenticatedMainActivity extends Activity{
 			//TODO: set fragment according to action
 		}
 	}
+
+	public String getCurrentTaskTreeFoldersAsString() {
+		String currentTaskTreeFoldersString = "";
+		for(String s : currentTaskTreeFolders)
+			currentTaskTreeFoldersString += s;
+		return currentTaskTreeFoldersString;
+	}
+
+	public void addCurrentTaskTreeFolder(String folderName) {
+		Log.println(Log.DEBUG, "Task Folder Tree", "Adding folder " + folderName);
+		this.currentTaskTreeFolders.add(folderName + "/");
+	}
 	
+	public void removeLastCurrentTaskTreeFolder(){
+		Log.println(Log.DEBUG, "Task Folder Tree", "Removing the last folder.");
+		if(currentTaskTreeFolders.size() > 0)
+			this.currentTaskTreeFolders.remove(currentTaskTreeFolders.size()-1);
+	}
+	
+	public void clearCurrentTaskTreeFolder(){
+		Log.println(Log.DEBUG, "Task Folder Tree", "Clearing the folders.");
+		currentTaskTreeFolders = new ArrayList<String>();
+	}
 	
 }

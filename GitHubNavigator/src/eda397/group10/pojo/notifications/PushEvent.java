@@ -67,8 +67,14 @@ public class PushEvent extends NotificationPOJO {
 					new UsernamePasswordCredentials(userName, password),
 					HTTP.UTF_8, false);
 			db.open();
+			if(!db.findRepo(repoName)){
+				Log.println(Log.ERROR, "Push Event", "Repository " + repoName + " not found in database.");
+				db.close();
+				return;
+			}
 			String oldSha = db.getSha(repoName);
 			String url = "https://api.github.com/repos/"+repoName+"/compare/"+oldSha+"..."+newSha;
+			Log.println(Log.DEBUG, "Push Event", "url: " + url);
 			db.updateSha(repoName, newSha);
 			db.close();
 
@@ -124,11 +130,11 @@ public class PushEvent extends NotificationPOJO {
 					String fileUrl = "https://api.github.com/repos/"+ repoName + "/git/blobs/" + sha;
 
 					if (status.equals("modified")) {
-						Log.println(Log.ASSERT, "Notification Checker", "Checking for conflicts with file: " + filename);
+						Log.println(Log.ASSERT, "Notification Checker", "Checking for conflicts with file: " + repoName + "/" + filename);
 						isConflict = db.findPath(repoName + "/" + filename);
 						if(isConflict){
 							Log.println(Log.ASSERT, "Notification checker", "Found conflicting file: " + fileUrl);
-							Log.println(Log.ASSERT, "Notification checker", "Name of conflicting file: " + filename);
+							Log.println(Log.ASSERT, "Notification checker", "Name of conflicting file: " + repoName + "/" + filename);
 							setLight(NotificationPOJO.LEDColor.RED);
 							break;
 						}
