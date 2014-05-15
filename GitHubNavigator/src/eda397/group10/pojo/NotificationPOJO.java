@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.Html;
 import android.util.Log;
 import eda397.group10.navigator.AuthenticatedMainActivity;
 import eda397.group10.navigator.R;
@@ -141,7 +142,7 @@ public class NotificationPOJO {
 	 * @param title
 	 */
 	protected void setTitle(String title) {
-		notificationBuilder.setContentTitle(title);
+		notificationBuilder.setContentTitle(Html.fromHtml(title));
 		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	
@@ -150,7 +151,7 @@ public class NotificationPOJO {
 	 * @param text
 	 */
 	protected void setText(String text) {
-		notificationBuilder.setContentText(text);
+		notificationBuilder.setContentText(Html.fromHtml(text));
 		//notificationManager.notify(notificationId, notificationBuilder.build());
 	}
 	

@@ -34,6 +34,7 @@ public class RepoCommitListAdapter extends BaseAdapter {
 		this.contex = contex;
 		this.datas = datas;
 		this.layoutInflater = layoutInflater;
+		viewMap = new HashMap<Integer,View>();
 	}
 
 	@Override
